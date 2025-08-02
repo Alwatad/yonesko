@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm vercel-build",
+  "framework": "nextjs",
+  "functions": {
+    "app/**": {
+      "maxDuration": 30
+    }
+  }
+}
