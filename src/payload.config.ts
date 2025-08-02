@@ -114,15 +114,12 @@ db: postgresAdapter({
   idType: 'uuid',
   pool: {
     connectionString: process.env.DATABASE_URI,
-    // Force older SASL method
-    options: '--client-encoding=UTF8',
     ssl: {
       rejectUnauthorized: false,
-      sslmode: 'require'
-    }
+    },
+    // Add connection options for SASL
+    options: '--client-encoding=UTF8',
   },
-  // Try different connection approach
-  push: false,
 }),
   collections: [
     Pages,
