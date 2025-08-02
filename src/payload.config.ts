@@ -117,9 +117,9 @@ db: postgresAdapter({
     ssl: {
       rejectUnauthorized: false,
     },
-    // Add connection options for SASL
     options: '--client-encoding=UTF8',
   },
+  push: process.env.NODE_ENV !== 'production', // Enable push mode for development/build
 }),
   collections: [
     Pages,
