@@ -1,11 +1,11 @@
 {
-  "name": "payload-ecommerce-template",
+  "name": "shawirmar",
   "version": "1.0.0",
   "description": "Ecommerce template built with PayloadCMS and Next.js",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "payload migrate && cross-env NODE_OPTIONS=--no-deprecation next build", 
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
@@ -27,7 +27,7 @@
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
-    "@payloadcms/db-mongodb": "3.47.0",
+    "@payloadcms/db-postgres": "3.47.0",
     "@payloadcms/live-preview-react": "3.47.0",
     "@payloadcms/next": "3.47.0",
     "@payloadcms/payload-cloud": "3.47.0",
