@@ -1,9 +1,9 @@
-import * as migration_20250803_142750 from './20250803_142750';
+import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
+import { up as up20250803_151127 } from './20250803_151127'
 
 export const migrations = [
   {
-    up: migration_20250803_142750.up,
-    down: migration_20250803_142750.down,
-    name: '20250803_142750'
+    name: '20250803_151127',
+    up: up20250803_151127,
   },
-];
+]
