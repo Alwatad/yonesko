@@ -1,14 +1,9 @@
 // src/payload/seed.ts
 
-import path from "path";
-
-import payload, { type Payload } from "payload";
+import payload from "payload";
 
 import "dotenv/config";
 import config from "../payload.config";
-
-// Load environment variables
-const { PAYLOAD_SECRET, DATABASE_URI } = process.env;
 
 /**
  * This function seeds the database with initial data.
@@ -23,9 +18,36 @@ const seed = async () => {
       config,
     });
 
+    // Wait for database to be fully ready
+    console.log("⏳ Ensuring database is fully ready...");
+    let attempts = 0;
+    const maxAttempts = 30;
+    
+    while (attempts < maxAttempts) {
+      try {
+        // Test if we can actually query the database
+        await payload.find({
+          collection: "pages",
+          limit: 1,
+          overrideAccess: true,
+        });
+        
+        console.log("✅ Database is ready for queries");
+        break;
+      } catch {
+        console.log(`⏳ Database not ready yet... (${attempts + 1}/${maxAttempts})`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        attempts++;
+        
+        if (attempts >= maxAttempts) {
+          console.log("⚠️  Database may not be fully ready, but continuing...");
+        }
+      }
+    }
+
     // Extract the project name from an environment variable if possible,
     // or use a fallback. This assumes you set PROJECT_NAME during deployment.
-    const projectName = process.env.PROJECT_NAME || "My Awesome Store";
+    const projectName = process.env.PROJECT_NAME ?? "My Awesome Store";
 
     // --- Seed Globals (Header & Footer) ---
     console.log("Seeding Globals...");
@@ -119,4 +141,4 @@ const seed = async () => {
 };
 
 // Run the seed function
-seed();
+void seed();
