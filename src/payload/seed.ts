@@ -97,6 +97,7 @@ const seed = async () => {
                     version: 1,
                   },
                 },
+                enableLink: false, // Disable link to avoid UUID issues
               },
             ],
           },
