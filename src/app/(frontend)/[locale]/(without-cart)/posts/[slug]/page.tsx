@@ -1,5 +1,4 @@
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 import React, { cache } from "react";
 
 import { RelatedPosts } from "@/blocks/RelatedPosts/Component";
@@ -10,7 +9,7 @@ import { PostHero } from "@/components/heros/PostHero";
 import { type Locale } from "@/i18n/config";
 import { routing } from "@/i18n/routing";
 import { generateMeta } from "@/utilities/generateMeta";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import PageClient from "./page.client";
 
@@ -19,9 +18,7 @@ import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   try {
-    const payload = await getPayload({ config });
-    const posts = await payload.find({
-      collection: "posts",
+    const posts = await safeFind("posts", {
       draft: false,
       limit: 1000,
       overrideAccess: false,
@@ -95,11 +92,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
   const { isEnabled: draft } = await draftMode();
 
-  const payload = await getPayload({ config });
-
   try {
-    const result = await payload.find({
-      collection: "posts",
+    const result = await safeFind("posts", {
       draft,
       limit: 1,
       overrideAccess: draft,
