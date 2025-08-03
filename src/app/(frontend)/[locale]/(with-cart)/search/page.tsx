@@ -1,9 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { getPayload } from "payload";
 
 import { WithInlinePrice } from "@/globals/(ecommerce)/Layout/ProductList/variants/listings/WithInlinePrice";
 import { routing } from "@/i18n/routing";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -11,11 +10,9 @@ export function generateStaticParams() {
 
 const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: string }> }) => {
   const { search } = await searchParams;
-  const payload = await getPayload({ config });
   // TODO: pagination for more products
   const { docs: products } = search
-    ? await payload.find({
-        collection: "products",
+    ? await safeFind("products", {
         where: {
           or: [
             {

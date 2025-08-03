@@ -1,6 +1,5 @@
 import { draftMode } from "next/headers";
 import { setRequestLocale } from "next-intl/server";
-import { getPayload } from "payload";
 import React, { cache } from "react";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
@@ -9,7 +8,7 @@ import { RenderHero } from "@/components/heros/RenderHero";
 import { type Locale } from "@/i18n/config";
 import { routing } from "@/i18n/routing";
 import { generateMeta } from "@/utilities/generateMeta";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import PageClient from "./page.client";
 
@@ -17,9 +16,7 @@ import type { Metadata } from "next";
 
 export async function generateStaticParams() {
   try {
-    const payload = await getPayload({ config });
-    const pages = await payload.find({
-      collection: "pages",
+    const pages = await safeFind("pages", {
       draft: false,
       limit: 1000,
       overrideAccess: false,
@@ -97,11 +94,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
   const { isEnabled: draft } = await draftMode();
 
-  const payload = await getPayload({ config });
-
   try {
-    const result = await payload.find({
-      collection: "pages",
+    const result = await safeFind("pages", {
       draft,
       limit: 1,
       locale,

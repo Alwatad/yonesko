@@ -11,7 +11,7 @@ import RichText from "@/components/RichText";
 import { WithInlinePrice } from "@/globals/(ecommerce)/Layout/ProductList/variants/listings/WithInlinePrice";
 import { type HotspotBlock as HotspotBlockProps, type Product } from "@/payload-types";
 import { cn } from "@/utilities/cn";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import { WithInlinePriceSlider } from "./variants/WithInlinePriceSlider";
 
@@ -29,14 +29,11 @@ export const HotspotBlock = async ({
   sort,
   products,
 }: HotspotBlockProps) => {
-  const payload = await getPayload({ config });
-
   let productsToShow: Product[] = [];
 
   switch (type) {
     case "category": {
-      const { docs: categoryProducts } = await payload.find({
-        collection: "products",
+      const { docs: categoryProducts } = await safeFind("products", {
         depth: 2,
         where: {
           "categoriesArr.category": {
@@ -50,8 +47,7 @@ export const HotspotBlock = async ({
       break;
     }
     case "subcategory": {
-      const { docs: subcategoryProducts } = await payload.find({
-        collection: "products",
+      const { docs: subcategoryProducts } = await safeFind("products", {
         depth: 2,
         where: {
           "categoriesArr.subcategories": {

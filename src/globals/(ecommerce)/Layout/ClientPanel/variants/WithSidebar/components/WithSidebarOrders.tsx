@@ -1,5 +1,4 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { getPayload } from "payload";
 
 import { Media } from "@/components/Media";
 import { Card } from "@/components/ui/card";
@@ -8,10 +7,9 @@ import { Link } from "@/i18n/routing";
 import { formatDateTime } from "@/utilities/formatDateTime";
 import { formatPrice } from "@/utilities/formatPrices";
 import { getCustomer } from "@/utilities/getCustomer";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 export const WithSidebarOrders = async () => {
-  const payload = await getPayload({ config });
   const user = await getCustomer();
   const locale = (await getLocale()) as Locale;
 
@@ -20,8 +18,7 @@ export const WithSidebarOrders = async () => {
   }
   const t = await getTranslations("Account.orders");
 
-  const orders = await payload.find({
-    collection: "orders",
+  const orders = await safeFind("orders", {
     where: {
       customer: {
         equals: user?.id,

@@ -1,8 +1,6 @@
-import { getPayload } from "payload";
-
 import { CollectionArchive } from "@/components/CollectionArchive";
 import RichText from "@/components/RichText";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import type { Post, ArchiveBlock as ArchiveBlockProps } from "@/payload-types";
 
@@ -18,15 +16,12 @@ export const ArchiveBlock = async (
   let posts: Post[] = [];
 
   if (populateBy === "collection") {
-    const payload = await getPayload({ config });
-
     const flattenedCategories = categories?.map((category) => {
       if (typeof category === "object") return category.id;
       else return category;
     });
 
-    const fetchedPosts = await payload.find({
-      collection: "posts",
+    const fetchedPosts = await safeFind("posts", {
       depth: 1,
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0

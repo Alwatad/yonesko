@@ -1,12 +1,11 @@
 import { getLocale } from "next-intl/server";
-import { getPayload } from "payload";
 import React from "react";
 
 import { type CardPostData } from "@/components/Card";
 import { CollectionArchive } from "@/components/CollectionArchive";
 import { Search } from "@/components/search/Component";
 import { type Locale } from "@/i18n/config";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import PageClient from "./page.client";
 
@@ -20,11 +19,9 @@ type Args = {
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise;
   console.log(query);
-  const payload = await getPayload({ config });
   const locale = (await getLocale()) as Locale;
 
-  const posts = await payload.find({
-    collection: "search",
+  const posts = await safeFind("search", {
     depth: 1,
     limit: 12,
     locale,

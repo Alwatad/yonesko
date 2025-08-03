@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
-import { getPayload } from "payload";
 
 import { ListingBreadcrumbs } from "@/components/(ecommerce)/ListingBreadcrumbs";
 import { type Locale } from "@/i18n/config";
 import { type Product, type ProductCategory, type ProductSubCategory } from "@/payload-types";
 import { getCachedGlobal } from "@/utilities/getGlobals";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 import { None } from "./variants/filters/None";
 import { WithSidebar } from "./variants/filters/WithSidebar/WithSidebar";
@@ -42,10 +41,7 @@ export const ProductList = async ({
         ProductDetailsComponent = None;
     }
 
-    const payload = await getPayload({ config });
-
-    const { docs: allProducts } = await payload.find({
-      collection: "products",
+    const { docs: allProducts } = await safeFind("products", {
       depth: 2,
       locale,
       where: {

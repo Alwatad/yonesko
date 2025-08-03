@@ -45,12 +45,13 @@ export async function safeFind(collection: string, options: any = {}) {
 /**
  * Safe wrapper for PayloadCMS findByID queries
  */
-export async function safeFindByID(collection: string, id: string) {
+export async function safeFindByID(collection: string, id: string, options: any = {}) {
   return safePayloadQuery(
     async (payload) => {
       return await payload.findByID({
         collection,
         id,
+        ...options,
       });
     },
     null

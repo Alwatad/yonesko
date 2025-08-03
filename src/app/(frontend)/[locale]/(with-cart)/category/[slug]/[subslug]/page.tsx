@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { getLocale } from "next-intl/server";
-import { getPayload, type Sort } from "payload";
+import { type Sort } from "payload";
 
 import { ProductList } from "@/globals/(ecommerce)/Layout/ProductList/Component";
 import { type Locale } from "@/i18n/config";
-import config from "@payload-config";
+import { safeFind } from "@/utilities/safePayloadQuery";
 
 const SubcategoryPage = async ({
   params,
@@ -14,12 +14,10 @@ const SubcategoryPage = async ({
   searchParams: Promise<Record<string, string | undefined>>;
 }) => {
   try {
-    const payload = await getPayload({ config });
     const locale = (await getLocale()) as Locale;
     const { color, size, sortBy } = await searchParams;
     const { subslug } = await params;
-    const { docs: subcategories } = await payload.find({
-      collection: "productSubCategories",
+    const { docs: subcategories } = await safeFind("productSubCategories", {
       depth: 1,
       locale,
       where: {
@@ -52,8 +50,7 @@ const SubcategoryPage = async ({
         break;
     }
 
-    const { docs: products } = await payload.find({
-      collection: "products",
+    const { docs: products } = await safeFind("products", {
       depth: 2,
       locale,
       where: {
