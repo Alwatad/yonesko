@@ -120,7 +120,7 @@ export default buildConfig({
       },
       options: "--client-encoding=UTF8",
     },
-    push: false,
+    push: process.env.NODE_ENV === 'development',
   }),
   collections: [
     Pages,

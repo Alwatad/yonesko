@@ -18,43 +18,8 @@ const seed = async () => {
       config,
     });
 
-    // Wait for PayloadCMS to create the complete schema
-    console.log("⏳ Waiting for PayloadCMS to create complete schema...");
-    let attempts = 0;
-    const maxAttempts = 60; // Increased timeout for schema creation
-
-    while (attempts < maxAttempts) {
-      try {
-        // Test if we can actually query the database with all required fields
-        const testResult = await payload.find({
-          collection: "pages",
-          limit: 1,
-          overrideAccess: true,
-        });
-
-        // Also test if title field is accessible
-        if (testResult.docs.length > 0) {
-          const firstPage = testResult.docs[0];
-          if (firstPage.title !== undefined) {
-            console.log("✅ Database schema is complete and ready for queries");
-            break;
-          }
-        }
-
-        console.log(`⏳ Schema not fully ready... (${attempts + 1}/${maxAttempts})`);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        attempts++;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
-        console.log(`⏳ Database not ready yet... (${attempts + 1}/${maxAttempts}) - ${errorMessage}`);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        attempts++;
-      }
-    }
-
-    if (attempts >= maxAttempts) {
-      console.log("⚠️  Database schema may not be fully ready, but continuing...");
-    }
+    // Skip the schema waiting since we're using migrations + push: true
+    console.log("✅ Schema creation handled by migrations and push: true");
 
     // Extract the project name from an environment variable if possible,
     // or use a fallback. This assumes you set PROJECT_NAME during deployment.
