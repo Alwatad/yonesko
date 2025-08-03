@@ -119,7 +119,7 @@ db: postgresAdapter({
     },
     options: '--client-encoding=UTF8',
   },
-  push: process.env.VERCEL === '1' || process.env.NODE_ENV !== 'production',
+  push: true,
 }),
   collections: [
     Pages,
