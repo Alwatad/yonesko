@@ -142,6 +142,64 @@ const seed = async () => {
       },
     });
 
+    // --- Seed Sample Posts ---
+    console.log("Seeding Sample Posts...");
+    await payload.create({
+      collection: "posts",
+      data: {
+        title: "Welcome to Our Blog",
+        slug: "welcome-to-our-blog",
+        _status: "published",
+        content: {
+          root: {
+            type: "root",
+            children: [
+              {
+                type: "paragraph",
+                children: [{ text: "This is our first blog post. Welcome!" }],
+                version: 1,
+              },
+            ],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+      context: {
+        disableRevalidate: true,
+      },
+    });
+
+    await payload.create({
+      collection: "posts",
+      data: {
+        title: "Getting Started Guide",
+        slug: "getting-started-guide",
+        _status: "published",
+        content: {
+          root: {
+            type: "root",
+            children: [
+              {
+                type: "paragraph",
+                children: [{ text: "Learn how to get started with our platform." }],
+                version: 1,
+              },
+            ],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+      context: {
+        disableRevalidate: true,
+      },
+    });
+
     console.log("✅ Database seeded successfully!");
   } catch (err) {
     console.error("❌ Error seeding database:", err);
