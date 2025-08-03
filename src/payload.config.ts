@@ -120,7 +120,7 @@ export default buildConfig({
       },
       options: "--client-encoding=UTF8",
     },
-    push: true,
+    push: false,
   }),
   collections: [
     Pages,
