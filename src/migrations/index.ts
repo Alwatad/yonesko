@@ -17,6 +17,7 @@ import { up as up20250803_220014 } from "./20250803_220014";
 import { up as up20250803_220015 } from "./20250803_220015";
 import { up as up20250803_220016 } from "./20250803_220016";
 import { up as up20250803_220017 } from "./20250803_220017";
+import { up as up20250803_220018 } from "./20250803_220018";
 
 export const migrations = [
   {
@@ -90,5 +91,9 @@ export const migrations = [
   {
     name: "20250803_220017",
     up: up20250803_220017,
+  },
+  {
+    name: "20250803_220018",
+    up: up20250803_220018,
   },
 ];
