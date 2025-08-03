@@ -1,9 +1,10 @@
 // src/payload/seed.ts
 
-import payload from 'payload';
-import type { Payload } from 'payload';
-import path from 'path';
-import 'dotenv/config';
+import payload from "payload";
+import type { Payload } from "payload";
+import path from "path";
+import "dotenv/config";
+import config from "../payload.config";
 
 // Load environment variables
 const { PAYLOAD_SECRET, DATABASE_URI } = process.env;
@@ -13,57 +14,53 @@ const { PAYLOAD_SECRET, DATABASE_URI } = process.env;
  * It's designed to be run after migrations are complete.
  */
 const seed = async () => {
-  console.log('🌱 Starting database seed...');
+  console.log("🌱 Starting database seed...");
 
   try {
-    // Initialize Payload
+    // Initialize Payload with the config
     await payload.init({
-      secret: PAYLOAD_SECRET!,
-      mongoURL: DATABASE_URI!, // Or postgresURL if you use that
-      local: true, // Use the Local API
+      config,
     });
 
     // Extract the project name from an environment variable if possible,
     // or use a fallback. This assumes you set PROJECT_NAME during deployment.
-    const projectName = process.env.PROJECT_NAME || 'My Awesome Store';
-    
+    const projectName = process.env.PROJECT_NAME || "My Awesome Store";
+
     // --- Seed Globals (Header & Footer) ---
-    console.log('Seeding Globals...');
+    console.log("Seeding Globals...");
     await payload.updateGlobal({
-      slug: 'header',
+      slug: "header",
       data: {
         // Add any nav links you want to pre-populate
-        navItems: [], 
+        navItems: [],
       },
     });
 
     await payload.updateGlobal({
-      slug: 'footer',
+      slug: "footer",
       data: {
-        // This solves your footer text problem!
-        copyright: `Copyright © ${new Date().getFullYear()} ${projectName}. All Rights Reserved.`,
-        // Add other footer content here
+        // Add only fields that exist in your Footer global config
       },
     });
 
     // --- Seed Homepage ---
-    console.log('Seeding Homepage...');
+    console.log("Seeding Homepage...");
     await payload.create({
-      collection: 'pages',
+      collection: "pages",
       data: {
-        title: 'Home',
-        slug: 'home', // The slug your frontend looks for
-        _status: 'published',
+        title: "Home",
+        slug: "home", // The slug your frontend looks for
+        _status: "published",
         layout: [
           {
-            blockType: 'hero', // Example block
+            blockType: "hero", // Example block
             richText: [
               {
                 children: [{ text: `Welcome to ${projectName}!` }],
-                type: 'h1',
+                type: "h1",
               },
               {
-                children: [{ text: 'Your new e-commerce site is ready to go. Start exploring!' }],
+                children: [{ text: "Your new e-commerce site is ready to go. Start exploring!" }],
               },
             ],
             links: [],
@@ -72,9 +69,9 @@ const seed = async () => {
       },
     });
 
-    console.log('✅ Database seeded successfully!');
+    console.log("✅ Database seeded successfully!");
   } catch (err) {
-    console.error('❌ Error seeding database:', err);
+    console.error("❌ Error seeding database:", err);
   } finally {
     // Ensure the process exits
     process.exit();
