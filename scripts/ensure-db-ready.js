@@ -14,10 +14,10 @@ async function ensureDatabaseReady() {
     await client.connect();
     console.log('🔍 Ensuring database is completely ready for Next.js build...');
 
-    // Step 1: Wait for essential tables to exist (after seeding)
-    console.log('⏳ Waiting for PayloadCMS to create essential tables...');
+    // Step 1: Wait for essential tables to exist (after migrations)
+    console.log('⏳ Waiting for essential tables to exist...');
     let attempts = 0;
-    const maxAttempts = 90; // Increased to 90 seconds for Vercel
+    const maxAttempts = 60; // 60 seconds max
 
     while (attempts < maxAttempts) {
       try {
