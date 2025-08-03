@@ -51,19 +51,50 @@ const seed = async () => {
         title: "Home",
         slug: "home", // The slug your frontend looks for
         _status: "published",
+        hero: {
+          type: "lowImpact",
+          richText: {
+            root: {
+              type: "root",
+              children: [
+                {
+                  type: "paragraph",
+                  children: [{ text: "Placeholder hero content." }],
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              version: 1,
+            },
+          },
+          linkGroup: [],
+        },
         layout: [
           {
-            blockType: "hero", // Example block
-            richText: [
+            blockType: "content", // Use content block instead of hero
+            columns: [
               {
-                children: [{ text: `Welcome to ${projectName}!` }],
-                type: "h1",
-              },
-              {
-                children: [{ text: "Your new e-commerce site is ready to go. Start exploring!" }],
+                size: "full",
+                richText: {
+                  root: {
+                    type: "root",
+                    children: [
+                      {
+                        type: "paragraph",
+                        children: [{ text: `Welcome to ${projectName}!` }],
+                        version: 1,
+                      },
+                    ],
+                    direction: "ltr",
+                    format: "",
+                    indent: 0,
+                    version: 1,
+                  },
+                },
               },
             ],
-            links: [],
           },
         ],
       },
