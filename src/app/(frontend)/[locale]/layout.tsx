@@ -8,6 +8,9 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import React, { type ReactNode, unstable_ViewTransition as ViewTransition } from "react";
 
+// Force dynamic rendering for the entire frontend to avoid next-intl static generation issues
+export const dynamic = "force-dynamic";
+
 import "../globals.css";
 // import { LivePreviewListener } from "@/components/LivePreviewListener";
 import { Footer } from "@/globals/Footer/Component";
