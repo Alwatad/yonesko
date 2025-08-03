@@ -1,31 +1,43 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { MigrateUpArgs, MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
-  // Create essential tables for the build to work
+  // CHUNK 1: Basic Collection and Global Tables (20 tables)
   await db.execute(sql`
-                -- Create basic pages table with essential columns
-            CREATE TABLE IF NOT EXISTS "pages" (
-              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-              "title" text,
-              "slug" text UNIQUE,
-              "slug_lock" boolean DEFAULT false,
-              "_status" text DEFAULT 'draft',
-              "published_at" timestamp with time zone,
-              "created_at" timestamp with time zone DEFAULT now(),
-              "updated_at" timestamp with time zone DEFAULT now()
-            );
+    -- Create basic pages table with essential columns
+    CREATE TABLE IF NOT EXISTS "pages" (
+      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+      "title" text,
+      "slug" text UNIQUE,
+      "slug_lock" boolean DEFAULT false,
+      "_status" text DEFAULT 'draft',
+      "published_at" timestamp with time zone,
+      "created_at" timestamp with time zone DEFAULT now(),
+      "updated_at" timestamp with time zone DEFAULT now()
+    );
 
-                -- Create basic posts table with essential columns
-            CREATE TABLE IF NOT EXISTS "posts" (
-              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-              "title" text,
-              "slug" text UNIQUE,
-              "slug_lock" boolean DEFAULT false,
-              "_status" text DEFAULT 'draft',
-              "published_at" timestamp with time zone,
-              "created_at" timestamp with time zone DEFAULT now(),
-              "updated_at" timestamp with time zone DEFAULT now()
-            );
+    -- Create basic posts table with essential columns
+    CREATE TABLE IF NOT EXISTS "posts" (
+      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+      "title" text,
+      "slug" text UNIQUE,
+      "slug_lock" boolean DEFAULT false,
+      "_status" text DEFAULT 'draft',
+      "published_at" timestamp with time zone,
+      "created_at" timestamp with time zone DEFAULT now(),
+      "updated_at" timestamp with time zone DEFAULT now()
+    );
+
+    -- Create basic products table with essential columns
+    CREATE TABLE IF NOT EXISTS "products" (
+      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+      "title" text,
+      "slug" text UNIQUE,
+      "slug_lock" boolean DEFAULT false,
+      "_status" text DEFAULT 'draft',
+      "published_at" timestamp with time zone,
+      "created_at" timestamp with time zone DEFAULT now(),
+      "updated_at" timestamp with time zone DEFAULT now()
+    );
 
     -- Create basic media table
     CREATE TABLE IF NOT EXISTS "media" (
@@ -58,18 +70,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       "created_at" timestamp with time zone DEFAULT now(),
       "updated_at" timestamp with time zone DEFAULT now()
     );
-
-                -- Create basic products table with essential columns
-            CREATE TABLE IF NOT EXISTS "products" (
-              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-              "title" text,
-              "slug" text UNIQUE,
-              "slug_lock" boolean DEFAULT false,
-              "_status" text DEFAULT 'draft',
-              "published_at" timestamp with time zone,
-              "created_at" timestamp with time zone DEFAULT now(),
-              "updated_at" timestamp with time zone DEFAULT now()
-            );
 
     -- Create basic product_categories table
     CREATE TABLE IF NOT EXISTS "product_categories" (
@@ -117,6 +117,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     CREATE TABLE IF NOT EXISTS "redirects" (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
       "from" text UNIQUE,
+      "to_type" text,
+      "to_url" text,
       "created_at" timestamp with time zone DEFAULT now(),
       "updated_at" timestamp with time zone DEFAULT now()
     );
@@ -124,6 +126,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     -- Create basic header global table
     CREATE TABLE IF NOT EXISTS "header" (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+      "type" text,
+      "hide_on_scroll" boolean DEFAULT false,
+      "background" text,
       "created_at" timestamp with time zone DEFAULT now(),
       "updated_at" timestamp with time zone DEFAULT now()
     );
@@ -131,6 +136,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
     -- Create basic footer global table
     CREATE TABLE IF NOT EXISTS "footer" (
       "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+      "type" text,
       "created_at" timestamp with time zone DEFAULT now(),
       "updated_at" timestamp with time zone DEFAULT now()
     );

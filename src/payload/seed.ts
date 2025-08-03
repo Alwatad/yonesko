@@ -18,8 +18,8 @@ const seed = async () => {
       config,
     });
 
-    // Skip the schema waiting since we're using migrations + push: true
-    console.log("✅ Schema creation handled by migrations and push: true");
+    // Schema is now handled by chunked migrations
+    console.log("✅ Schema creation handled by chunked migrations");
 
     // Extract the project name from an environment variable if possible,
     // or use a fallback. This assumes you set PROJECT_NAME during deployment.
