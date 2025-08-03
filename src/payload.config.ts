@@ -34,7 +34,7 @@ import { Footer } from "./globals/Footer/config";
 import { Header } from "./globals/Header/config";
 import { plugins } from "./plugins";
 import { getServerSideURL } from "./utilities/getURL";
- 
+
 // import 'payloadcms-lexical-ext/client/client.css'
 
 const filename = fileURLToPath(import.meta.url);
@@ -110,15 +110,17 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-db: postgresAdapter({
-  idType: "uuid",
-  pool: {
-    connectionString: process.env.DATABASE_URI,
-    ssl: false,
-    options: "--client-encoding=UTF8",
-  },
-  push: true,
-}),
+  db: postgresAdapter({
+    idType: "uuid",
+    pool: {
+      connectionString: process.env.DATABASE_URI,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      options: "--client-encoding=UTF8",
+    },
+    push: true,
+  }),
   collections: [
     Pages,
     Posts,
