@@ -1,8 +1,9 @@
 // src/payload/seed.ts
 
-import payload from "payload";
-import type { Payload } from "payload";
 import path from "path";
+
+import payload, { type Payload } from "payload";
+
 import "dotenv/config";
 import config from "../payload.config";
 
@@ -34,12 +35,18 @@ const seed = async () => {
         // Add any nav links you want to pre-populate
         navItems: [],
       },
+      context: {
+        disableRevalidate: true,
+      },
     });
 
     await payload.updateGlobal({
       slug: "footer",
       data: {
         // Add only fields that exist in your Footer global config
+      },
+      context: {
+        disableRevalidate: true,
       },
     });
 
@@ -69,7 +76,6 @@ const seed = async () => {
               version: 1,
             },
           },
-          linkGroup: [],
         },
         layout: [
           {
@@ -97,6 +103,9 @@ const seed = async () => {
             ],
           },
         ],
+      },
+      context: {
+        disableRevalidate: true,
       },
     });
 

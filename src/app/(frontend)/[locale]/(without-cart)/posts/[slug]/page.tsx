@@ -55,7 +55,7 @@ export default async function Post({ params: paramsPromise }: Args) {
   if (!post) return <PayloadRedirects locale={locale} url={url} />;
 
   return (
-    <article className="pb-16 pt-16">
+    <article className="pt-16 pb-16">
       <PageClient />
 
       {/* Allows redirects for valid pages too */}

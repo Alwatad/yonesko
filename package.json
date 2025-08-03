@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "payload migrate && pnpm seed && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "pnpm seed && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
     "vercel-build": "pnpm build",
     "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts tsx src/payload/seed.ts",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
@@ -64,6 +64,7 @@
     "cmdk": "1.0.0",
     "cross-env": "^7.0.3",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.1",
     "embla-carousel-auto-scroll": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",

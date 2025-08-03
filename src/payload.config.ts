@@ -116,14 +116,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI,
       ssl: {
         rejectUnauthorized: false,
+        ca: undefined,
       },
       options: "--client-encoding=UTF8",
-    },
-    drizzle: {
-      connectionString: process.env.DATABASE_URI,
-      ssl: {
-        rejectUnauthorized: false,
-      },
     },
     push: true,
   }),
