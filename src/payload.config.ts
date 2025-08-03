@@ -111,10 +111,12 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
 db: postgresAdapter({
-  idType: 'uuid',
+  idType: "uuid",
   pool: {
     connectionString: process.env.DATABASE_URI,
     ssl: false,
+    options: "--client-encoding=UTF8",
+  },
   push: true,
 }),
   collections: [
