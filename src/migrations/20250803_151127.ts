@@ -3,25 +3,29 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // Create essential tables for the build to work
   await db.execute(sql`
-    -- Create basic pages table
-    CREATE TABLE IF NOT EXISTS "pages" (
-      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-      "title" text,
-      "slug" text UNIQUE,
-      "_status" text DEFAULT 'draft',
-      "created_at" timestamp with time zone DEFAULT now(),
-      "updated_at" timestamp with time zone DEFAULT now()
-    );
+                -- Create basic pages table with essential columns
+            CREATE TABLE IF NOT EXISTS "pages" (
+              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+              "title" text,
+              "slug" text UNIQUE,
+              "slug_lock" boolean DEFAULT false,
+              "_status" text DEFAULT 'draft',
+              "published_at" timestamp with time zone,
+              "created_at" timestamp with time zone DEFAULT now(),
+              "updated_at" timestamp with time zone DEFAULT now()
+            );
 
-    -- Create basic posts table
-    CREATE TABLE IF NOT EXISTS "posts" (
-      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-      "title" text,
-      "slug" text UNIQUE,
-      "_status" text DEFAULT 'draft',
-      "created_at" timestamp with time zone DEFAULT now(),
-      "updated_at" timestamp with time zone DEFAULT now()
-    );
+                -- Create basic posts table with essential columns
+            CREATE TABLE IF NOT EXISTS "posts" (
+              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+              "title" text,
+              "slug" text UNIQUE,
+              "slug_lock" boolean DEFAULT false,
+              "_status" text DEFAULT 'draft',
+              "published_at" timestamp with time zone,
+              "created_at" timestamp with time zone DEFAULT now(),
+              "updated_at" timestamp with time zone DEFAULT now()
+            );
 
     -- Create basic media table
     CREATE TABLE IF NOT EXISTS "media" (
@@ -55,15 +59,17 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       "updated_at" timestamp with time zone DEFAULT now()
     );
 
-    -- Create basic products table
-    CREATE TABLE IF NOT EXISTS "products" (
-      "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-      "title" text,
-      "slug" text UNIQUE,
-      "_status" text DEFAULT 'draft',
-      "created_at" timestamp with time zone DEFAULT now(),
-      "updated_at" timestamp with time zone DEFAULT now()
-    );
+                -- Create basic products table with essential columns
+            CREATE TABLE IF NOT EXISTS "products" (
+              "id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+              "title" text,
+              "slug" text UNIQUE,
+              "slug_lock" boolean DEFAULT false,
+              "_status" text DEFAULT 'draft',
+              "published_at" timestamp with time zone,
+              "created_at" timestamp with time zone DEFAULT now(),
+              "updated_at" timestamp with time zone DEFAULT now()
+            );
 
     -- Create basic product_categories table
     CREATE TABLE IF NOT EXISTS "product_categories" (

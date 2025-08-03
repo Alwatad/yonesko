@@ -18,31 +18,43 @@ const seed = async () => {
       config,
     });
 
-    // Wait for database to be fully ready
-    console.log("⏳ Ensuring database is fully ready...");
+    // Wait for PayloadCMS to create the complete schema
+    console.log("⏳ Waiting for PayloadCMS to create complete schema...");
     let attempts = 0;
-    const maxAttempts = 30;
+    const maxAttempts = 60; // Increased timeout for schema creation
     
     while (attempts < maxAttempts) {
       try {
-        // Test if we can actually query the database
-        await payload.find({
+        // Test if we can actually query the database with all required fields
+        const testResult = await payload.find({
           collection: "pages",
           limit: 1,
           overrideAccess: true,
         });
         
-        console.log("✅ Database is ready for queries");
-        break;
-      } catch {
-        console.log(`⏳ Database not ready yet... (${attempts + 1}/${maxAttempts})`);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Also test if title field is accessible
+        if (testResult.docs.length > 0) {
+          const firstPage = testResult.docs[0];
+          if (firstPage.title !== undefined) {
+            console.log("✅ Database schema is complete and ready for queries");
+            break;
+          }
+        }
+        
+        console.log(`⏳ Schema not fully ready... (${attempts + 1}/${maxAttempts})`);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         attempts++;
         
-        if (attempts >= maxAttempts) {
-          console.log("⚠️  Database may not be fully ready, but continuing...");
-        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.log(`⏳ Database not ready yet... (${attempts + 1}/${maxAttempts}) - ${errorMessage}`);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        attempts++;
       }
+    }
+    
+    if (attempts >= maxAttempts) {
+      console.log("⚠️  Database schema may not be fully ready, but continuing...");
     }
 
     // Extract the project name from an environment variable if possible,
