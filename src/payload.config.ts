@@ -114,11 +114,7 @@ db: postgresAdapter({
   idType: 'uuid',
   pool: {
     connectionString: process.env.DATABASE_URI,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    options: '--client-encoding=UTF8',
-  },
+    ssl: false,
   push: true,
 }),
   collections: [
