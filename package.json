@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "payload migrate && pnpm seed && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "payload migrate && pnpm seed && node scripts/wait-for-db.js && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
     "vercel-build": "pnpm build",
     "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts tsx src/payload/seed.ts",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
@@ -80,6 +80,7 @@
     "nodemailer": "^7.0.5",
     "payload": "3.47.0",
     "payload-admin-bar": "^1.0.7",
+    "pg": "^8.16.3",
     "postcss-import": "^16.1.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "prism-react-renderer": "^2.4.1",

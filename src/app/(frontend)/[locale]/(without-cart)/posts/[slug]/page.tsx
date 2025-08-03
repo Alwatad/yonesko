@@ -18,25 +18,30 @@ import type { Post } from "@/payload-types";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const posts = await payload.find({
-    collection: "posts",
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  });
-
-  const params = routing.locales.flatMap((locale) => {
-    return posts.docs.map(({ slug }) => {
-      return { locale, slug };
+  try {
+    const payload = await getPayload({ config });
+    const posts = await payload.find({
+      collection: "posts",
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        slug: true,
+      },
     });
-  });
 
-  return params;
+    const params = routing.locales.flatMap((locale) => {
+      return posts.docs.map(({ slug }) => {
+        return { locale, slug };
+      });
+    });
+
+    return params;
+  } catch (error) {
+    console.log("⚠️  Database not ready for posts static generation, skipping...");
+    return [];
+  }
 }
 
 type Args = {
@@ -84,7 +89,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const { slug = "", locale } = await paramsPromise;
   const post = await queryPostBySlug({ slug, locale });
 
-  return generateMeta({ doc: post });
+  return generateMeta({ doc: post! });
 }
 
 const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: Locale }) => {
@@ -92,19 +97,24 @@ const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: L
 
   const payload = await getPayload({ config });
 
-  const result = await payload.find({
-    collection: "posts",
-    draft,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    locale,
-    where: {
-      slug: {
-        equals: slug,
+  try {
+    const result = await payload.find({
+      collection: "posts",
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+      pagination: false,
+      locale,
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-  });
+    });
 
-  return result.docs?.[0] || null;
+    return result.docs?.[0] || null;
+  } catch (error) {
+    console.log("⚠️  Database not ready for post query, returning null...");
+    return null;
+  }
 });

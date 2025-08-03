@@ -16,27 +16,32 @@ import PageClient from "./page.client";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const pages = await payload.find({
-    collection: "pages",
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    pagination: false,
-    select: {
-      slug: true,
-    },
-  });
+  try {
+    const payload = await getPayload({ config });
+    const pages = await payload.find({
+      collection: "pages",
+      draft: false,
+      limit: 1000,
+      overrideAccess: false,
+      pagination: false,
+      select: {
+        slug: true,
+      },
+    });
 
-  const params = routing.locales.flatMap((locale) => {
-    return pages.docs
-      ?.filter((doc) => doc.slug !== "home")
-      .map(({ slug }) => {
-        return { locale, slug };
-      });
-  });
+    const params = routing.locales.flatMap((locale) => {
+      return pages.docs
+        ?.filter((doc) => doc.slug !== "home")
+        .map(({ slug }) => {
+          return { locale, slug };
+        });
+    });
 
-  return params;
+    return params;
+  } catch (error) {
+    console.log("⚠️  Database not ready for static generation, skipping...");
+    return [];
+  }
 }
 
 type Args = {

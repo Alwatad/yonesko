@@ -173,6 +173,9 @@ importers:
       payload-admin-bar:
         specifier: ^1.0.7
         version: 1.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       postcss-import:
         specifier: ^16.1.1
         version: 16.1.1(postcss@8.5.6)
