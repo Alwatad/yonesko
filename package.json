@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "pnpm seed && node scripts/wait-for-db.js && sleep 10 && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "node scripts/ensure-title-columns.js && pnpm seed && node scripts/wait-for-db.js && sleep 10 && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
     "vercel-build": "pnpm build",
     "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts tsx src/payload/seed.ts",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
