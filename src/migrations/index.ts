@@ -1,11 +1,11 @@
+import { type MigrateUpArgs, type MigrateDownArgs } from "@payloadcms/db-postgres";
+
 import * as migration_000_payload_internal from "./000_payload_internal";
 import * as migration_001_chunk_1 from "./001_chunk_1";
 import * as migration_002_chunk_2 from "./002_chunk_2";
 import * as migration_003_chunk_3 from "./003_chunk_3";
 import * as migration_004_chunk_4 from "./004_chunk_4";
 import * as migration_005_chunk_5 from "./005_chunk_5";
-
-import type { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
 
 type Migration = {
   name: string;
@@ -45,4 +45,3 @@ export const migrations: Migration[] = [
     name: "005_chunk_5",
   },
 ];
-// index.ts
