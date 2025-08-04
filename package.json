@@ -7,7 +7,7 @@
   "scripts": {
     "build": "payload migrate --yes && pnpm seed && payload generate:types && cross-env NODE_OPTIONS=--no-deprecation next build",
     "vercel-build": "pnpm build",
-    "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts tsx src/payload/seed.ts",
+    "seed": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts tsx src/seed/index.ts",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",

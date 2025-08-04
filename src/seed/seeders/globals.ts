@@ -1,0 +1,463 @@
+// seed/seeders/globals.ts
+import { type Payload } from "payload";
+
+import { logger } from "../utils/logger";
+
+export async function seedGlobalSettings(
+  payload: Payload,
+  mediaAssets: Record<string, { id: string }>,
+): Promise<void> {
+  try {
+    // Header Settings
+    await seedHeader(payload, mediaAssets);
+
+    // Footer Settings
+    await seedFooter(payload, mediaAssets);
+
+    // Shop Settings
+    await seedShopSettings(payload);
+
+    // Shop Layout
+    await seedShopLayout(payload);
+
+    // Email Settings
+    await seedEmailSettings(payload, mediaAssets);
+
+    // Shipping Methods
+    await seedShippingMethods(payload, mediaAssets);
+
+    // Payment Settings
+    await seedPaymentSettings(payload);
+
+    // Fulfillment Settings
+    await seedFulfillmentSettings(payload);
+
+    logger.success("✓ All global settings configured");
+  } catch (error) {
+    logger.error("Failed to seed global settings:", error);
+    throw error;
+  }
+}
+
+async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: string }>) {
+  await payload.updateGlobal({
+    slug: "header",
+    data: {
+      type: "default",
+      hideOnScroll: false,
+      background: "#ffffff",
+      logo: mediaAssets["stride-logo.png"]?.id,
+      navItems: [
+        {
+          link: {
+            type: "custom",
+            label: "Home",
+            url: "/",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Shop",
+            url: "/products",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Men",
+            url: "/category/mens-shoes",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Women",
+            url: "/category/womens-shoes",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Athletic",
+            url: "/category/sports-athletic",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "About",
+            url: "/about",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Contact",
+            url: "/contact",
+          },
+        },
+      ],
+    },
+  });
+
+  logger.info("✓ Header configured");
+}
+
+async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
+  await payload.updateGlobal({
+    slug: "footer",
+    data: {
+      navItems: [
+        {
+          link: {
+            type: "custom",
+            label: "Privacy Policy",
+            url: "/privacy",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Terms & Conditions",
+            url: "/terms",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Shipping Info",
+            url: "/shipping",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "Returns",
+            url: "/returns",
+          },
+        },
+        {
+          link: {
+            type: "custom",
+            label: "FAQ",
+            url: "/faq",
+          },
+        },
+      ],
+      attribution: {
+        en: {
+          root: {
+            children: [
+              {
+                children: [
+                  {
+                    text: "© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS",
+                  },
+                ],
+                type: "p",
+              },
+            ],
+            type: "root",
+          },
+        },
+        pl: {
+          root: {
+            children: [
+              {
+                children: [
+                  {
+                    text: "© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS",
+                  },
+                ],
+                type: "p",
+              },
+            ],
+            type: "root",
+          },
+        },
+      },
+    },
+  });
+
+  logger.info("✓ Footer configured");
+}
+
+async function seedShopSettings(payload: Payload) {
+  await payload.updateGlobal({
+    slug: "shopSettings",
+    data: {
+      availableCurrencies: ["USD", "EUR", "PLN"],
+      currencyValues: [
+        {
+          currency: "USD",
+          value: 1,
+        },
+        {
+          currency: "EUR",
+          value: 0.92,
+        },
+        {
+          currency: "PLN",
+          value: 4.05,
+        },
+      ],
+    },
+  });
+
+  logger.info("✓ Shop settings configured");
+}
+
+async function seedShopLayout(payload: Payload) {
+  await payload.updateGlobal({
+    slug: "shopLayout",
+    data: {
+      productDetails: {
+        type: "WithImageGalleryExpandableDetails",
+        reviewsEnabled: true,
+      },
+      productList: {
+        filters: "withSidebar",
+      },
+      cartAndWishlist: {
+        type: "slideOver",
+      },
+      checkout: {
+        type: "OneStepWithSummary",
+      },
+      clientPanel: {
+        type: "withSidebar",
+        help: {
+          title: "Need Help?",
+          content: {
+            root: {
+              children: [
+                {
+                  children: [
+                    {
+                      text: "Contact our customer service team for assistance with your orders, returns, or any questions.",
+                    },
+                  ],
+                  type: "p",
+                  version: 1,
+                },
+                {
+                  children: [
+                    {
+                      text: "Email: support@stridefootwear.com",
+                    },
+                  ],
+                  type: "p",
+                  version: 1,
+                },
+                {
+                  children: [
+                    {
+                      text: "Phone: +1 (555) 123-4567",
+                    },
+                  ],
+                  type: "p",
+                  version: 1,
+                },
+              ],
+              type: "root",
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              version: 1,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  logger.info("✓ Shop layout configured");
+}
+
+async function seedEmailSettings(payload: Payload, mediaAssets: Record<string, { id: string }>) {
+  await payload.updateGlobal({
+    slug: "emailMessages",
+    data: {
+      smtp: {
+        host: "smtp.example.com",
+        port: 587,
+        secure: false,
+        user: "noreply@stridefootwear.com",
+        password: "your-smtp-password", // In production, use environment variables
+        fromEmail: "noreply@stridefootwear.com",
+      },
+      messages: {
+        logo: mediaAssets["stride-logo.png"]?.id,
+        additionalText: "Thank you for shopping with Stride Footwear!",
+        template: "default",
+      },
+    },
+  });
+
+  logger.info("✓ Email settings configured");
+}
+
+async function seedShippingMethods(payload: Payload, mediaAssets: Record<string, { id: string }>) {
+  // InPost Pickup Points
+  await payload.updateGlobal({
+    slug: "inpost-pickup",
+    data: {
+      enabled: true,
+      icon: mediaAssets["stride-logo.png"]?.id, // Use a shipping icon in production
+      settings: {
+        label: "InPost Pickup Point",
+        description: "Convenient pickup from InPost lockers",
+      },
+      clientId: "demo-client-id",
+      APIUrl: "https://sandbox-api-shipx-pl.easypack24.net",
+      shipXAPIKey: "demo-api-key",
+      geowidgetToken: "demo-geowidget-token",
+      deliveryZones: [
+        {
+          countries: ["pl", "de"],
+          freeShipping: [
+            {
+              value: 100,
+              currency: "USD",
+            },
+            {
+              value: 400,
+              currency: "PLN",
+            },
+          ],
+          range: [
+            {
+              weightFrom: 0,
+              weightTo: 5,
+              pricing: [
+                {
+                  value: 12,
+                  currency: "USD",
+                },
+                {
+                  value: 49,
+                  currency: "PLN",
+                },
+              ],
+            },
+            {
+              weightFrom: 5,
+              weightTo: 20,
+              pricing: [
+                {
+                  value: 18,
+                  currency: "USD",
+                },
+                {
+                  value: 73,
+                  currency: "PLN",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  // InPost Courier
+  await payload.updateGlobal({
+    slug: "inpost-courier",
+    data: {
+      enabled: true,
+      icon: mediaAssets["stride-logo.png"]?.id,
+      settings: {
+        label: "InPost Courier Delivery",
+        description: "Door-to-door delivery by InPost courier",
+      },
+      clientId: "demo-client-id",
+      APIUrl: "https://sandbox-api-shipx-pl.easypack24.net",
+      shipXAPIKey: "demo-api-key",
+      deliveryZones: [
+        {
+          countries: ["pl", "de", "fr"],
+          freeShipping: [
+            {
+              value: 150,
+              currency: "USD",
+            },
+            {
+              value: 600,
+              currency: "PLN",
+            },
+          ],
+          range: [
+            {
+              weightFrom: 0,
+              weightTo: 5,
+              pricing: [
+                {
+                  value: 15,
+                  currency: "USD",
+                },
+                {
+                  value: 61,
+                  currency: "PLN",
+                },
+              ],
+            },
+            {
+              weightFrom: 5,
+              weightTo: 30,
+              pricing: [
+                {
+                  value: 25,
+                  currency: "USD",
+                },
+                {
+                  value: 101,
+                  currency: "PLN",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  });
+
+  logger.info("✓ Shipping methods configured");
+}
+
+async function seedPaymentSettings(payload: Payload) {
+  await payload.updateGlobal({
+    slug: "paywalls",
+    data: {
+      paywall: "stripe",
+      stripe: {
+        secret: "sk_test_demo",
+        public: "pk_test_demo",
+        webhookSecret: "whsec_demo",
+      },
+      // Leave other payment methods unconfigured for now
+    },
+  });
+
+  logger.info("✓ Payment settings configured");
+}
+
+async function seedFulfillmentSettings(payload: Payload) {
+  await payload.updateGlobal({
+    slug: "fulfilment",
+    data: {
+      shopAddress: {
+        name: "Stride Footwear Warehouse",
+        address: "123 Fashion Avenue",
+        city: "New York",
+        country: "pl", // Use supported country code
+        region: "NY",
+        postalCode: "10001",
+        email: "warehouse@stridefootwear.com",
+        phone: "+1 (555) 123-4567",
+      },
+    },
+  });
+
+  logger.info("✓ Fulfillment settings configured");
+}
