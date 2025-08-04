@@ -1,129 +1,33 @@
-import { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
-import { up as up20250803_220000 } from "./20250803_220000";
-import { up as up20250803_220001 } from "./20250803_220001";
-import { up as up20250803_220002 } from "./20250803_220002";
-import { up as up20250803_220003 } from "./20250803_220003";
-import { up as up20250803_220004 } from "./20250803_220004";
-import { up as up20250803_220005 } from "./20250803_220005";
-import { up as up20250803_220006 } from "./20250803_220006";
-import { up as up20250803_220007 } from "./20250803_220007";
-import { up as up20250803_220008 } from "./20250803_220008";
-import { up as up20250803_220009 } from "./20250803_220009";
-import { up as up20250803_220010 } from "./20250803_220010";
-import { up as up20250803_220011 } from "./20250803_220011";
-import { up as up20250803_220012 } from "./20250803_220012";
-import { up as up20250803_220013 } from "./20250803_220013";
-import { up as up20250803_220014 } from "./20250803_220014";
-import { up as up20250803_220015 } from "./20250803_220015";
-import { up as up20250803_220016 } from "./20250803_220016";
-import { up as up20250803_220017 } from "./20250803_220017";
-import { up as up20250803_220018 } from "./20250803_220018";
-import { up as up20250803_220019 } from "./20250803_220019";
-import { up as up20250803_220020 } from "./20250803_220020";
-import { up as up20250803_220021 } from "./20250803_220021";
-import { up as up20250803_220022 } from "./20250803_220022";
-import { up as up20250803_220023 } from "./20250803_220023";
-import { up as up20250803_220024 } from "./20250803_220024";
+import * as migration_001_chunk_1 from "./001_chunk_1";
+import * as migration_002_chunk_2 from "./002_chunk_2";
+import * as migration_003_chunk_3 from "./003_chunk_3";
+import * as migration_004_chunk_4 from "./004_chunk_4";
+import * as migration_005_chunk_5 from "./005_chunk_5";
 
 export const migrations = [
   {
-    name: "20250803_220000",
-    up: up20250803_220000,
+    up: migration_001_chunk_1.up,
+    down: migration_001_chunk_1.down,
+    name: "001_chunk_1",
   },
   {
-    name: "20250803_220001",
-    up: up20250803_220001,
+    up: migration_002_chunk_2.up,
+    down: migration_002_chunk_2.down,
+    name: "002_chunk_2",
   },
   {
-    name: "20250803_220002",
-    up: up20250803_220002,
+    up: migration_003_chunk_3.up,
+    down: migration_003_chunk_3.down,
+    name: "003_chunk_3",
   },
   {
-    name: "20250803_220003",
-    up: up20250803_220003,
+    up: migration_004_chunk_4.up,
+    down: migration_004_chunk_4.down,
+    name: "004_chunk_4",
   },
   {
-    name: "20250803_220004",
-    up: up20250803_220004,
-  },
-  {
-    name: "20250803_220005",
-    up: up20250803_220005,
-  },
-  {
-    name: "20250803_220006",
-    up: up20250803_220006,
-  },
-  {
-    name: "20250803_220007",
-    up: up20250803_220007,
-  },
-  {
-    name: "20250803_220008",
-    up: up20250803_220008,
-  },
-  {
-    name: "20250803_220009",
-    up: up20250803_220009,
-  },
-  {
-    name: "20250803_220010",
-    up: up20250803_220010,
-  },
-  {
-    name: "20250803_220011",
-    up: up20250803_220011,
-  },
-  {
-    name: "20250803_220012",
-    up: up20250803_220012,
-  },
-  {
-    name: "20250803_220013",
-    up: up20250803_220013,
-  },
-  {
-    name: "20250803_220014",
-    up: up20250803_220014,
-  },
-  {
-    name: "20250803_220015",
-    up: up20250803_220015,
-  },
-  {
-    name: "20250803_220016",
-    up: up20250803_220016,
-  },
-  {
-    name: "20250803_220017",
-    up: up20250803_220017,
-  },
-  {
-    name: "20250803_220018",
-    up: up20250803_220018,
-  },
-  {
-    name: "20250803_220019",
-    up: up20250803_220019,
-  },
-  {
-    name: "20250803_220020",
-    up: up20250803_220020,
-  },
-  {
-    name: "20250803_220021",
-    up: up20250803_220021,
-  },
-  {
-    name: "20250803_220022",
-    up: up20250803_220022,
-  },
-  {
-    name: "20250803_220023",
-    up: up20250803_220023,
-  },
-  {
-    name: "20250803_220024",
-    up: up20250803_220024,
+    up: migration_005_chunk_5.up,
+    down: migration_005_chunk_5.down,
+    name: "005_chunk_5",
   },
 ];
