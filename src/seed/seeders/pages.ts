@@ -1012,8 +1012,7 @@ import { logger } from "../utils/logger";
 //   logger.info("✓ Created Terms & Conditions page");
 // }
 
-// seed/seeders/pages.ts - FIXED VERSION
-import { logger } from "../utils/logger";
+
 
 export async function seedPages(
   payload: Payload,
@@ -1059,11 +1058,11 @@ function createTextNode(text: string, format = 0) {
 }
 
 // Helper function to create proper Lexical paragraph nodes
-function createParagraphNode(children: any[]) {
+function createParagraphNode(children: { [k: string]: unknown; type: string; version: number; }[]) {
   return {
     children,
-    direction: "ltr",
-    format: "",
+    direction: "ltr" as const,
+    format: "" as const,
     indent: 0,
     type: "paragraph",
     version: 1,
@@ -1071,11 +1070,11 @@ function createParagraphNode(children: any[]) {
 }
 
 // Helper function to create proper Lexical heading nodes
-function createHeadingNode(children: any[], tag: string) {
+function createHeadingNode(children: { [k: string]: unknown; type: string; version: number; }[], tag: string) {
   return {
     children,
-    direction: "ltr",
-    format: "",
+    direction: "ltr" as const,
+    format: "" as const,
     indent: 0,
     type: "heading",
     tag,
@@ -1084,12 +1083,12 @@ function createHeadingNode(children: any[], tag: string) {
 }
 
 // Helper function to create proper Lexical root structure
-function createRichTextRoot(children: any[]) {
+function createRichTextRoot(children: { [k: string]: unknown; type: string; version: number; }[]) {
   return {
     root: {
       children,
-      direction: "ltr",
-      format: "",
+      direction: "ltr" as const,
+      format: "" as const,
       indent: 0,
       type: "root",
       version: 1,
