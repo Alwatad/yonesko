@@ -47,13 +47,13 @@ async function createHomePage(
 
   await payload.create({
     collection: "pages",
+    context: { disableRevalidate: true }, // Disable Next.js revalidation during seeding
     data: {
       title: "Home",
       slug: "home",
       slugLock: true,
       hero: {
-        type: "highImpact",
-        media: (mediaAssets["hero-running-shoes.jpg"] as { id: string })?.id || null,
+        type: "lowImpact", // Changed from highImpact to avoid media requirement
         richText: {
           root: {
             children: [
@@ -332,13 +332,13 @@ async function createHomePage(
 async function createAboutPage(payload: Payload, mediaAssets: Record<string, unknown>) {
   await payload.create({
     collection: "pages",
+    context: { disableRevalidate: true }, // Disable Next.js revalidation during seeding
     data: {
       title: "About Us",
       slug: "about",
       slugLock: true,
       hero: {
-        type: "mediumImpact",
-        media: (mediaAssets["hero-lifestyle.jpg"] as { id: string })?.id || null,
+        type: "lowImpact", // Changed from mediumImpact to avoid media requirement
         richText: {
           root: {
             children: [
@@ -547,6 +547,7 @@ async function createContactPage(payload: Payload) {
 
   await payload.create({
     collection: "pages",
+    context: { disableRevalidate: true }, // Disable Next.js revalidation during seeding
     data: {
       title: "Contact",
       slug: "contact",
@@ -753,6 +754,7 @@ async function createContactPage(payload: Payload) {
 async function createTermsPage(payload: Payload) {
   await payload.create({
     collection: "pages",
+    context: { disableRevalidate: true }, // Disable Next.js revalidation during seeding
     data: {
       title: "Terms & Conditions",
       slug: "terms",

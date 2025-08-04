@@ -158,11 +158,13 @@ export default buildConfig({
       bucket: process.env.S3_BUCKET ?? "",
       config: {
         endpoint: process.env.S3_ENDPOINT ?? "",
-        region: "auto",
+        region: "us-east-1", // Supabase requires a specific region
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
         },
+        s3ForcePathStyle: true, // Required for Supabase Storage
+        signatureVersion: "v4", // Required for Supabase
         requestChecksumCalculation: "WHEN_REQUIRED",
         responseChecksumValidation: "WHEN_REQUIRED",
       },

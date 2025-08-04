@@ -1,6 +1,4 @@
-import * as fs from "fs";
-import * as https from "https";
-import * as path from "path";
+// Note: fs, https, path imports removed since we're not uploading files
 
 import { logger } from "../utils/logger";
 
@@ -73,61 +71,12 @@ const ASSETS_DATA: Asset[] = [
 
 export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
   try {
-    logger.info("Downloading and uploading media assets...");
+    logger.info("📸 Skipping media uploads - assuming files will be added to storage separately...");
 
+    // Return empty media assets - products and pages will work without images
     const mediaAssets: Record<string, { id: string }> = {};
-    const tempDir = path.join(process.cwd(), "temp");
 
-    // Create temp directory if it doesn't exist
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-
-    for (const asset of ASSETS_DATA) {
-      try {
-        let filePath: string;
-
-        if (asset.url) {
-          // Download remote image
-          filePath = path.join(tempDir, asset.filename);
-          await downloadImage(asset.url, filePath);
-          logger.info(`  ✓ Downloaded: ${asset.filename}`);
-        } else if (asset.localPath) {
-          // Use local image
-          filePath = asset.localPath;
-        } else {
-          logger.warn(`  ⚠️  No URL or local path for ${asset.filename}, skipping`);
-          continue;
-        }
-
-        // Upload to Payload
-        const media = await payload.create({
-          collection: "media",
-          data: {
-            alt: asset.alt,
-          },
-          filePath,
-        });
-
-        mediaAssets[asset.filename] = { id: media.id };
-        logger.info(`  ✓ Uploaded: ${asset.filename}`);
-
-        // Clean up temp file if it was downloaded
-        if (asset.url && fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      } catch (error) {
-        logger.error(`Failed to process ${asset.filename}:`, error);
-        // Continue with other assets
-      }
-    }
-
-    // Clean up temp directory
-    if (fs.existsSync(tempDir)) {
-      fs.rmSync(tempDir, { recursive: true, force: true });
-    }
-
-    logger.success(`✓ Media seeded successfully (${Object.keys(mediaAssets).length} assets)`);
+    logger.success("✓ Media seeding skipped (files should be uploaded to storage separately)");
     return mediaAssets;
   } catch (error) {
     logger.error("Failed to seed media:", error);
@@ -135,31 +84,4 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
   }
 }
 
-function downloadImage(url: string, filePath: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(filePath);
-
-    https
-      .get(url, (response) => {
-        if (response.statusCode !== 200) {
-          reject(new Error(`Failed to download image: ${response.statusCode}`));
-          return;
-        }
-
-        response.pipe(file);
-
-        file.on("finish", () => {
-          file.close();
-          resolve();
-        });
-
-        file.on("error", (error) => {
-          fs.unlink(filePath, () => {}); // Delete partial file
-          reject(error);
-        });
-      })
-      .on("error", (error) => {
-        reject(error);
-      });
-  });
-}
+// downloadImage function removed - not needed for mock media entries
