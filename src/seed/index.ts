@@ -13,6 +13,7 @@ import config from "../payload.config.js";
 async function seed() {
   try {
     // Check if seeding is required via environment variable
+    // REQUIRES_SEEDING=true must be set in environment for seeding to run
     const requiresSeeding = process.env.REQUIRES_SEEDING?.toLowerCase() === "true";
 
     if (!requiresSeeding) {
