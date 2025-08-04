@@ -64,8 +64,8 @@ async function createHomePage(
                     bold: true,
                   },
                 ],
-                type: "h1",
-                tag: "h1",
+                          type: "heading",
+          tag: "h1",
                 version: 1,
               },
               {
@@ -74,7 +74,7 @@ async function createHomePage(
                     text: "Discover our latest collection of premium footwear designed for comfort and style.",
                   },
                 ],
-                type: "p",
+                type: "paragraph",
                 version: 1,
               },
             ],
@@ -119,8 +119,8 @@ async function createHomePage(
                       bold: true,
                     },
                   ],
-                  type: "h2",
-                  tag: "h2",
+                            type: "heading",
+          tag: "h2",
                   version: 1,
                 },
               ],
@@ -158,8 +158,8 @@ async function createHomePage(
                       bold: true,
                     },
                   ],
-                  type: "h2",
-                  tag: "h2",
+                            type: "heading",
+          tag: "h2",
                   version: 1,
                 },
                 {
@@ -168,7 +168,7 @@ async function createHomePage(
                       text: "Subscribe to our newsletter and get 15% off your first order.",
                     },
                   ],
-                  type: "p",
+                  type: "paragraph",
                   version: 1,
                 },
               ],
@@ -204,21 +204,27 @@ async function createHomePage(
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Men's Collection",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "From casual sneakers to formal dress shoes.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -245,21 +251,27 @@ async function createHomePage(
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Women's Collection",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Elegant heels to comfortable flats.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -286,21 +298,27 @@ async function createHomePage(
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Athletic Collection",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Performance footwear for every sport.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -349,8 +367,8 @@ async function createAboutPage(payload: Payload, _mediaAssets: Record<string, un
                     bold: true,
                   },
                 ],
-                type: "h1",
-                tag: "h1",
+                          type: "heading",
+          tag: "h1",
                 version: 1,
               },
               {
@@ -359,7 +377,7 @@ async function createAboutPage(payload: Payload, _mediaAssets: Record<string, un
                     text: "Crafting quality footwear since 2020",
                   },
                 ],
-                type: "p",
+                type: "paragraph",
                 version: 1,
               },
             ],
@@ -385,77 +403,97 @@ async function createAboutPage(payload: Payload, _mediaAssets: Record<string, un
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Welcome to Stride Footwear",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "At Stride, we believe that great shoes are the foundation of every journey. Founded in 2020, we set out with a simple mission: to create footwear that combines exceptional comfort with timeless style.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Our commitment to quality starts with carefully selected materials and extends through every stitch and sole. We work with skilled craftspeople who share our passion for creating shoes that not only look great but feel amazing from the first wear.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Our Values",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "• Quality: We never compromise on materials or craftsmanship",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "• Comfort: Every shoe is designed with your comfort in mind",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "• Style: Timeless designs that transcend seasonal trends",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "• Sustainability: Committed to reducing our environmental footprint",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -494,7 +532,7 @@ async function createContactPage(payload: Payload) {
                   text: "Thank you for your message! We'll get back to you within 24 hours.",
                 },
               ],
-              type: "p",
+              type: "paragraph",
               version: 1,
             },
           ],
@@ -564,8 +602,8 @@ async function createContactPage(payload: Payload) {
                     bold: true,
                   },
                 ],
-                type: "h1",
-                tag: "h1",
+                          type: "heading",
+          tag: "h1",
                 version: 1,
               },
               {
@@ -574,7 +612,7 @@ async function createContactPage(payload: Payload) {
                     text: "We'd love to hear from you",
                   },
                 ],
-                type: "p",
+                type: "paragraph",
                 version: 1,
               },
             ],
@@ -600,48 +638,60 @@ async function createContactPage(payload: Payload) {
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Visit Our Store",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "123 Fashion Avenue",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "New York, NY 10001",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Monday - Friday: 10AM - 8PM",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Saturday - Sunday: 11AM - 7PM",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -661,39 +711,49 @@ async function createContactPage(payload: Payload) {
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Contact Information",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h3",
-                      tag: "h3",
+                                type: "heading",
+          tag: "h3",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Phone: +1 (555) 123-4567",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Email: info@stridefootwear.com",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Customer Service: support@stridefootwear.com",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
@@ -721,8 +781,8 @@ async function createContactPage(payload: Payload) {
                       bold: true,
                     },
                   ],
-                  type: "h2",
-                  tag: "h2",
+                            type: "heading",
+          tag: "h2",
                   version: 1,
                 },
                 {
@@ -731,7 +791,7 @@ async function createContactPage(payload: Payload) {
                       text: "Have a question or feedback? We're here to help!",
                     },
                   ],
-                  type: "p",
+                  type: "paragraph",
                   version: 1,
                 },
               ],
@@ -771,8 +831,8 @@ async function createTermsPage(payload: Payload) {
                     bold: true,
                   },
                 ],
-                type: "h1",
-                tag: "h1",
+                          type: "heading",
+          tag: "h1",
                 version: 1,
               },
               {
@@ -781,7 +841,7 @@ async function createTermsPage(payload: Payload) {
                     text: "Last updated: January 1, 2024",
                   },
                 ],
-                type: "p",
+                type: "paragraph",
                 version: 1,
               },
             ],
@@ -807,121 +867,157 @@ async function createTermsPage(payload: Payload) {
                     {
                       children: [
                         {
+                          type: "text",
                           text: "1. Acceptance of Terms",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "2. Use License",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Permission is granted to temporarily download one copy of the materials (information or software) on Stride Footwear's website for personal, non-commercial transitory viewing only.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "3. Disclaimer",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "The materials on Stride Footwear's website are provided on an 'as is' basis. Stride Footwear makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "4. Limitations",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "In no event shall Stride Footwear or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Stride Footwear's website.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "5. Privacy Policy",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "Your privacy is important to us. Our privacy policy explains how we collect, use, and protect your personal information.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "6. Returns and Refunds",
-                          bold: true,
+                          type: "text",
+                          format: 1,
+                          version: 1,
+                          version: 1,
                         },
                       ],
-                      type: "h2",
-                      tag: "h2",
+                                type: "heading",
+          tag: "h2",
                       version: 1,
                     },
                     {
                       children: [
                         {
+                          type: "text",
                           text: "We offer a 30-day return policy for unworn items in original packaging. Refunds will be processed within 5-7 business days of receiving the returned item.",
+                          version: 1,
                         },
                       ],
-                      type: "p",
+                      type: "paragraph",
                       version: 1,
                     },
                   ],
