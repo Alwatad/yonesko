@@ -53,7 +53,7 @@ async function createHomePage(
       slugLock: true,
       hero: {
         type: "highImpact",
-        media: (mediaAssets["hero-running-shoes.jpg"] as { id: string })?.id,
+        media: (mediaAssets["hero-running-shoes.jpg"] as { id: string })?.id || null,
         richText: {
           root: {
             children: [
@@ -338,7 +338,7 @@ async function createAboutPage(payload: Payload, mediaAssets: Record<string, unk
       slugLock: true,
       hero: {
         type: "mediumImpact",
-        media: (mediaAssets["hero-lifestyle.jpg"] as { id: string })?.id,
+        media: (mediaAssets["hero-lifestyle.jpg"] as { id: string })?.id || null,
         richText: {
           root: {
             children: [

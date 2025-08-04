@@ -20,7 +20,7 @@ const ASSETS_DATA: Asset[] = [
     url: "https://via.placeholder.com/300x100/000000/FFFFFF?text=STRIDE",
   },
   {
-    filename: "hero-shoes.jpg",
+    filename: "hero-running-shoes.jpg",
     alt: "Premium Running Shoes",
     url: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&h=800&fit=crop",
   },
@@ -63,6 +63,11 @@ const ASSETS_DATA: Asset[] = [
     filename: "womens-flats.jpg",
     alt: "Women's Flat Shoes",
     url: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&h=800&fit=crop",
+  },
+  {
+    filename: "hero-lifestyle.jpg",
+    alt: "Lifestyle Hero Image",
+    url: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&h=800&fit=crop",
   },
 ];
 
