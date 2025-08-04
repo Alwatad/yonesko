@@ -286,7 +286,6 @@ export interface Page {
 export interface Post {
   id: string;
   title: string;
-  tempMigrationField?: string | null;
   heroImage?: (string | null) | Media;
   content: {
     root: {
@@ -334,7 +333,6 @@ export interface Post {
 export interface Media {
   id: string;
   alt: string;
-  tempMigrationField?: string | null;
   caption?: {
     root: {
       type: string;
@@ -427,7 +425,6 @@ export interface Media {
 export interface Category {
   id: string;
   title: string;
-  tempMigrationField?: string | null;
   parent?: (string | null) | Category;
   breadcrumbs?:
     | {
@@ -1086,7 +1083,6 @@ export interface ProductSubCategory {
 export interface Product {
   id: string;
   title: string;
-  tempMigrationField?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
   description?: {
@@ -2038,7 +2034,6 @@ export interface HotspotBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
-  tempMigrationField?: T;
   heroImage?: T;
   content?: T;
   relatedPosts?: T;
@@ -2070,7 +2065,6 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  tempMigrationField?: T;
   caption?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2164,7 +2158,6 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
-  tempMigrationField?: T;
   parent?: T;
   breadcrumbs?:
     | T
@@ -2330,7 +2323,6 @@ export interface OrdersSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  tempMigrationField?: T;
   slug?: T;
   slugLock?: T;
   description?: T;

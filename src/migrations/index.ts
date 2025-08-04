@@ -1,3 +1,4 @@
+import * as migration_000_payload_internal from "./000_payload_internal";
 import * as migration_001_chunk_1 from "./001_chunk_1";
 import * as migration_002_chunk_2 from "./002_chunk_2";
 import * as migration_003_chunk_3 from "./003_chunk_3";
@@ -13,6 +14,11 @@ type Migration = {
 };
 
 export const migrations: Migration[] = [
+  {
+    up: migration_000_payload_internal.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_000_payload_internal.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "000_payload_internal",
+  },
   {
     up: migration_001_chunk_1.up as (args: MigrateUpArgs) => Promise<void>,
     down: migration_001_chunk_1.down as (args: MigrateDownArgs) => Promise<void>,
@@ -39,3 +45,4 @@ export const migrations: Migration[] = [
     name: "005_chunk_5",
   },
 ];
+// index.ts

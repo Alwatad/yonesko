@@ -1,6 +1,6 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { type MigrateUpArgs, type MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
-export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+export async function up({ db, payload: _payload, req: _req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
 
    CREATE TYPE "public"."_locales" AS ENUM('en', 'pl');
@@ -119,9 +119,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__products_v_published_locale" AS ENUM('en', 'pl');
   CREATE TYPE "public"."enum_redirects_to_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
-  CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'schedulePublish');
-  CREATE TYPE "public"."enum_payload_jobs_log_state" AS ENUM('failed', 'succeeded');
-  CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'schedulePublish');
   CREATE TYPE "public"."enum_header_nav_items_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_header_type" AS ENUM('default', 'floating');
   CREATE TYPE "public"."enum_footer_nav_items_link_type" AS ENUM('reference', 'custom');
@@ -558,8 +555,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   `);
 }
 
-export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+export async function down({ db: _db, payload: _payload, req: _req }: MigrateDownArgs): Promise<void> {
   // This chunk's down migration would drop the tables created in this chunk
   // For now, we'll leave it as a placeholder since this is a partial migration
-  console.log('Down migration for chunk 1 - would drop tables created in this chunk');
+  console.log("Down migration for chunk 1 - would drop tables created in this chunk");
 }
