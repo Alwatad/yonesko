@@ -163,8 +163,7 @@ export default buildConfig({
           accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
         },
-        s3ForcePathStyle: true, // Required for Supabase Storage
-        signatureVersion: "v4", // Required for Supabase
+        forcePathStyle: true, // Required for Supabase Storage
         requestChecksumCalculation: "WHEN_REQUIRED",
         responseChecksumValidation: "WHEN_REQUIRED",
       },

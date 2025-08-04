@@ -11,7 +11,7 @@ type Asset = {
   localPath?: string; // For local images
 };
 
-const ASSETS_DATA: Asset[] = [
+const _ASSETS_DATA: Asset[] = [
   {
     filename: "stride-logo.png",
     alt: "Stride Logo",
@@ -69,7 +69,7 @@ const ASSETS_DATA: Asset[] = [
   },
 ];
 
-export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
+export async function seedMedia(_payload: Payload): Promise<Record<string, { id: string }>> {
   try {
     logger.info("📸 Skipping media uploads - assuming files will be added to storage separately...");
 

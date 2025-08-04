@@ -329,7 +329,7 @@ async function createHomePage(
   logger.info("✓ Created Home page");
 }
 
-async function createAboutPage(payload: Payload, mediaAssets: Record<string, unknown>) {
+async function createAboutPage(payload: Payload, _mediaAssets: Record<string, unknown>) {
   await payload.create({
     collection: "pages",
     context: { disableRevalidate: true }, // Disable Next.js revalidation during seeding

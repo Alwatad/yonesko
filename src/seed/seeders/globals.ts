@@ -39,14 +39,14 @@ export async function seedGlobalSettings(
   }
 }
 
-async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: string }>) {
+async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
   await payload.updateGlobal({
     slug: "header",
     data: {
       type: "default",
       hideOnScroll: false,
       background: "#ffffff",
-      logo: mediaAssets["stride-logo.png"]?.id,
+      // logo: mediaAssets["stride-logo.png"]?.id, // Skip logo until media is uploaded
       navItems: [
         {
           link: {
