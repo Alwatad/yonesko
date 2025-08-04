@@ -7,9 +7,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function splitMigrationSimple(inputFile, numChunks = 10) {
+function splitMigrationBalanced(inputFile, minLines = 550, maxLines = 600) {
   console.log(`Splitting migration file: ${inputFile}`);
-  console.log(`Number of chunks: ${numChunks}`);
+  console.log(`Target lines per chunk: ${minLines}-${maxLines}`);
 
   // Read the input file
   const content = fs.readFileSync(inputFile, "utf8");
@@ -19,9 +19,9 @@ function splitMigrationSimple(inputFile, numChunks = 10) {
 
   // Extract the SQL content from the template literal
   let sqlContent;
-  const sqlMatch = content.match(/await db\.execute\(sql`([\s\S]*?)`\);/);
+  const sqlMatch = content.match(/await db\.execute\(sql\`([\s\S]*?)\`\);/);
   if (!sqlMatch) {
-    const altMatch = content.match(/sql`([\s\S]*?)`/);
+    const altMatch = content.match(/sql\`([\s\S]*?)\`/);
     if (!altMatch) {
       throw new Error("Could not find SQL content in migration file");
     }
@@ -33,9 +33,10 @@ function splitMigrationSimple(inputFile, numChunks = 10) {
   const sqlLines = sqlContent.split("\n");
   console.log(`SQL lines: ${sqlLines.length}`);
 
-  // Calculate chunk size
-  const chunkSize = Math.ceil(sqlLines.length / numChunks);
-  console.log(`Chunk size: ~${chunkSize} lines`);
+  // Calculate optimal number of chunks
+  const totalLines = sqlLines.length;
+  const optimalChunks = Math.ceil(totalLines / minLines);
+  console.log(`Optimal number of chunks: ${optimalChunks}`);
 
   // Create chunks with smart SQL boundary detection
   const chunks = [];
@@ -78,13 +79,26 @@ function splitMigrationSimple(inputFile, numChunks = 10) {
 
     // Check if we should end this chunk
     const isEndOfStatement = line.trim().endsWith(";") && parenCount === 0 && !inString;
-    const isChunkFull = currentLineCount >= chunkSize;
+    const isChunkFull = currentLineCount >= minLines;
     const isLastLine = i === sqlLines.length - 1;
+    const remainingLines = sqlLines.length - (i + 1);
+    const wouldLeaveSmallLastChunk = remainingLines > 0 && remainingLines < minLines;
 
-    if ((isEndOfStatement && isChunkFull) || isLastLine) {
+    // End chunk if:
+    // 1. We're at a statement end AND chunk is full enough OR
+    // 2. We're at the last line OR
+    // 3. Current chunk is getting too big
+    if (
+      (isEndOfStatement && isChunkFull && !wouldLeaveSmallLastChunk) ||
+      isLastLine ||
+      currentLineCount >= maxLines
+    ) {
       chunks.push(currentChunk.join("\n"));
       currentChunk = [];
       currentLineCount = 0;
+      parenCount = 0;
+      inString = false;
+      stringChar = "";
     }
   }
 
@@ -167,14 +181,15 @@ ${migrations.join("\n")}
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   const inputFile = process.argv[2];
-  const numChunks = parseInt(process.argv[3]) || 10;
+  const minLines = parseInt(process.argv[3]) || 550;
+  const maxLines = parseInt(process.argv[4]) || 600;
 
   if (!inputFile) {
-    console.error("Usage: node split-migration-simple.js <input-file> [num-chunks]");
+    console.error("Usage: node split-migration-strict-balanced.js <input-file> [min-lines] [max-lines]");
     process.exit(1);
   }
 
-  splitMigrationSimple(inputFile, numChunks);
+  splitMigrationBalanced(inputFile, minLines, maxLines);
 }
 
-export { splitMigrationSimple };
+export { splitMigrationBalanced };

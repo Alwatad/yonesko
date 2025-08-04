@@ -2,387 +2,397 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-
-CREATE TABLE "forms_blocks_number_locales" (
-  	"label" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select_options" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" varchar NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"value" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select_options_locales" (
-  	"label" varchar NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_select_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_state" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_state_locales" (
-  	"label" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_text" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_text_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_textarea" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_textarea_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_emails" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"email_to" varchar,
-  	"cc" varchar,
-  	"bcc" varchar,
-  	"reply_to" varchar,
-  	"email_from" varchar
-  );
+  CREATE INDEX "_pages_v_blocks_media_block_order_idx" ON "_pages_v_blocks_media_block" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_media_block_parent_id_idx" ON "_pages_v_blocks_media_block" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_media_block_path_idx" ON "_pages_v_blocks_media_block" USING btree ("_path");
+  CREATE INDEX "_pages_v_blocks_media_block_media_idx" ON "_pages_v_blocks_media_block" USING btree ("media_id");
+  CREATE INDEX "_pages_v_blocks_archive_order_idx" ON "_pages_v_blocks_archive" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_archive_parent_id_idx" ON "_pages_v_blocks_archive" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_archive_path_idx" ON "_pages_v_blocks_archive" USING btree ("_path");
+  CREATE UNIQUE INDEX "_pages_v_blocks_archive_locales_locale_parent_id_unique" ON "_pages_v_blocks_archive_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_form_block_order_idx" ON "_pages_v_blocks_form_block" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_form_block_parent_id_idx" ON "_pages_v_blocks_form_block" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_form_block_path_idx" ON "_pages_v_blocks_form_block" USING btree ("_path");
+  CREATE INDEX "_pages_v_blocks_form_block_form_idx" ON "_pages_v_blocks_form_block" USING btree ("form_id");
+  CREATE UNIQUE INDEX "_pages_v_blocks_form_block_locales_locale_parent_id_unique" ON "_pages_v_blocks_form_block_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_carousel_slides_order_idx" ON "_pages_v_blocks_carousel_slides" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_carousel_slides_parent_id_idx" ON "_pages_v_blocks_carousel_slides" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_carousel_slides_image_idx" ON "_pages_v_blocks_carousel_slides" USING btree ("image_id");
+  CREATE UNIQUE INDEX "_pages_v_blocks_carousel_slides_locales_locale_parent_id_unique" ON "_pages_v_blocks_carousel_slides_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_carousel_order_idx" ON "_pages_v_blocks_carousel" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_carousel_parent_id_idx" ON "_pages_v_blocks_carousel" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_carousel_path_idx" ON "_pages_v_blocks_carousel" USING btree ("_path");
+  CREATE UNIQUE INDEX "_pages_v_blocks_carousel_locales_locale_parent_id_unique" ON "_pages_v_blocks_carousel_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_accordion_items_order_idx" ON "_pages_v_blocks_accordion_items" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_accordion_items_parent_id_idx" ON "_pages_v_blocks_accordion_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "_pages_v_blocks_accordion_items_locales_locale_parent_id_unique" ON "_pages_v_blocks_accordion_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_accordion_order_idx" ON "_pages_v_blocks_accordion" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_accordion_parent_id_idx" ON "_pages_v_blocks_accordion" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_accordion_path_idx" ON "_pages_v_blocks_accordion" USING btree ("_path");
+  CREATE UNIQUE INDEX "_pages_v_blocks_accordion_locales_locale_parent_id_unique" ON "_pages_v_blocks_accordion_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_blocks_hotspot_zone_order_idx" ON "_pages_v_blocks_hotspot_zone" USING btree ("_order");
+  CREATE INDEX "_pages_v_blocks_hotspot_zone_parent_id_idx" ON "_pages_v_blocks_hotspot_zone" USING btree ("_parent_id");
+  CREATE INDEX "_pages_v_blocks_hotspot_zone_path_idx" ON "_pages_v_blocks_hotspot_zone" USING btree ("_path");
+  CREATE INDEX "_pages_v_blocks_hotspot_zone_category_idx" ON "_pages_v_blocks_hotspot_zone" USING btree ("category_id");
+  CREATE INDEX "_pages_v_blocks_hotspot_zone_subcategory_idx" ON "_pages_v_blocks_hotspot_zone" USING btree ("subcategory_id");
+  CREATE UNIQUE INDEX "_pages_v_blocks_hotspot_zone_locales_locale_parent_id_unique" ON "_pages_v_blocks_hotspot_zone_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
+  CREATE INDEX "_pages_v_version_hero_version_hero_media_idx" ON "_pages_v" USING btree ("version_hero_media_id");
+  CREATE INDEX "_pages_v_version_version_slug_idx" ON "_pages_v" USING btree ("version_slug");
+  CREATE INDEX "_pages_v_version_version_updated_at_idx" ON "_pages_v" USING btree ("version_updated_at");
+  CREATE INDEX "_pages_v_version_version_created_at_idx" ON "_pages_v" USING btree ("version_created_at");
+  CREATE INDEX "_pages_v_version_version__status_idx" ON "_pages_v" USING btree ("version__status");
+  CREATE INDEX "_pages_v_created_at_idx" ON "_pages_v" USING btree ("created_at");
+  CREATE INDEX "_pages_v_updated_at_idx" ON "_pages_v" USING btree ("updated_at");
+  CREATE INDEX "_pages_v_snapshot_idx" ON "_pages_v" USING btree ("snapshot");
+  CREATE INDEX "_pages_v_published_locale_idx" ON "_pages_v" USING btree ("published_locale");
+  CREATE INDEX "_pages_v_latest_idx" ON "_pages_v" USING btree ("latest");
+  CREATE INDEX "_pages_v_autosave_idx" ON "_pages_v" USING btree ("autosave");
+  CREATE INDEX "_pages_v_version_meta_version_meta_image_idx" ON "_pages_v_locales" USING btree ("version_meta_image_id");
+  CREATE UNIQUE INDEX "_pages_v_locales_locale_parent_id_unique" ON "_pages_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_pages_v_rels_order_idx" ON "_pages_v_rels" USING btree ("order");
+  CREATE INDEX "_pages_v_rels_parent_idx" ON "_pages_v_rels" USING btree ("parent_id");
+  CREATE INDEX "_pages_v_rels_path_idx" ON "_pages_v_rels" USING btree ("path");
+  CREATE INDEX "_pages_v_rels_pages_id_idx" ON "_pages_v_rels" USING btree ("pages_id");
+  CREATE INDEX "_pages_v_rels_posts_id_idx" ON "_pages_v_rels" USING btree ("posts_id");
+  CREATE INDEX "_pages_v_rels_categories_id_idx" ON "_pages_v_rels" USING btree ("categories_id");
+  CREATE INDEX "_pages_v_rels_products_id_idx" ON "_pages_v_rels" USING btree ("products_id");
+  CREATE INDEX "posts_populated_authors_order_idx" ON "posts_populated_authors" USING btree ("_order");
+  CREATE INDEX "posts_populated_authors_parent_id_idx" ON "posts_populated_authors" USING btree ("_parent_id");
+  CREATE INDEX "posts_hero_image_idx" ON "posts" USING btree ("hero_image_id");
+  CREATE INDEX "posts_slug_idx" ON "posts" USING btree ("slug");
+  CREATE INDEX "posts_updated_at_idx" ON "posts" USING btree ("updated_at");
+  CREATE INDEX "posts_created_at_idx" ON "posts" USING btree ("created_at");
+  CREATE INDEX "posts__status_idx" ON "posts" USING btree ("_status");
+  CREATE INDEX "posts_meta_meta_image_idx" ON "posts_locales" USING btree ("meta_image_id");
+  CREATE UNIQUE INDEX "posts_locales_locale_parent_id_unique" ON "posts_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "posts_rels_order_idx" ON "posts_rels" USING btree ("order");
+  CREATE INDEX "posts_rels_parent_idx" ON "posts_rels" USING btree ("parent_id");
+  CREATE INDEX "posts_rels_path_idx" ON "posts_rels" USING btree ("path");
+  CREATE INDEX "posts_rels_posts_id_idx" ON "posts_rels" USING btree ("posts_id");
+  CREATE INDEX "posts_rels_categories_id_idx" ON "posts_rels" USING btree ("categories_id");
+  CREATE INDEX "posts_rels_administrators_id_idx" ON "posts_rels" USING btree ("administrators_id");
+  CREATE INDEX "_posts_v_version_populated_authors_order_idx" ON "_posts_v_version_populated_authors" USING btree ("_order");
+  CREATE INDEX "_posts_v_version_populated_authors_parent_id_idx" ON "_posts_v_version_populated_authors" USING btree ("_parent_id");
+  CREATE INDEX "_posts_v_parent_idx" ON "_posts_v" USING btree ("parent_id");
+  CREATE INDEX "_posts_v_version_version_hero_image_idx" ON "_posts_v" USING btree ("version_hero_image_id");
+  CREATE INDEX "_posts_v_version_version_slug_idx" ON "_posts_v" USING btree ("version_slug");
+  CREATE INDEX "_posts_v_version_version_updated_at_idx" ON "_posts_v" USING btree ("version_updated_at");
+  CREATE INDEX "_posts_v_version_version_created_at_idx" ON "_posts_v" USING btree ("version_created_at");
+  CREATE INDEX "_posts_v_version_version__status_idx" ON "_posts_v" USING btree ("version__status");
+  CREATE INDEX "_posts_v_created_at_idx" ON "_posts_v" USING btree ("created_at");
+  CREATE INDEX "_posts_v_updated_at_idx" ON "_posts_v" USING btree ("updated_at");
+  CREATE INDEX "_posts_v_snapshot_idx" ON "_posts_v" USING btree ("snapshot");
+  CREATE INDEX "_posts_v_published_locale_idx" ON "_posts_v" USING btree ("published_locale");
+  CREATE INDEX "_posts_v_latest_idx" ON "_posts_v" USING btree ("latest");
+  CREATE INDEX "_posts_v_autosave_idx" ON "_posts_v" USING btree ("autosave");
+  CREATE INDEX "_posts_v_version_meta_version_meta_image_idx" ON "_posts_v_locales" USING btree ("version_meta_image_id");
+  CREATE UNIQUE INDEX "_posts_v_locales_locale_parent_id_unique" ON "_posts_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_posts_v_rels_order_idx" ON "_posts_v_rels" USING btree ("order");
+  CREATE INDEX "_posts_v_rels_parent_idx" ON "_posts_v_rels" USING btree ("parent_id");
+  CREATE INDEX "_posts_v_rels_path_idx" ON "_posts_v_rels" USING btree ("path");
+  CREATE INDEX "_posts_v_rels_posts_id_idx" ON "_posts_v_rels" USING btree ("posts_id");
+  CREATE INDEX "_posts_v_rels_categories_id_idx" ON "_posts_v_rels" USING btree ("categories_id");
+  CREATE INDEX "_posts_v_rels_administrators_id_idx" ON "_posts_v_rels" USING btree ("administrators_id");
+  CREATE INDEX "media_updated_at_idx" ON "media" USING btree ("updated_at");
+  CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
+  CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
+  CREATE INDEX "media_sizes_thumbnail_sizes_thumbnail_filename_idx" ON "media" USING btree ("sizes_thumbnail_filename");
+  CREATE INDEX "media_sizes_square_sizes_square_filename_idx" ON "media" USING btree ("sizes_square_filename");
+  CREATE INDEX "media_sizes_small_sizes_small_filename_idx" ON "media" USING btree ("sizes_small_filename");
+  CREATE INDEX "media_sizes_medium_sizes_medium_filename_idx" ON "media" USING btree ("sizes_medium_filename");
+  CREATE INDEX "media_sizes_large_sizes_large_filename_idx" ON "media" USING btree ("sizes_large_filename");
+  CREATE INDEX "media_sizes_xlarge_sizes_xlarge_filename_idx" ON "media" USING btree ("sizes_xlarge_filename");
+  CREATE INDEX "media_sizes_og_sizes_og_filename_idx" ON "media" USING btree ("sizes_og_filename");
+  CREATE UNIQUE INDEX "media_locales_locale_parent_id_unique" ON "media_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "categories_breadcrumbs_order_idx" ON "categories_breadcrumbs" USING btree ("_order");
+  CREATE INDEX "categories_breadcrumbs_parent_id_idx" ON "categories_breadcrumbs" USING btree ("_parent_id");
+  CREATE INDEX "categories_breadcrumbs_locale_idx" ON "categories_breadcrumbs" USING btree ("_locale");
+  CREATE INDEX "categories_breadcrumbs_doc_idx" ON "categories_breadcrumbs" USING btree ("doc_id");
+  CREATE INDEX "categories_parent_idx" ON "categories" USING btree ("parent_id");
+  CREATE INDEX "categories_updated_at_idx" ON "categories" USING btree ("updated_at");
+  CREATE INDEX "categories_created_at_idx" ON "categories" USING btree ("created_at");
+  CREATE UNIQUE INDEX "categories_locales_locale_parent_id_unique" ON "categories_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "administrators_sessions_order_idx" ON "administrators_sessions" USING btree ("_order");
+  CREATE INDEX "administrators_sessions_parent_id_idx" ON "administrators_sessions" USING btree ("_parent_id");
+  CREATE INDEX "administrators_updated_at_idx" ON "administrators" USING btree ("updated_at");
+  CREATE INDEX "administrators_created_at_idx" ON "administrators" USING btree ("created_at");
+  CREATE UNIQUE INDEX "administrators_email_idx" ON "administrators" USING btree ("email");
+  CREATE INDEX "customers_shippings_order_idx" ON "customers_shippings" USING btree ("_order");
+  CREATE INDEX "customers_shippings_parent_id_idx" ON "customers_shippings" USING btree ("_parent_id");
+  CREATE INDEX "customers_sessions_order_idx" ON "customers_sessions" USING btree ("_order");
+  CREATE INDEX "customers_sessions_parent_id_idx" ON "customers_sessions" USING btree ("_parent_id");
+  CREATE INDEX "customers_updated_at_idx" ON "customers" USING btree ("updated_at");
+  CREATE INDEX "customers_created_at_idx" ON "customers" USING btree ("created_at");
+  CREATE UNIQUE INDEX "customers_email_idx" ON "customers" USING btree ("email");
+  CREATE INDEX "orders_products_order_idx" ON "orders_products" USING btree ("_order");
+  CREATE INDEX "orders_products_parent_id_idx" ON "orders_products" USING btree ("_parent_id");
+  CREATE INDEX "orders_products_product_idx" ON "orders_products" USING btree ("product_id");
+  CREATE INDEX "orders_customer_idx" ON "orders" USING btree ("customer_id");
+  CREATE INDEX "orders_updated_at_idx" ON "orders" USING btree ("updated_at");
+  CREATE INDEX "orders_created_at_idx" ON "orders" USING btree ("created_at");
+  CREATE INDEX "products_details_order_idx" ON "products_details" USING btree ("_order");
+  CREATE INDEX "products_details_parent_id_idx" ON "products_details" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "products_details_locales_locale_parent_id_unique" ON "products_details_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "products_colors_order_idx" ON "products_colors" USING btree ("_order");
+  CREATE INDEX "products_colors_parent_id_idx" ON "products_colors" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "products_colors_locales_locale_parent_id_unique" ON "products_colors_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "products_sizes_order_idx" ON "products_sizes" USING btree ("_order");
+  CREATE INDEX "products_sizes_parent_id_idx" ON "products_sizes" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "products_sizes_locales_locale_parent_id_unique" ON "products_sizes_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "products_variants_pricing_order_idx" ON "products_variants_pricing" USING btree ("_order");
+  CREATE INDEX "products_variants_pricing_parent_id_idx" ON "products_variants_pricing" USING btree ("_parent_id");
+  CREATE INDEX "products_variants_pricing_value_idx" ON "products_variants_pricing" USING btree ("value");
+  CREATE INDEX "products_variants_order_idx" ON "products_variants" USING btree ("_order");
+  CREATE INDEX "products_variants_parent_id_idx" ON "products_variants" USING btree ("_parent_id");
+  CREATE INDEX "products_variants_size_idx" ON "products_variants" USING btree ("size");
+  CREATE INDEX "products_variants_color_idx" ON "products_variants" USING btree ("color");
+  CREATE INDEX "products_variants_image_idx" ON "products_variants" USING btree ("image_id");
+  CREATE INDEX "products_categories_arr_order_idx" ON "products_categories_arr" USING btree ("_order");
+  CREATE INDEX "products_categories_arr_parent_id_idx" ON "products_categories_arr" USING btree ("_parent_id");
+  CREATE INDEX "products_categories_arr_category_idx" ON "products_categories_arr" USING btree ("category_id");
+  CREATE INDEX "products_pricing_order_idx" ON "products_pricing" USING btree ("_order");
+  CREATE INDEX "products_pricing_parent_id_idx" ON "products_pricing" USING btree ("_parent_id");
+  CREATE INDEX "products_pricing_value_idx" ON "products_pricing" USING btree ("value");
+  CREATE INDEX "products_slug_idx" ON "products" USING btree ("slug");
+  CREATE INDEX "products_bought_idx" ON "products" USING btree ("bought");
+  CREATE INDEX "products_updated_at_idx" ON "products" USING btree ("updated_at");
+  CREATE INDEX "products_created_at_idx" ON "products" USING btree ("created_at");
+  CREATE INDEX "products__status_idx" ON "products" USING btree ("_status");
+  CREATE UNIQUE INDEX "products_locales_locale_parent_id_unique" ON "products_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "products_rels_order_idx" ON "products_rels" USING btree ("order");
+  CREATE INDEX "products_rels_parent_idx" ON "products_rels" USING btree ("parent_id");
+  CREATE INDEX "products_rels_path_idx" ON "products_rels" USING btree ("path");
+  CREATE INDEX "products_rels_media_id_idx" ON "products_rels" USING btree ("media_id");
+  CREATE INDEX "products_rels_product_sub_categories_id_idx" ON "products_rels" USING btree ("product_sub_categories_id");
+  CREATE INDEX "_products_v_version_details_order_idx" ON "_products_v_version_details" USING btree ("_order");
+  CREATE INDEX "_products_v_version_details_parent_id_idx" ON "_products_v_version_details" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "_products_v_version_details_locales_locale_parent_id_unique" ON "_products_v_version_details_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_products_v_version_colors_order_idx" ON "_products_v_version_colors" USING btree ("_order");
+  CREATE INDEX "_products_v_version_colors_parent_id_idx" ON "_products_v_version_colors" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "_products_v_version_colors_locales_locale_parent_id_unique" ON "_products_v_version_colors_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_products_v_version_sizes_order_idx" ON "_products_v_version_sizes" USING btree ("_order");
+  CREATE INDEX "_products_v_version_sizes_parent_id_idx" ON "_products_v_version_sizes" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "_products_v_version_sizes_locales_locale_parent_id_unique" ON "_products_v_version_sizes_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_products_v_version_variants_pricing_order_idx" ON "_products_v_version_variants_pricing" USING btree ("_order");
+  CREATE INDEX "_products_v_version_variants_pricing_parent_id_idx" ON "_products_v_version_variants_pricing" USING btree ("_parent_id");
+  CREATE INDEX "_products_v_version_variants_pricing_value_idx" ON "_products_v_version_variants_pricing" USING btree ("value");
+  CREATE INDEX "_products_v_version_variants_order_idx" ON "_products_v_version_variants" USING btree ("_order");
+  CREATE INDEX "_products_v_version_variants_parent_id_idx" ON "_products_v_version_variants" USING btree ("_parent_id");
+  CREATE INDEX "_products_v_version_variants_size_idx" ON "_products_v_version_variants" USING btree ("size");
+  CREATE INDEX "_products_v_version_variants_color_idx" ON "_products_v_version_variants" USING btree ("color");
+  CREATE INDEX "_products_v_version_variants_image_idx" ON "_products_v_version_variants" USING btree ("image_id");
+  CREATE INDEX "_products_v_version_categories_arr_order_idx" ON "_products_v_version_categories_arr" USING btree ("_order");
+  CREATE INDEX "_products_v_version_categories_arr_parent_id_idx" ON "_products_v_version_categories_arr" USING btree ("_parent_id");
+  CREATE INDEX "_products_v_version_categories_arr_category_idx" ON "_products_v_version_categories_arr" USING btree ("category_id");
+  CREATE INDEX "_products_v_version_pricing_order_idx" ON "_products_v_version_pricing" USING btree ("_order");
+  CREATE INDEX "_products_v_version_pricing_parent_id_idx" ON "_products_v_version_pricing" USING btree ("_parent_id");
+  CREATE INDEX "_products_v_version_pricing_value_idx" ON "_products_v_version_pricing" USING btree ("value");
+  CREATE INDEX "_products_v_parent_idx" ON "_products_v" USING btree ("parent_id");
+  CREATE INDEX "_products_v_version_version_slug_idx" ON "_products_v" USING btree ("version_slug");
+  CREATE INDEX "_products_v_version_version_bought_idx" ON "_products_v" USING btree ("version_bought");
+  CREATE INDEX "_products_v_version_version_updated_at_idx" ON "_products_v" USING btree ("version_updated_at");
+  CREATE INDEX "_products_v_version_version_created_at_idx" ON "_products_v" USING btree ("version_created_at");
+  CREATE INDEX "_products_v_version_version__status_idx" ON "_products_v" USING btree ("version__status");
+  CREATE INDEX "_products_v_created_at_idx" ON "_products_v" USING btree ("created_at");
+  CREATE INDEX "_products_v_updated_at_idx" ON "_products_v" USING btree ("updated_at");
+  CREATE INDEX "_products_v_snapshot_idx" ON "_products_v" USING btree ("snapshot");
+  CREATE INDEX "_products_v_published_locale_idx" ON "_products_v" USING btree ("published_locale");
+  CREATE INDEX "_products_v_latest_idx" ON "_products_v" USING btree ("latest");
+  CREATE INDEX "_products_v_autosave_idx" ON "_products_v" USING btree ("autosave");
+  CREATE UNIQUE INDEX "_products_v_locales_locale_parent_id_unique" ON "_products_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "_products_v_rels_order_idx" ON "_products_v_rels" USING btree ("order");
+  CREATE INDEX "_products_v_rels_parent_idx" ON "_products_v_rels" USING btree ("parent_id");
+  CREATE INDEX "_products_v_rels_path_idx" ON "_products_v_rels" USING btree ("path");
+  CREATE INDEX "_products_v_rels_media_id_idx" ON "_products_v_rels" USING btree ("media_id");
+  CREATE INDEX "_products_v_rels_product_sub_categories_id_idx" ON "_products_v_rels" USING btree ("product_sub_categories_id");
+  CREATE INDEX "product_categories_slug_idx" ON "product_categories" USING btree ("slug");
+  CREATE INDEX "product_categories_updated_at_idx" ON "product_categories" USING btree ("updated_at");
+  CREATE INDEX "product_categories_created_at_idx" ON "product_categories" USING btree ("created_at");
+  CREATE UNIQUE INDEX "product_categories_locales_locale_parent_id_unique" ON "product_categories_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "product_sub_categories_category_idx" ON "product_sub_categories" USING btree ("category_id");
+  CREATE INDEX "product_sub_categories_slug_idx" ON "product_sub_categories" USING btree ("slug");
+  CREATE INDEX "product_sub_categories_updated_at_idx" ON "product_sub_categories" USING btree ("updated_at");
+  CREATE INDEX "product_sub_categories_created_at_idx" ON "product_sub_categories" USING btree ("created_at");
+  CREATE UNIQUE INDEX "product_sub_categories_locales_locale_parent_id_unique" ON "product_sub_categories_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "product_reviews_product_idx" ON "product_reviews" USING btree ("product_id");
+  CREATE INDEX "product_reviews_author_idx" ON "product_reviews" USING btree ("author_id");
+  CREATE INDEX "product_reviews_updated_at_idx" ON "product_reviews" USING btree ("updated_at");
+  CREATE INDEX "product_reviews_created_at_idx" ON "product_reviews" USING btree ("created_at");
+  CREATE UNIQUE INDEX "redirects_from_idx" ON "redirects" USING btree ("from");
+  CREATE INDEX "redirects_updated_at_idx" ON "redirects" USING btree ("updated_at");
+  CREATE INDEX "redirects_created_at_idx" ON "redirects" USING btree ("created_at");
+  CREATE INDEX "redirects_rels_order_idx" ON "redirects_rels" USING btree ("order");
+  CREATE INDEX "redirects_rels_parent_idx" ON "redirects_rels" USING btree ("parent_id");
+  CREATE INDEX "redirects_rels_path_idx" ON "redirects_rels" USING btree ("path");
+  CREATE INDEX "redirects_rels_pages_id_idx" ON "redirects_rels" USING btree ("pages_id");
+  CREATE INDEX "redirects_rels_posts_id_idx" ON "redirects_rels" USING btree ("posts_id");
+  CREATE INDEX "forms_blocks_checkbox_order_idx" ON "forms_blocks_checkbox" USING btree ("_order");
+  CREATE INDEX "forms_blocks_checkbox_parent_id_idx" ON "forms_blocks_checkbox" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_checkbox_path_idx" ON "forms_blocks_checkbox" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_checkbox_locales_locale_parent_id_unique" ON "forms_blocks_checkbox_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_country_order_idx" ON "forms_blocks_country" USING btree ("_order");
+  CREATE INDEX "forms_blocks_country_parent_id_idx" ON "forms_blocks_country" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_country_path_idx" ON "forms_blocks_country" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_country_locales_locale_parent_id_unique" ON "forms_blocks_country_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_email_order_idx" ON "forms_blocks_email" USING btree ("_order");
+  CREATE INDEX "forms_blocks_email_parent_id_idx" ON "forms_blocks_email" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_email_path_idx" ON "forms_blocks_email" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_email_locales_locale_parent_id_unique" ON "forms_blocks_email_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_message_order_idx" ON "forms_blocks_message" USING btree ("_order");
+  CREATE INDEX "forms_blocks_message_parent_id_idx" ON "forms_blocks_message" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_message_path_idx" ON "forms_blocks_message" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_message_locales_locale_parent_id_unique" ON "forms_blocks_message_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_number_order_idx" ON "forms_blocks_number" USING btree ("_order");
+  CREATE INDEX "forms_blocks_number_parent_id_idx" ON "forms_blocks_number" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_number_path_idx" ON "forms_blocks_number" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_number_locales_locale_parent_id_unique" ON "forms_blocks_number_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_select_options_order_idx" ON "forms_blocks_select_options" USING btree ("_order");
+  CREATE INDEX "forms_blocks_select_options_parent_id_idx" ON "forms_blocks_select_options" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "forms_blocks_select_options_locales_locale_parent_id_unique" ON "forms_blocks_select_options_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_select_order_idx" ON "forms_blocks_select" USING btree ("_order");
+  CREATE INDEX "forms_blocks_select_parent_id_idx" ON "forms_blocks_select" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_select_path_idx" ON "forms_blocks_select" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_select_locales_locale_parent_id_unique" ON "forms_blocks_select_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_state_order_idx" ON "forms_blocks_state" USING btree ("_order");
+  CREATE INDEX "forms_blocks_state_parent_id_idx" ON "forms_blocks_state" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_state_path_idx" ON "forms_blocks_state" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_state_locales_locale_parent_id_unique" ON "forms_blocks_state_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_text_order_idx" ON "forms_blocks_text" USING btree ("_order");
+  CREATE INDEX "forms_blocks_text_parent_id_idx" ON "forms_blocks_text" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_text_path_idx" ON "forms_blocks_text" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_text_locales_locale_parent_id_unique" ON "forms_blocks_text_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_blocks_textarea_order_idx" ON "forms_blocks_textarea" USING btree ("_order");
+  CREATE INDEX "forms_blocks_textarea_parent_id_idx" ON "forms_blocks_textarea" USING btree ("_parent_id");
+  CREATE INDEX "forms_blocks_textarea_path_idx" ON "forms_blocks_textarea" USING btree ("_path");
+  CREATE UNIQUE INDEX "forms_blocks_textarea_locales_locale_parent_id_unique" ON "forms_blocks_textarea_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_emails_order_idx" ON "forms_emails" USING btree ("_order");
+  CREATE INDEX "forms_emails_parent_id_idx" ON "forms_emails" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "forms_emails_locales_locale_parent_id_unique" ON "forms_emails_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "forms_updated_at_idx" ON "forms" USING btree ("updated_at");
+  CREATE INDEX "forms_created_at_idx" ON "forms" USING btree ("created_at");
+  CREATE UNIQUE INDEX "forms_locales_locale_parent_id_unique" ON "forms_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "form_submissions_submission_data_order_idx" ON "form_submissions_submission_data" USING btree ("_order");
+  CREATE INDEX "form_submissions_submission_data_parent_id_idx" ON "form_submissions_submission_data" USING btree ("_parent_id");
+  CREATE INDEX "form_submissions_form_idx" ON "form_submissions" USING btree ("form_id");
+  CREATE INDEX "form_submissions_updated_at_idx" ON "form_submissions" USING btree ("updated_at");
+  CREATE INDEX "form_submissions_created_at_idx" ON "form_submissions" USING btree ("created_at");
+  CREATE INDEX "search_categories_order_idx" ON "search_categories" USING btree ("_order");
+  CREATE INDEX "search_categories_parent_id_idx" ON "search_categories" USING btree ("_parent_id");
+  CREATE INDEX "search_slug_idx" ON "search" USING btree ("slug");
+  CREATE INDEX "search_meta_meta_image_idx" ON "search" USING btree ("meta_image_id");
+  CREATE INDEX "search_updated_at_idx" ON "search" USING btree ("updated_at");
+  CREATE INDEX "search_created_at_idx" ON "search" USING btree ("created_at");
+  CREATE UNIQUE INDEX "search_locales_locale_parent_id_unique" ON "search_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "search_rels_order_idx" ON "search_rels" USING btree ("order");
+  CREATE INDEX "search_rels_parent_idx" ON "search_rels" USING btree ("parent_id");
+  CREATE INDEX "search_rels_path_idx" ON "search_rels" USING btree ("path");
+  CREATE INDEX "search_rels_posts_id_idx" ON "search_rels" USING btree ("posts_id");
+  CREATE INDEX "payload_jobs_log_order_idx" ON "payload_jobs_log" USING btree ("_order");
+  CREATE INDEX "payload_jobs_log_parent_id_idx" ON "payload_jobs_log" USING btree ("_parent_id");
+  CREATE INDEX "payload_jobs_completed_at_idx" ON "payload_jobs" USING btree ("completed_at");
+  CREATE INDEX "payload_jobs_total_tried_idx" ON "payload_jobs" USING btree ("total_tried");
+  CREATE INDEX "payload_jobs_has_error_idx" ON "payload_jobs" USING btree ("has_error");
+  CREATE INDEX "payload_jobs_task_slug_idx" ON "payload_jobs" USING btree ("task_slug");
+  CREATE INDEX "payload_jobs_queue_idx" ON "payload_jobs" USING btree ("queue");
+  CREATE INDEX "payload_jobs_wait_until_idx" ON "payload_jobs" USING btree ("wait_until");
+  CREATE INDEX "payload_jobs_processing_idx" ON "payload_jobs" USING btree ("processing");
+  CREATE INDEX "payload_jobs_updated_at_idx" ON "payload_jobs" USING btree ("updated_at");
+  CREATE INDEX "payload_jobs_created_at_idx" ON "payload_jobs" USING btree ("created_at");
+  CREATE INDEX "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
+  CREATE INDEX "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
+  CREATE INDEX "payload_locked_documents_created_at_idx" ON "payload_locked_documents" USING btree ("created_at");
+  CREATE INDEX "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
+  CREATE INDEX "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
+  CREATE INDEX "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
+  CREATE INDEX "payload_locked_documents_rels_pages_id_idx" ON "payload_locked_documents_rels" USING btree ("pages_id");
+  CREATE INDEX "payload_locked_documents_rels_posts_id_idx" ON "payload_locked_documents_rels" USING btree ("posts_id");
+  CREATE INDEX "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
+  CREATE INDEX "payload_locked_documents_rels_categories_id_idx" ON "payload_locked_documents_rels" USING btree ("categories_id");
+  CREATE INDEX "payload_locked_documents_rels_administrators_id_idx" ON "payload_locked_documents_rels" USING btree ("administrators_id");
+  CREATE INDEX "payload_locked_documents_rels_customers_id_idx" ON "payload_locked_documents_rels" USING btree ("customers_id");
+  CREATE INDEX "payload_locked_documents_rels_orders_id_idx" ON "payload_locked_documents_rels" USING btree ("orders_id");
+  CREATE INDEX "payload_locked_documents_rels_products_id_idx" ON "payload_locked_documents_rels" USING btree ("products_id");
+  CREATE INDEX "payload_locked_documents_rels_product_categories_id_idx" ON "payload_locked_documents_rels" USING btree ("product_categories_id");
+  CREATE INDEX "payload_locked_documents_rels_product_sub_categories_id_idx" ON "payload_locked_documents_rels" USING btree ("product_sub_categories_id");
+  CREATE INDEX "payload_locked_documents_rels_product_reviews_id_idx" ON "payload_locked_documents_rels" USING btree ("product_reviews_id");
+  CREATE INDEX "payload_locked_documents_rels_redirects_id_idx" ON "payload_locked_documents_rels" USING btree ("redirects_id");
+  CREATE INDEX "payload_locked_documents_rels_forms_id_idx" ON "payload_locked_documents_rels" USING btree ("forms_id");
+  CREATE INDEX "payload_locked_documents_rels_form_submissions_id_idx" ON "payload_locked_documents_rels" USING btree ("form_submissions_id");
+  CREATE INDEX "payload_locked_documents_rels_search_id_idx" ON "payload_locked_documents_rels" USING btree ("search_id");
+  CREATE INDEX "payload_locked_documents_rels_payload_jobs_id_idx" ON "payload_locked_documents_rels" USING btree ("payload_jobs_id");
+  CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
+  CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
+  CREATE INDEX "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
+  CREATE INDEX "payload_preferences_rels_order_idx" ON "payload_preferences_rels" USING btree ("order");
+  CREATE INDEX "payload_preferences_rels_parent_idx" ON "payload_preferences_rels" USING btree ("parent_id");
+  CREATE INDEX "payload_preferences_rels_path_idx" ON "payload_preferences_rels" USING btree ("path");
+  CREATE INDEX "payload_preferences_rels_administrators_id_idx" ON "payload_preferences_rels" USING btree ("administrators_id");
+  CREATE INDEX "payload_preferences_rels_customers_id_idx" ON "payload_preferences_rels" USING btree ("customers_id");
+  CREATE INDEX "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
+  CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
+  CREATE INDEX "header_nav_items_order_idx" ON "header_nav_items" USING btree ("_order");
+  CREATE INDEX "header_nav_items_parent_id_idx" ON "header_nav_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "header_nav_items_locales_locale_parent_id_unique" ON "header_nav_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "header_logo_idx" ON "header_locales" USING btree ("logo_id","_locale");
+  CREATE UNIQUE INDEX "header_locales_locale_parent_id_unique" ON "header_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "header_rels_order_idx" ON "header_rels" USING btree ("order");
+  CREATE INDEX "header_rels_parent_idx" ON "header_rels" USING btree ("parent_id");
+  CREATE INDEX "header_rels_path_idx" ON "header_rels" USING btree ("path");
+  CREATE INDEX "header_rels_pages_id_idx" ON "header_rels" USING btree ("pages_id");
+  CREATE INDEX "header_rels_posts_id_idx" ON "header_rels" USING btree ("posts_id");
+  CREATE INDEX "footer_nav_items_order_idx" ON "footer_nav_items" USING btree ("_order");
+  CREATE INDEX "footer_nav_items_parent_id_idx" ON "footer_nav_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "footer_nav_items_locales_locale_parent_id_unique" ON "footer_nav_items_locales" USING btree ("_locale","_parent_id");
+  CREATE UNIQUE INDEX "footer_locales_locale_parent_id_unique" ON "footer_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "footer_rels_order_idx" ON "footer_rels" USING btree ("order");
+  CREATE INDEX "footer_rels_parent_idx" ON "footer_rels" USING btree ("parent_id");
+  CREATE INDEX "footer_rels_path_idx" ON "footer_rels" USING btree ("path");
+  CREATE INDEX "footer_rels_pages_id_idx" ON "footer_rels" USING btree ("pages_id");
+  CREATE INDEX "footer_rels_posts_id_idx" ON "footer_rels" USING btree ("posts_id");
+  CREATE INDEX "email_messages_messages_messages_logo_idx" ON "email_messages" USING btree ("messages_logo_id");
+  CREATE INDEX "shop_settings_available_currencies_order_idx" ON "shop_settings_available_currencies" USING btree ("order");
+  CREATE INDEX "shop_settings_available_currencies_parent_idx" ON "shop_settings_available_currencies" USING btree ("parent_id");
+  CREATE INDEX "shop_settings_currency_values_order_idx" ON "shop_settings_currency_values" USING btree ("_order");
+  CREATE INDEX "shop_settings_currency_values_parent_id_idx" ON "shop_settings_currency_values" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "shop_layout_locales_locale_parent_id_unique" ON "shop_layout_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "inpost_pickup_delivery_zones_countries_order_idx" ON "inpost_pickup_delivery_zones_countries" USING btree ("order");
+  CREATE INDEX "inpost_pickup_delivery_zones_countries_parent_idx" ON "inpost_pickup_delivery_zones_countries" USING btree ("parent_id");
+  CREATE INDEX "inpost_pickup_delivery_zones_free_shipping_order_idx" ON "inpost_pickup_delivery_zones_free_shipping" USING btree ("_order");
+  CREATE INDEX "inpost_pickup_delivery_zones_free_shipping_parent_id_idx" ON "inpost_pickup_delivery_zones_free_shipping" USING btree ("_parent_id");
+  CREATE INDEX "inpost_pickup_delivery_zones_range_pricing_order_idx" ON "inpost_pickup_delivery_zones_range_pricing" USING btree ("_order");
+  CREATE INDEX "inpost_pickup_delivery_zones_range_pricing_parent_id_idx" ON "inpost_pickup_delivery_zones_range_pricing" USING btree ("_parent_id");
+  CREATE INDEX "inpost_pickup_delivery_zones_range_order_idx" ON "inpost_pickup_delivery_zones_range" USING btree ("_order");
+  CREATE INDEX "inpost_pickup_delivery_zones_range_parent_id_idx" ON "inpost_pickup_delivery_zones_range" USING btree ("_parent_id");
+  CREATE INDEX "inpost_pickup_delivery_zones_order_idx" ON "inpost_pickup_delivery_zones" USING btree ("_order");
+  CREATE INDEX "inpost_pickup_delivery_zones_parent_id_idx" ON "inpost_pickup_delivery_zones" USING btree ("_parent_id");
+  CREATE INDEX "inpost_pickup_icon_idx" ON "inpost_pickup" USING btree ("icon_id");
+  CREATE UNIQUE INDEX "inpost_pickup_locales_locale_parent_id_unique" ON "inpost_pickup_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "inpost_courier_delivery_zones_countries_order_idx" ON "inpost_courier_delivery_zones_countries" USING btree ("order");
+  CREATE INDEX "inpost_courier_delivery_zones_countries_parent_idx" ON "inpost_courier_delivery_zones_countries" USING btree ("parent_id");
+  CREATE INDEX "inpost_courier_delivery_zones_free_shipping_order_idx" ON "inpost_courier_delivery_zones_free_shipping" USING btree ("_order");
+  CREATE INDEX "inpost_courier_delivery_zones_free_shipping_parent_id_idx" ON "inpost_courier_delivery_zones_free_shipping" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_delivery_zones_range_pricing_order_idx" ON "inpost_courier_delivery_zones_range_pricing" USING btree ("_order");
+  CREATE INDEX "inpost_courier_delivery_zones_range_pricing_parent_id_idx" ON "inpost_courier_delivery_zones_range_pricing" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_delivery_zones_range_order_idx" ON "inpost_courier_delivery_zones_range" USING btree ("_order");
+  CREATE INDEX "inpost_courier_delivery_zones_range_parent_id_idx" ON "inpost_courier_delivery_zones_range" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_delivery_zones_order_idx" ON "inpost_courier_delivery_zones" USING btree ("_order");
+  CREATE INDEX "inpost_courier_delivery_zones_parent_id_idx" ON "inpost_courier_delivery_zones" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_icon_idx" ON "inpost_courier" USING btree ("icon_id");
+  CREATE UNIQUE INDEX "inpost_courier_locales_locale_parent_id_unique" ON "inpost_courier_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_countries_order_idx" ON "inpost_courier_cod_delivery_zones_countries" USING btree ("order");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_countries_parent_idx" ON "inpost_courier_cod_delivery_zones_countries" USING btree ("parent_id");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_free_shipping_order_idx" ON "inpost_courier_cod_delivery_zones_free_shipping" USING btree ("_order");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_free_shipping_parent_id_idx" ON "inpost_courier_cod_delivery_zones_free_shipping" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_range_pricing_order_idx" ON "inpost_courier_cod_delivery_zones_range_pricing" USING btree ("_order");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_range_pricing_parent_id_idx" ON "inpost_courier_cod_delivery_zones_range_pricing" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_range_order_idx" ON "inpost_courier_cod_delivery_zones_range" USING btree ("_order");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_range_parent_id_idx" ON "inpost_courier_cod_delivery_zones_range" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_order_idx" ON "inpost_courier_cod_delivery_zones" USING btree ("_order");
+  CREATE INDEX "inpost_courier_cod_delivery_zones_parent_id_idx" ON "inpost_courier_cod_delivery_zones" USING btree ("_parent_id");
+  CREATE INDEX "inpost_courier_cod_icon_idx" ON "inpost_courier_cod" USING btree ("icon_id");
+  CREATE UNIQUE INDEX "inpost_courier_cod_locales_locale_parent_id_unique" ON "inpost_courier_cod_locales" USING btree ("_locale","_parent_id");
   `);
-}
-
-  // The complete down migration should be handled by the full migration system.
-  // You may need to manually implement the down migration for this chunk.
-}
---
-CREATE TABLE "forms_emails_locales" (
-  	"subject" varchar DEFAULT 'You''ve received a new message.' NOT NULL,
-  	"message" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-  
-  CREATE TABLE "forms" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"title" varchar NOT NULL,
-  	"confirmation_type" "enum_forms_confirmation_type" DEFAULT 'message',
-  	"redirect_url" varchar,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "forms_locales" (
-  	"submit_button_label" varchar,
-  	"confirmation_message" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" uuid NOT NULL
-  );
-  
-  CREATE TABLE "form_submissions_submission_data" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"field" varchar NOT NULL,
-  	"value" varchar NOT NULL
-  );
-  
-  CREATE TABLE "form_submissions" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"form_id" uuid NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "search_categories" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"relation_to" varchar,
-  	"title" varchar
-  );
-  
-  CREATE TABLE "search" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"priority" numeric,
-  	"slug" varchar,
-  	"meta_title" varchar,
-  	"meta_description" varchar,
-  	"meta_image_id" uuid,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "search_locales" (
-  	"title" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" uuid NOT NULL
-  );
-  
-  CREATE TABLE "search_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" uuid NOT NULL,
-  	"path" varchar NOT NULL,
-  	"posts_id" uuid
-  );
-  
-  CREATE TABLE "payload_jobs_log" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"executed_at" timestamp(3) with time zone NOT NULL,
-  	"completed_at" timestamp(3) with time zone NOT NULL,
-  	"task_slug" "enum_payload_jobs_log_task_slug" NOT NULL,
-  	"task_i_d" varchar NOT NULL,
-  	"input" jsonb,
-  	"output" jsonb,
-  	"state" "enum_payload_jobs_log_state" NOT NULL,
-  	"error" jsonb
-  );
-  
-  CREATE TABLE "payload_jobs" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"input" jsonb,
-  	"completed_at" timestamp(3) with time zone,
-  	"total_tried" numeric DEFAULT 0,
-  	"has_error" boolean DEFAULT false,
-  	"error" jsonb,
-  	"task_slug" "enum_payload_jobs_task_slug",
-  	"queue" varchar DEFAULT 'default',
-  	"wait_until" timestamp(3) with time zone,
-  	"processing" boolean DEFAULT false,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "payload_locked_documents" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"global_slug" varchar,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "payload_locked_documents_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" uuid NOT NULL,
-  	"path" varchar NOT NULL,
-  	"pages_id" uuid,
-  	"posts_id" uuid,
-  	"media_id" uuid,
-  	"categories_id" uuid,
-  	"administrators_id" uuid,
-  	"customers_id" uuid,
-  	"orders_id" varchar,
-  	"products_id" uuid,
-  	"product_categories_id" uuid,
-  	"product_sub_categories_id" uuid,
-  	"product_reviews_id" uuid,
-  	"redirects_id" uuid,
-  	"forms_id" uuid,
-  	"form_submissions_id" uuid,
-  	"search_id" uuid,
-  	"payload_jobs_id" uuid
-  );
-  
-  CREATE TABLE "payload_preferences" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"key" varchar,
-  	"value" jsonb,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "payload_preferences_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" uuid NOT NULL,
-  	"path" varchar NOT NULL,
-  	"administrators_id" uuid,
-  	"customers_id" uuid
-  );
-  
-  CREATE TABLE "payload_migrations" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"name" varchar,
-  	"batch" numeric,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE "header_nav_items" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_header_nav_items_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar
-  );
-  
-  CREATE TABLE "header_nav_items_locales" (
-  	"link_label" varchar NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-  
-  CREATE TABLE "header" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"type" "enum_header_type" DEFAULT 'default' NOT NULL,
-  	"hide_on_scroll" boolean DEFAULT false,
-  	"background" varchar,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
-  CREATE TABLE "header_locales" (
-  	"logo_id" uuid,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" uuid NOT NULL
-  );
-  
-  CREATE TABLE "header_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" uuid NOT NULL,
-  	"path" varchar NOT NULL,
-  	"pages_id" uuid,
-  	"posts_id" uuid
-  );
-  
-  CREATE TABLE "footer_nav_items" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"link_type" "enum_footer_nav_items_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar
-  );
-  
-  CREATE TABLE "footer_nav_items_locales" (
-  	"link_label" varchar NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-  
-  CREATE TABLE "footer" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
-  CREATE TABLE "footer_locales" (
-  	"attribution" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" uuid NOT NULL
-  );
-  
-  CREATE TABLE "footer_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" uuid NOT NULL,
-  	"path" varchar NOT NULL,
-  	"pages_id" uuid,
-  	"posts_id" uuid
-  );
-  
-  CREATE TABLE "email_messages" (
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-  	"smtp_host" varchar NOT NULL,
-  	"smtp_port" numeric NOT NULL,
-  	"smtp_secure" boolean DEFAULT false NOT NULL,
-  	"smtp_user" varchar NOT NULL,
-  	"smtp_password" varchar NOT NULL,
-  	"smtp_from_email" varchar NOT NULL,
-  	"messages_logo_id" uuid,
-  	"messages_additional_text" varchar,
-  	"messages_template" "enum_email_messages_messages_template" DEFAULT 'default' NOT NULL,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
-  CREATE TABLE "shop_settings_available_currencies" (
-  	"order" integer NOT NULL,
-  	"parent_id" uuid NOT NULL,
-  	"value" "enum_shop_settings_available_currencies",
-  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL
-  );
-  
-  CREATE TABLE "shop_settings_currency_values" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"currency" varchar NOT NULL,
-  	"value" numeric NOT NULL
-  );
-`);
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {

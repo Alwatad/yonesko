@@ -1,5 +1,5 @@
 {
-  "id": "1de8b2fb-b1aa-4ba2-b0d8-c70c13692e0a",
+  "id": "49c64e45-792b-45b5-b3a2-c2952be0d36e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -2708,6 +2708,12 @@
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
+        },
+        "force_migration_field": {
+          "name": "force_migration_field",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "hero_type": {
           "name": "hero_type",
@@ -6031,6 +6037,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "version_force_migration_field": {
+          "name": "version_force_migration_field",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "version_hero_type": {
           "name": "version_hero_type",
           "type": "enum__pages_v_version_hero_type",
@@ -6799,6 +6811,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "force_migration_field": {
+          "name": "force_migration_field",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "hero_image_id": {
           "name": "hero_image_id",
           "type": "uuid",
@@ -7373,6 +7391,12 @@
         "parent_id": {
           "name": "parent_id",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_force_migration_field": {
+          "name": "version_force_migration_field",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
@@ -10977,6 +11001,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "force_migration_field": {
+          "name": "force_migration_field",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "slug": {
           "name": "slug",
           "type": "varchar",
@@ -12414,6 +12444,12 @@
         "parent_id": {
           "name": "parent_id",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version_force_migration_field": {
+          "name": "version_force_migration_field",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },

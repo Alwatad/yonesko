@@ -1,45 +1,41 @@
-import { up as up001, down as down001 } from "./001_chunk_1";
-import { up as up002, down as down002 } from "./002_chunk_2";
-import { up as up003, down as down003 } from "./003_chunk_3";
-import { up as up004, down as down004 } from "./004_chunk_4";
-import { up as up005, down as down005 } from "./005_chunk_5";
-import { up as up006, down as down006 } from "./006_chunk_6";
-import { up as up007, down as down007 } from "./007_chunk_7";
+import * as migration_001_chunk_1 from "./001_chunk_1";
+import * as migration_002_chunk_2 from "./002_chunk_2";
+import * as migration_003_chunk_3 from "./003_chunk_3";
+import * as migration_004_chunk_4 from "./004_chunk_4";
+import * as migration_005_chunk_5 from "./005_chunk_5";
 
-export const migrations = [
+import type { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
+
+type Migration = {
+  name: string;
+  up: (args: MigrateUpArgs) => Promise<void>;
+  down: (args: MigrateDownArgs) => Promise<void>;
+};
+
+export const migrations: Migration[] = [
   {
-    name: "chunk_001",
-    up: up001,
-    down: down001,
+    up: migration_001_chunk_1.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_001_chunk_1.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "001_chunk_1",
   },
   {
-    name: "chunk_002",
-    up: up002,
-    down: down002,
+    up: migration_002_chunk_2.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_002_chunk_2.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "002_chunk_2",
   },
   {
-    name: "chunk_003",
-    up: up003,
-    down: down003,
+    up: migration_003_chunk_3.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_003_chunk_3.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "003_chunk_3",
   },
   {
-    name: "chunk_004",
-    up: up004,
-    down: down004,
+    up: migration_004_chunk_4.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_004_chunk_4.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "004_chunk_4",
   },
   {
-    name: "chunk_005",
-    up: up005,
-    down: down005,
-  },
-  {
-    name: "chunk_006",
-    up: up006,
-    down: down006,
-  },
-  {
-    name: "chunk_007",
-    up: up007,
-    down: down007,
+    up: migration_005_chunk_5.up as (args: MigrateUpArgs) => Promise<void>,
+    down: migration_005_chunk_5.down as (args: MigrateDownArgs) => Promise<void>,
+    name: "005_chunk_5",
   },
 ];
