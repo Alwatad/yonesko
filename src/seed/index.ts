@@ -14,7 +14,7 @@ async function seed() {
   try {
     // Check if seeding is required via environment variable
     const requiresSeeding = process.env.REQUIRES_SEEDING?.toLowerCase() === "true";
-    
+
     if (!requiresSeeding) {
       logger.info("⏭️  Skipping database seeding (REQUIRES_SEEDING not set to 'true')");
       logger.info("   Set REQUIRES_SEEDING=true for fresh deployments that need initial data");
