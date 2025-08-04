@@ -42,6 +42,7 @@ export const Media: CollectionConfig = {
       required: true,
       localized: true,
     },
+
     {
       name: "caption",
       type: "richText",

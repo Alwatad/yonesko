@@ -218,7 +218,6 @@ CREATE TYPE "public"."enum_orders_shipping_address_country" AS ENUM('ad', 'al', 
 
 CREATE TYPE "public"."enum_orders_order_details_shipping" AS ENUM('inpost-pickup', 'inpost-courier', 'inpost-courier-cod');
 
-CREATE TYPE "public"."enum_orders_order_details_status" AS ENUM('pending', 'paid', 'unpaid', 'processing', 'shipped', 'completed', 'cancelled', 'returned');
 
 CREATE TYPE "public"."enum_products_variants_type" AS ENUM('sizes', 'colors', 'colorsAndSizes');
 
@@ -386,119 +385,11 @@ CREATE TABLE "pages_blocks_media_block" (
   	"padding_top" "enum_pages_blocks_media_block_padding_top" DEFAULT 'medium',
   	"block_name" varchar
   );
-
-CREATE TABLE "pages_blocks_archive" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"populate_by" "enum_pages_blocks_archive_populate_by" DEFAULT 'collection',
-  	"relation_to" "enum_pages_blocks_archive_relation_to" DEFAULT 'posts',
-  	"limit" numeric DEFAULT 10,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "pages_blocks_archive_locales" (
-  	"intro_content" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_form_block" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"form_id" uuid,
-  	"enable_intro" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "pages_blocks_form_block_locales" (
-  	"intro_content" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_carousel_slides" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" varchar NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"image_id" uuid,
-  	"enable_link" boolean,
-  	"link_type" "enum_pages_blocks_carousel_slides_link_type" DEFAULT 'reference',
-  	"link_new_tab" boolean,
-  	"link_url" varchar,
-  	"link_appearance" "enum_pages_blocks_carousel_slides_link_appearance" DEFAULT 'default'
-  );
-
-CREATE TABLE "pages_blocks_carousel_slides_locales" (
-  	"link_label" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_carousel" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"type" "enum_pages_blocks_carousel_type" DEFAULT 'default',
-  	"autoplay" numeric,
-  	"spacing_bottom" "enum_pages_blocks_carousel_spacing_bottom" DEFAULT 'none',
-  	"spacing_top" "enum_pages_blocks_carousel_spacing_top" DEFAULT 'none',
-  	"padding_bottom" "enum_pages_blocks_carousel_padding_bottom" DEFAULT 'medium',
-  	"padding_top" "enum_pages_blocks_carousel_padding_top" DEFAULT 'medium',
-  	"block_name" varchar
-  );
-
-CREATE TABLE "pages_blocks_carousel_locales" (
-  	"title" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_accordion_items" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" varchar NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_accordion_items_locales" (
-  	"title" varchar,
-  	"content" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "pages_blocks_accordion" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"spacing_bottom" "enum_pages_blocks_accordion_spacing_bottom" DEFAULT 'none',
-  	"spacing_top" "enum_pages_blocks_accordion_spacing_top" DEFAULT 'none',
-  	"padding_bottom" "enum_pages_blocks_accordion_padding_bottom" DEFAULT 'medium',
-  	"padding_top" "enum_pages_blocks_accordion_padding_top" DEFAULT 'medium',
-  	"block_name" varchar
-  );
-
-CREATE TABLE "pages_blocks_accordion_locales" (
-  	"title" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-  `);
+`);
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  // Note: This is a partial migration chunk. 
-  // The complete down migration should be handled by the full migration system.
-  // You may need to manually implement the down migration for this chunk.
+  // This chunk's down migration would drop the tables created in this chunk
+  // For now, we'll leave it as a placeholder since this is a partial migration
+  console.log('Down migration for chunk 1 - would drop tables created in this chunk');
 }

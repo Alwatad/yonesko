@@ -73,7 +73,7 @@ function splitMigration(inputFile, chunkSize = 300) {
 
   console.log(`Found ${statements.length} SQL statements`);
 
-  // Group statements into chunks
+  // Group statements into chunks based on line count
   const chunks = [];
   let currentChunk = [];
   let currentLineCount = 0;
@@ -97,13 +97,49 @@ function splitMigration(inputFile, chunkSize = 300) {
     chunks.push(currentChunk);
   }
 
-  console.log(`Created ${chunks.length} chunks`);
+  // Ensure we don't have chunks that are too large
+  const maxChunkSize = chunkSize * 2; // Allow some flexibility
+  const finalChunks = [];
+
+  for (const chunk of chunks) {
+    const chunkLines = chunk.join("\n").split("\n").length;
+
+    if (chunkLines > maxChunkSize) {
+      // Split this chunk further
+      const subChunks = [];
+      let subChunk = [];
+      let subChunkLines = 0;
+
+      for (const statement of chunk) {
+        const statementLines = statement.split("\n").length;
+
+        if (subChunkLines + statementLines > chunkSize && subChunk.length > 0) {
+          subChunks.push(subChunk);
+          subChunk = [];
+          subChunkLines = 0;
+        }
+
+        subChunk.push(statement);
+        subChunkLines += statementLines;
+      }
+
+      if (subChunk.length > 0) {
+        subChunks.push(subChunk);
+      }
+
+      finalChunks.push(...subChunks);
+    } else {
+      finalChunks.push(chunk);
+    }
+  }
+
+  console.log(`Created ${finalChunks.length} chunks`);
 
   // Generate chunk files
   const chunksDir = path.dirname(inputFile);
   const baseName = path.basename(inputFile, ".ts");
 
-  chunks.forEach((chunk, index) => {
+  finalChunks.forEach((chunk, index) => {
     const chunkNumber = (index + 1).toString().padStart(3, "0");
     const chunkFileName = `${chunkNumber}_chunk_${index + 1}.ts`;
     const chunkPath = path.join(chunksDir, chunkFileName);
@@ -117,9 +153,9 @@ ${chunk.join("\n\n")}
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  // Note: This is a partial migration chunk. 
-  // The complete down migration should be handled by the full migration system.
-  // You may need to manually implement the down migration for this chunk.
+  // This chunk's down migration would drop the tables created in this chunk
+  // For now, we'll leave it as a placeholder since this is a partial migration
+  console.log('Down migration for chunk ${index + 1} - would drop tables created in this chunk');
 }
 `;
 
@@ -128,12 +164,12 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   });
 
   // Generate index file
-  const indexContent = generateIndexFile(chunks.length);
+  const indexContent = generateIndexFile(finalChunks.length);
   const indexPath = path.join(chunksDir, "index.ts");
   fs.writeFileSync(indexPath, indexContent);
   console.log(`Created index file: ${indexPath}`);
 
-  console.log(`\nTotal chunks created: ${chunks.length}`);
+  console.log(`\nTotal chunks created: ${finalChunks.length}`);
 }
 
 function generateIndexFile(chunkCount) {
@@ -142,16 +178,17 @@ function generateIndexFile(chunkCount) {
 
   for (let i = 1; i <= chunkCount; i++) {
     const chunkNumber = i.toString().padStart(3, "0");
-    imports.push(`import { up as up${chunkNumber} } from "./${chunkNumber}_chunk_${i}";`);
+    imports.push(
+      `import { up as up${chunkNumber}, down as down${chunkNumber} } from "./${chunkNumber}_chunk_${i}";`,
+    );
     migrations.push(`  {
     name: "chunk_${chunkNumber}",
     up: up${chunkNumber},
+    down: down${chunkNumber},
   },`);
   }
 
-  return `import { MigrateUpArgs, MigrateDownArgs } from "@payloadcms/db-postgres";
-
-${imports.join("\n")}
+  return `${imports.join("\n")}
 
 export const migrations = [
 ${migrations.join("\n")}

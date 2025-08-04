@@ -2,6 +2,107 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
+
+CREATE TABLE "products_details" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL
+  );
+
+CREATE TABLE "products_details_locales" (
+  	"title" varchar,
+  	"content" jsonb,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" varchar NOT NULL
+  );
+
+CREATE TABLE "products_colors" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"slug" varchar,
+  	"color_value" varchar
+  );
+
+CREATE TABLE "products_colors_locales" (
+  	"label" varchar,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" varchar NOT NULL
+  );
+
+CREATE TABLE "products_sizes" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"slug" varchar
+  );
+
+CREATE TABLE "products_sizes_locales" (
+  	"label" varchar,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" varchar NOT NULL
+  );
+
+CREATE TABLE "products_variants_pricing" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"value" numeric,
+  	"currency" varchar
+  );
+
+CREATE TABLE "products_variants" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"size" varchar,
+  	"color" varchar,
+  	"variant_slug" varchar,
+  	"image_id" uuid,
+  	"stock" numeric DEFAULT 0,
+  	"weight" numeric DEFAULT 0
+  );
+
+CREATE TABLE "products_categories_arr" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"category_id" uuid
+  );
+
+CREATE TABLE "products_pricing" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"value" numeric,
+  	"currency" varchar
+  );
+
+CREATE TABLE "products" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"slug" varchar,
+  	"slug_lock" boolean DEFAULT true,
+  	"enable_variants" boolean,
+  	"enable_variant_prices" boolean,
+  	"enable_variant_weights" boolean,
+  	"variants_type" "enum_products_variants_type" DEFAULT 'sizes',
+  	"stock" numeric DEFAULT 0,
+  	"weight" numeric DEFAULT 0,
+  	"bought" numeric DEFAULT 0,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_products_status" DEFAULT 'draft'
+  );
+  `);
+}
+
+  // The complete down migration should be handled by the full migration system.
+  // You may need to manually implement the down migration for this chunk.
+}
+--
 CREATE TABLE "products_locales" (
   	"title" varchar,
   	"description" jsonb,
@@ -284,119 +385,11 @@ CREATE TABLE "forms_blocks_number" (
   	"required" boolean,
   	"block_name" varchar
   );
-
-CREATE TABLE "forms_blocks_number_locales" (
-  	"label" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select_options" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" varchar NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"value" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select_options_locales" (
-  	"label" varchar NOT NULL,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_select" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"placeholder" varchar,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_select_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_state" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_state_locales" (
-  	"label" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_text" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_text_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_blocks_textarea" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"_path" text NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"name" varchar NOT NULL,
-  	"width" numeric,
-  	"required" boolean,
-  	"block_name" varchar
-  );
-
-CREATE TABLE "forms_blocks_textarea_locales" (
-  	"label" varchar,
-  	"default_value" varchar,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" varchar NOT NULL
-  );
-
-CREATE TABLE "forms_emails" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" uuid NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"email_to" varchar,
-  	"cc" varchar,
-  	"bcc" varchar,
-  	"reply_to" varchar,
-  	"email_from" varchar
-  );
-  `);
+`);
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
-  // Note: This is a partial migration chunk. 
-  // The complete down migration should be handled by the full migration system.
-  // You may need to manually implement the down migration for this chunk.
+  // This chunk's down migration would drop the tables created in this chunk
+  // For now, we'll leave it as a placeholder since this is a partial migration
+  console.log('Down migration for chunk 4 - would drop tables created in this chunk');
 }

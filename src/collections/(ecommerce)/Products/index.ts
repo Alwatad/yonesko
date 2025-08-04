@@ -60,6 +60,7 @@ export const Products: CollectionConfig = {
       localized: true,
       required: true,
     },
+
     ...slugField(),
     {
       type: "tabs",

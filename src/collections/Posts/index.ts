@@ -87,6 +87,7 @@ export const Posts: CollectionConfig<"posts"> = {
       required: true,
       localized: true,
     },
+
     {
       type: "tabs",
       tabs: [
