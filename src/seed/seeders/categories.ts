@@ -135,7 +135,7 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
 
           subcategories.push({
             slug: subCategoryData.slug,
-            id: subCategory.id,
+            id: subCategory.id as string,
           });
 
           logger.info(`    ✓ Created subcategory: ${subCategoryData.title}`);
@@ -143,7 +143,7 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
       }
 
       categories[categoryData.slug] = {
-        id: category.id,
+        id: category.id as string,
         subcategories: subcategories.length > 0 ? subcategories : undefined,
       };
     }
