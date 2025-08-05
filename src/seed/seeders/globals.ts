@@ -86,8 +86,8 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
       data: {
         type: "default",
         hideOnScroll: false,
-        background: "#ffffff",
-                navItems: [
+        background: "#000000",
+        navItems: [
           {
             link: {
               type: "custom",
@@ -123,7 +123,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
           {
             link: {
               type: "custom",
-              label: "Athletic",  
+              label: "Athletic",
               url: "/category/sports-athletic",
               newTab: false,
             },
