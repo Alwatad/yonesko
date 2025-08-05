@@ -87,7 +87,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
         type: "default",
         hideOnScroll: false,
         background: "#ffffff",
-        navItems: [
+                navItems: [
           {
             link: {
               type: "custom",
@@ -107,7 +107,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
           {
             link: {
               type: "custom",
-              label: "Men",
+              label: "Men's",
               url: "/category/mens-shoes",
               newTab: false,
             },
@@ -115,7 +115,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
           {
             link: {
               type: "custom",
-              label: "Women",
+              label: "Women's",
               url: "/category/womens-shoes",
               newTab: false,
             },
@@ -133,14 +133,6 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
               type: "custom",
               label: "About",
               url: "/about",
-              newTab: false,
-            },
-          },
-          {
-            link: {
-              type: "custom", 
-              label: "Contact",
-              url: "/contact",
               newTab: false,
             },
           },
