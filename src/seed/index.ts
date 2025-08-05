@@ -55,8 +55,8 @@ async function seed() {
       }[],
     );
 
-    logger.info("⚙️  Seeding global settings (header, footer, shop settings)...");
-    await seedGlobalSettings(payload, mediaAssets);
+    logger.info("⚙️  Skipping global settings (Next.js revalidation issue during build)...");
+    // await seedGlobalSettings(payload, mediaAssets);
 
     logger.success("🎉 Database seeding completed successfully!");
     process.exit(0);
