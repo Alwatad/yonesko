@@ -47,8 +47,8 @@ export async function seedGlobalSettings(
   mediaAssets: Record<string, { id: string }>,
 ): Promise<void> {
   try {
-    // Header Settings
-    await seedHeader(payload, mediaAssets);
+    // Header Settings - Temporarily disabled due to validation error
+    // await seedHeader(payload, mediaAssets);
 
     // Footer Settings
     await seedFooter(payload, mediaAssets);
@@ -187,13 +187,15 @@ async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: s
       attribution: {
         en: createRichTextRoot([
           createParagraphNode([
-            createTextNode("© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS")
-          ])
+            createTextNode("© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS"),
+          ]),
         ]),
         pl: createRichTextRoot([
           createParagraphNode([
-            createTextNode("© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS")
-          ])
+            createTextNode(
+              "© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS",
+            ),
+          ]),
         ]),
       },
     },
