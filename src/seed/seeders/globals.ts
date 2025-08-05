@@ -78,7 +78,7 @@ export async function seedGlobalSettings(
   }
 }
 
-async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
+async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: string }>) {
   try {
     await payload.updateGlobal({
       slug: "header",
@@ -339,7 +339,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
     context: { disableRevalidate: true },
     data: {
       enabled: true,
-              icon: mediaAssets["logo.png"]?.id, // Use a shipping icon in production
+      icon: mediaAssets["logo.png"]?.id, // Use a shipping icon in production
       settings: {
         label: "InPost Pickup Point",
         description: "Convenient pickup from InPost lockers",
