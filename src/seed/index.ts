@@ -1,7 +1,7 @@
 import { getPayload } from "payload";
 
 import { seedCategories } from "./seeders/categories";
-import { seedGlobalSettings as _seedGlobalSettings } from "./seeders/globals";
+import { seedGlobalSettings } from "./seeders/globals";
 import { seedMedia } from "./seeders/media";
 import { seedPages } from "./seeders/pages";
 import { seedProducts } from "./seeders/products";
@@ -55,8 +55,8 @@ async function seed() {
       }[],
     );
 
-    logger.info("⚙️  Skipping global settings (header nav validation issue - can be configured manually)...");
-    // await seedGlobalSettings(payload, mediaAssets);
+    logger.info("⚙️  Seeding global settings (header, footer, shop settings)...");
+    await seedGlobalSettings(payload, mediaAssets);
 
     logger.success("🎉 Database seeding completed successfully!");
     process.exit(0);

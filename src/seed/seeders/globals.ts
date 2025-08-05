@@ -3,6 +3,45 @@ import { type Payload } from "payload";
 
 import { logger } from "../utils/logger";
 
+// Helper function to create proper Lexical text nodes (same as pages.ts)
+function createTextNode(text: string, format = 0) {
+  return {
+    detail: 0,
+    format,
+    mode: "normal",
+    style: "",
+    text,
+    type: "text",
+    version: 1,
+  };
+}
+
+// Helper function to create proper Lexical paragraph nodes (same as pages.ts)
+function createParagraphNode(children: { [k: string]: unknown; type: string; version: number }[]) {
+  return {
+    children,
+    direction: "ltr" as const,
+    format: "" as const,
+    indent: 0,
+    type: "paragraph",
+    version: 1,
+  };
+}
+
+// Helper function to create proper Lexical root structure (same as pages.ts)
+function createRichTextRoot(children: { [k: string]: unknown; type: string; version: number }[]) {
+  return {
+    root: {
+      children,
+      direction: "ltr" as const,
+      format: "" as const,
+      indent: 0,
+      type: "root",
+      version: 1,
+    },
+  };
+}
+
 export async function seedGlobalSettings(
   payload: Payload,
   mediaAssets: Record<string, { id: string }>,
@@ -146,36 +185,16 @@ async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: s
         },
       ],
       attribution: {
-        en: {
-          root: {
-            children: [
-              {
-                children: [
-                  {
-                    text: "© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS",
-                  },
-                ],
-                type: "p",
-              },
-            ],
-            type: "root",
-          },
-        },
-        pl: {
-          root: {
-            children: [
-              {
-                children: [
-                  {
-                    text: "© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS",
-                  },
-                ],
-                type: "p",
-              },
-            ],
-            type: "root",
-          },
-        },
+        en: createRichTextRoot([
+          createParagraphNode([
+            createTextNode("© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS")
+          ])
+        ]),
+        pl: createRichTextRoot([
+          createParagraphNode([
+            createTextNode("© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS")
+          ])
+        ]),
       },
     },
   });
