@@ -96,6 +96,54 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
               newTab: false,
             },
           },
+          {
+            link: {
+              type: "custom",
+              label: "Shop",
+              url: "/products",
+              newTab: false,
+            },
+          },
+          {
+            link: {
+              type: "custom",
+              label: "Men",
+              url: "/category/mens-shoes",
+              newTab: false,
+            },
+          },
+          {
+            link: {
+              type: "custom",
+              label: "Women",
+              url: "/category/womens-shoes",
+              newTab: false,
+            },
+          },
+          {
+            link: {
+              type: "custom",
+              label: "Athletic",  
+              url: "/category/sports-athletic",
+              newTab: false,
+            },
+          },
+          {
+            link: {
+              type: "custom",
+              label: "About",
+              url: "/about",
+              newTab: false,
+            },
+          },
+          {
+            link: {
+              type: "custom", 
+              label: "Contact",
+              url: "/contact",
+              newTab: false,
+            },
+          },
         ],
       },
     });
