@@ -79,74 +79,34 @@ export async function seedGlobalSettings(
 }
 
 async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
-  await payload.updateGlobal({
-    slug: "header",
-    context: { disableRevalidate: true },
-    data: {
-      type: "default",
-      hideOnScroll: false,
-      background: "#ffffff",
-      // logo: mediaAssets["stride-logo.png"]?.id, // Skip logo until media is uploaded
-      navItems: [
-        {
-          link: {
-            type: "custom",
-            label: "Home",
-            url: "/",
-            newTab: false,
+  try {
+    await payload.updateGlobal({
+      slug: "header",
+      context: { disableRevalidate: true },
+      data: {
+        type: "default",
+        hideOnScroll: false,
+        background: "#ffffff",
+        navItems: [
+          {
+            link: {
+              type: "custom",
+              label: "Home",
+              url: "/",
+              newTab: false,
+            },
           },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "Shop",
-            url: "/products",
-            newTab: false,
-          },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "Men",
-            url: "/category/mens-shoes",
-            newTab: false,
-          },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "Women",
-            url: "/category/womens-shoes",
-            newTab: false,
-          },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "Athletic",
-            url: "/category/sports-athletic",
-            newTab: false,
-          },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "About",
-            url: "/about",
-            newTab: false,
-          },
-        },
-        {
-          link: {
-            type: "custom",
-            label: "Contact",
-            url: "/contact",
-            newTab: false,
-          },
-        },
-      ],
-    },
-  });
+        ],
+      },
+    });
+  } catch (error: any) {
+    logger.error("DETAILED HEADER VALIDATION ERROR:");
+    logger.error("Error data:", JSON.stringify(error.data, null, 2));
+    if (error.data?.errors) {
+      logger.error("Validation errors:", JSON.stringify(error.data.errors, null, 2));
+    }
+    throw error;
+  }
 
   logger.info("✓ Header configured");
 }
