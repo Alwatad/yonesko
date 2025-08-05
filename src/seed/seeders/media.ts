@@ -13,9 +13,9 @@ type Asset = {
 
 const _ASSETS_DATA: Asset[] = [
   {
-    filename: "stride-logo.png",
-    alt: "Stride Logo",
-    url: "https://via.placeholder.com/300x100/000000/FFFFFF?text=STRIDE",
+    filename: "logo.png",
+    alt: "Company Logo",
+    url: "https://via.placeholder.com/300x100/000000/FFFFFF?text=LOGO",
   },
   {
     filename: "hero-running-shoes.jpg",

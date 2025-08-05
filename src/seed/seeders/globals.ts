@@ -87,6 +87,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
         type: "default",
         hideOnScroll: false,
         background: "#000000",
+        logo: mediaAssets["logo.png"]?.id,
         navItems: [
           {
             link: {
@@ -321,7 +322,7 @@ async function seedEmailSettings(payload: Payload, mediaAssets: Record<string, {
         fromEmail: "noreply@stridefootwear.com",
       },
       messages: {
-        logo: mediaAssets["stride-logo.png"]?.id,
+        logo: mediaAssets["logo.png"]?.id,
         additionalText: "Thank you for shopping with Stride Footwear!",
         template: "default",
       },
@@ -338,7 +339,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
     context: { disableRevalidate: true },
     data: {
       enabled: true,
-      icon: mediaAssets["stride-logo.png"]?.id, // Use a shipping icon in production
+              icon: mediaAssets["logo.png"]?.id, // Use a shipping icon in production
       settings: {
         label: "InPost Pickup Point",
         description: "Convenient pickup from InPost lockers",
@@ -401,7 +402,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
     context: { disableRevalidate: true },
     data: {
       enabled: true,
-      icon: mediaAssets["stride-logo.png"]?.id,
+      icon: mediaAssets["logo.png"]?.id,
       settings: {
         label: "InPost Courier Delivery",
         description: "Door-to-door delivery by InPost courier",
