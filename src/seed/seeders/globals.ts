@@ -140,11 +140,14 @@ async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: st
         ],
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error("DETAILED HEADER VALIDATION ERROR:");
-    logger.error("Error data:", JSON.stringify(error.data, null, 2));
-    if (error.data?.errors) {
-      logger.error("Validation errors:", JSON.stringify(error.data.errors, null, 2));
+    if (error && typeof error === "object" && "data" in error) {
+      logger.error("Error data:", JSON.stringify((error as { data: unknown }).data, null, 2));
+      const errorData = (error as { data?: { errors?: unknown } }).data;
+      if (errorData?.errors) {
+        logger.error("Validation errors:", JSON.stringify(errorData.errors, null, 2));
+      }
     }
     throw error;
   }
