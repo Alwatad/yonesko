@@ -1012,8 +1012,6 @@ import { logger } from "../utils/logger";
 //   logger.info("✓ Created Terms & Conditions page");
 // }
 
-
-
 export async function seedPages(
   payload: Payload,
   mediaAssets: Record<string, unknown>,
@@ -1058,7 +1056,7 @@ function createTextNode(text: string, format = 0) {
 }
 
 // Helper function to create proper Lexical paragraph nodes
-function createParagraphNode(children: { [k: string]: unknown; type: string; version: number; }[]) {
+function createParagraphNode(children: { [k: string]: unknown; type: string; version: number }[]) {
   return {
     children,
     direction: "ltr" as const,
@@ -1070,7 +1068,7 @@ function createParagraphNode(children: { [k: string]: unknown; type: string; ver
 }
 
 // Helper function to create proper Lexical heading nodes
-function createHeadingNode(children: { [k: string]: unknown; type: string; version: number; }[], tag: string) {
+function createHeadingNode(children: { [k: string]: unknown; type: string; version: number }[], tag: string) {
   return {
     children,
     direction: "ltr" as const,
@@ -1083,7 +1081,7 @@ function createHeadingNode(children: { [k: string]: unknown; type: string; versi
 }
 
 // Helper function to create proper Lexical root structure
-function createRichTextRoot(children: { [k: string]: unknown; type: string; version: number; }[]) {
+function createRichTextRoot(children: { [k: string]: unknown; type: string; version: number }[]) {
   return {
     root: {
       children,

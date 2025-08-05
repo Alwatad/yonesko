@@ -47,8 +47,8 @@ export async function seedGlobalSettings(
   mediaAssets: Record<string, { id: string }>,
 ): Promise<void> {
   try {
-    // Header Settings - Temporarily disabled due to validation error
-    // await seedHeader(payload, mediaAssets);
+    // Header Settings
+    await seedHeader(payload, mediaAssets);
 
     // Footer Settings
     await seedFooter(payload, mediaAssets);
@@ -81,6 +81,7 @@ export async function seedGlobalSettings(
 async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
   await payload.updateGlobal({
     slug: "header",
+    context: { disableRevalidate: true },
     data: {
       type: "default",
       hideOnScroll: false,
@@ -146,6 +147,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
 async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
   await payload.updateGlobal({
     slug: "footer",
+    context: { disableRevalidate: true },
     data: {
       navItems: [
         {
@@ -207,6 +209,7 @@ async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: s
 async function seedShopSettings(payload: Payload) {
   await payload.updateGlobal({
     slug: "shopSettings",
+    context: { disableRevalidate: true },
     data: {
       availableCurrencies: ["USD", "EUR", "PLN"],
       currencyValues: [
@@ -232,6 +235,7 @@ async function seedShopSettings(payload: Payload) {
 async function seedShopLayout(payload: Payload) {
   await payload.updateGlobal({
     slug: "shopLayout",
+    context: { disableRevalidate: true },
     data: {
       productDetails: {
         type: "WithImageGalleryExpandableDetails",
@@ -299,6 +303,7 @@ async function seedShopLayout(payload: Payload) {
 async function seedEmailSettings(payload: Payload, mediaAssets: Record<string, { id: string }>) {
   await payload.updateGlobal({
     slug: "emailMessages",
+    context: { disableRevalidate: true },
     data: {
       smtp: {
         host: "smtp.example.com",
@@ -323,6 +328,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
   // InPost Pickup Points
   await payload.updateGlobal({
     slug: "inpost-pickup",
+    context: { disableRevalidate: true },
     data: {
       enabled: true,
       icon: mediaAssets["stride-logo.png"]?.id, // Use a shipping icon in production
@@ -385,6 +391,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
   // InPost Courier
   await payload.updateGlobal({
     slug: "inpost-courier",
+    context: { disableRevalidate: true },
     data: {
       enabled: true,
       icon: mediaAssets["stride-logo.png"]?.id,
@@ -449,6 +456,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
 async function seedPaymentSettings(payload: Payload) {
   await payload.updateGlobal({
     slug: "paywalls",
+    context: { disableRevalidate: true },
     data: {
       paywall: "stripe",
       stripe: {
@@ -466,6 +474,7 @@ async function seedPaymentSettings(payload: Payload) {
 async function seedFulfillmentSettings(payload: Payload) {
   await payload.updateGlobal({
     slug: "fulfilment",
+    context: { disableRevalidate: true },
     data: {
       shopAddress: {
         name: "Stride Footwear Warehouse",
