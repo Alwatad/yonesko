@@ -89,46 +89,60 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
       // logo: mediaAssets["stride-logo.png"]?.id, // Skip logo until media is uploaded
       navItems: [
         {
-          type: "custom",
-          label: "Home",
-          url: "/",
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "Home",
+            url: "/",
+            newTab: false,
+          },
         },
         {
-          type: "custom", 
-          label: "Shop",
-          url: "/products",
-          newTab: false,
+          link: {
+            type: "custom", 
+            label: "Shop",
+            url: "/products",
+            newTab: false,
+          },
         },
         {
-          type: "custom",
-          label: "Men", 
-          url: "/category/mens-shoes",
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "Men",
+            url: "/category/mens-shoes",
+            newTab: false,
+          },
         },
         {
-          type: "custom",
-          label: "Women",
-          url: "/category/womens-shoes", 
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "Women",
+            url: "/category/womens-shoes", 
+            newTab: false,
+          },
         },
         {
-          type: "custom",
-          label: "Athletic",
-          url: "/category/sports-athletic",
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "Athletic",
+            url: "/category/sports-athletic",
+            newTab: false,
+          },
         },
         {
-          type: "custom",
-          label: "About",
-          url: "/about",
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "About",
+            url: "/about",
+            newTab: false,
+          },
         },
         {
-          type: "custom",
-          label: "Contact", 
-          url: "/contact",
-          newTab: false,
+          link: {
+            type: "custom",
+            label: "Contact",
+            url: "/contact",
+            newTab: false,
+          },
         },
       ],
     },
