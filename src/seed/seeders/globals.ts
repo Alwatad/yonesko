@@ -98,7 +98,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
         },
         {
           link: {
-            type: "custom", 
+            type: "custom",
             label: "Shop",
             url: "/products",
             newTab: false,
@@ -116,7 +116,7 @@ async function seedHeader(payload: Payload, _mediaAssets: Record<string, { id: s
           link: {
             type: "custom",
             label: "Women",
-            url: "/category/womens-shoes", 
+            url: "/category/womens-shoes",
             newTab: false,
           },
         },
