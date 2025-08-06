@@ -224,22 +224,25 @@ const finalPlugins = [...plugins];
 // This prevents the plugin's delete hooks from running during the build/seed process.
 if (process.env.REQUIRES_SEEDING !== "true") {
   finalPlugins.push(
+    // In your payload.config.ts
+
     s3Storage({
       collections: {
         [Media.slug]: true,
       },
       bucket: process.env.S3_BUCKET ?? "",
       config: {
-        // --- FIX #2: Correct endpoint for public file access ---
-        endpoint: "https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1",
-        region: "us-east-1", // Supabase requires a specific region
+        // This endpoint points to the public URL for browsers
+        endpoint: "https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public",
+
+        region: "us-east-1",
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? "",
         },
-        forcePathStyle: true, // Required for Supabase Storage
-        requestChecksumCalculation: "WHEN_REQUIRED",
-        responseChecksumValidation: "WHEN_REQUIRED",
+        forcePathStyle: true,
+
+        // The advanced settings that caused the crash are REMOVED.
       },
     }),
   );
