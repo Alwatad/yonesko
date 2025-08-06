@@ -93,7 +93,7 @@ async function createHomePage(
     logger.info("Creating homepage...");
 
     const featuredProducts = products.filter((p) => p.bought > 50).slice(0, 4);
-    //const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
+    const _heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
     const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
 
     const homePage = await payload.create({
@@ -133,24 +133,31 @@ async function createHomePage(
           ],
         },
         layout: [
-          // Featured Products Carousel
-          {
-            blockType: "carousel",
-            blockName: "Featured Products",
-            title: createRichTextRoot([createHeadingNode([createTextNode("Best Sellers", 1)], "h2")]),
-            type: "default",
-            autoplay: 5000,
-            slides: featuredProducts.map((product) => ({
-              image: product.media[0] as string,
-              enableLink: true,
-              link: {
-                type: "custom",
-                label: typeof product.title === "string" ? product.title : (product.title.en ?? "Product"),
-                url: `/products/${product.slug}`,
-                appearance: "default",
-              },
-            })),
-          },
+          // Featured Products Carousel - only include if we have products
+          ...(featuredProducts.length > 0
+            ? [
+                {
+                  blockType: "carousel" as const,
+                  blockName: "Featured Products",
+                  title: createRichTextRoot([createHeadingNode([createTextNode("Best Sellers", 1)], "h2")]),
+                  type: "default" as const,
+                  autoplay: 5000,
+                  slides: featuredProducts
+                    .filter((product) => product.media && product.media.length > 0) // Only products with media
+                    .map((product) => ({
+                      image: product.media[0] as string,
+                      enableLink: true,
+                      link: {
+                        type: "custom" as const,
+                        label:
+                          typeof product.title === "string" ? product.title : (product.title.en ?? "Product"),
+                        url: `/products/${product.slug}`,
+                        appearance: "default" as const,
+                      },
+                    })),
+                },
+              ]
+            : []),
           // CTA Section
           {
             blockType: "cta",
