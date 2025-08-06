@@ -4,6 +4,37 @@ import { logger } from "../utils/logger";
 
 import type { Payload } from "payload";
 
+// Helper function to verify Supabase Storage configuration
+async function verifySupabaseStorageConfig(_payload: Payload): Promise<boolean> {
+  try {
+    logger.info("🔍 Verifying Supabase Storage configuration...");
+    
+    // Check required environment variables
+    const requiredEnvVars = [
+      'S3_ENDPOINT',
+      'S3_BUCKET', 
+      'S3_ACCESS_KEY_ID',
+      'S3_SECRET_ACCESS_KEY'
+    ];
+    
+    const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+      logger.error(`❌ Missing required environment variables: ${missingVars.join(', ')}`);
+      return false;
+    }
+    
+    logger.success("✅ All required Supabase Storage environment variables are set");
+    logger.info(`   🪣 Bucket: ${process.env.S3_BUCKET}`);
+    logger.info(`   🔗 Endpoint: ${process.env.S3_ENDPOINT}`);
+    
+    return true;
+  } catch (error) {
+    logger.error("❌ Error verifying Supabase Storage configuration:", error);
+    return false;
+  }
+}
+
 type Asset = {
   filename: string;
   alt: string;
@@ -71,35 +102,66 @@ const _ASSETS_DATA: Asset[] = [
 
 export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
   try {
-    logger.info("📸 Creating media database entries for uploaded files...");
+    logger.info("📸 Creating media database entries for Supabase Storage files...");
+    
+    // Verify Supabase Storage configuration first
+    const configValid = await verifySupabaseStorageConfig(payload);
+    if (!configValid) {
+      throw new Error("Supabase Storage configuration is invalid. Please check your environment variables.");
+    }
+    
+    logger.info("🔗 Connecting to Supabase Storage via S3 plugin...");
     
     const mediaAssets: Record<string, { id: string }> = {};
 
     // Create database entries for each media asset
-    // These should correspond to files you've uploaded to Supabase Storage
+    // These files should be uploaded to your Supabase Storage bucket first
     for (const asset of _ASSETS_DATA) {
       try {
+        logger.info(`📄 Creating database entry for: ${asset.filename}`);
+        
         const media = await payload.create({
           collection: "media",
           context: { disableRevalidate: true },
           data: {
             alt: asset.alt,
-            filename: asset.filename, // PayloadCMS + S3 plugin will generate URL from this
+            filename: asset.filename, // Must match the filename in your Supabase Storage bucket
+            // PayloadCMS S3 plugin will automatically:
+            // 1. Generate the full Supabase Storage URL
+            // 2. Set width/height if it's an image
+            // 3. Create thumbnails and different sizes
           },
         });
         
         mediaAssets[asset.filename] = { id: media.id };
-        logger.info(`✓ Created media entry: ${asset.filename} (ID: ${media.id})`);
+        logger.success(`✅ Created media entry: ${asset.filename} → ID: ${media.id}`);
+        
+        // Log the generated URL for verification
+        if (media.url) {
+          logger.info(`   🔗 Generated URL: ${media.url}`);
+        }
+        
       } catch (error) {
-        logger.warn(`⚠️  Failed to create media entry for ${asset.filename}: ${String(error)}`);
+        logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
+        logger.error(`   Error: ${String(error)}`);
+        logger.warn(`   💡 Make sure ${asset.filename} is uploaded to your Supabase Storage bucket!`);
         // Continue with other assets even if one fails
       }
     }
 
-    logger.success(`✓ Media seeding completed - ${Object.keys(mediaAssets).length} entries created`);
+    const successCount = Object.keys(mediaAssets).length;
+    const totalCount = _ASSETS_DATA.length;
+    
+    if (successCount === totalCount) {
+      logger.success(`🎉 All media entries created successfully! (${successCount}/${totalCount})`);
+    } else {
+      logger.warn(`⚠️  Partial success: ${successCount}/${totalCount} media entries created`);
+      logger.warn(`   Upload missing files to Supabase Storage and re-run seeding`);
+    }
+    
     return mediaAssets;
   } catch (error) {
-    logger.error("Failed to seed media:", error);
+    logger.error("💥 Critical error in media seeding:", error);
     throw error;
   }
 }
