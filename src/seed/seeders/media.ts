@@ -1,5 +1,3 @@
-// Note: fs, https, path imports removed since we're not uploading files
-
 import { logger } from "../utils/logger";
 
 import type { Payload } from "payload";
@@ -54,7 +52,7 @@ const ASSETS_DATA: Asset[] = [
 
 export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
   try {
-    logger.info("📸 Creating media database entries for existing Supabase Storage files...");
+    logger.info("📸 Creating media entries for existing Supabase Storage files...");
 
     const mediaAssets: Record<string, { id: string }> = {};
 
@@ -62,23 +60,32 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       try {
         logger.info(`📄 Creating database entry for: ${asset.filename}`);
 
-        // Create media entry - PayloadCMS will reference the existing file in Supabase
+        // Calculate the full S3 URL for the existing file
+        const baseUrl = process.env.S3_ENDPOINT?.replace("/s3", "") || "";
+        const bucketName = process.env.S3_BUCKET || "media";
+        const fileUrl = `${baseUrl}/storage/v1/object/public/${bucketName}/${asset.filename}`;
+
+        // Get file extension for MIME type
+        const extension = asset.filename.split(".").pop()?.toLowerCase();
+        const mimeType = extension === "png" ? "image/png" : "image/jpeg";
+
         const media = await payload.create({
           collection: "media",
           context: { disableRevalidate: true },
           data: {
             alt: asset.alt,
-            filename: asset.filename, // Must match exactly with Supabase Storage
+            filename: asset.filename,
+            mimeType: mimeType,
+            filesize: 0, // We don't know the exact size, but it's not critical
+            width: 800, // Default width - will be updated when image is accessed
+            height: 600, // Default height - will be updated when image is accessed
+            url: fileUrl, // Direct URL to the file in Supabase Storage
           },
         });
 
         mediaAssets[asset.filename] = { id: media.id };
         logger.success(`✅ Created media entry: ${asset.filename} → ID: ${media.id}`);
-
-        // Log the generated URL for verification
-        if (media.url) {
-          logger.info(`   🔗 Storage URL: ${media.url}`);
-        }
+        logger.info(`   🔗 File URL: ${fileUrl}`);
       } catch (error) {
         logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
         logger.error(`   Error: ${String(error)}`);
