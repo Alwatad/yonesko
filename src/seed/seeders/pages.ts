@@ -93,7 +93,7 @@ async function createHomePage(
     logger.info("Creating homepage...");
 
     const featuredProducts = products.filter((p) => p.bought > 50).slice(0, 4);
-    const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
+    //const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
     const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
 
     const homePage = await payload.create({
@@ -104,7 +104,7 @@ async function createHomePage(
         slug: "home",
         slugLock: true,
         hero: {
-          type: "highImpact",
+          type: "lowImpact", // Changed to lowImpact to avoid required media field
           richText: createRichTextRoot([
             createHeadingNode([createTextNode("Step into Style", 1)], "h1"),
             createParagraphNode([
@@ -113,8 +113,6 @@ async function createHomePage(
               ),
             ]),
           ]),
-          // Only include media if it exists
-          ...(heroMediaId && { media: heroMediaId }),
           links: [
             {
               link: {
