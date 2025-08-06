@@ -126,17 +126,9 @@ async function createHomePage(
             {
               link: {
                 type: "custom",
-                label: "Shop Now",
-                url: "/shop",
+                label: "Shop Collection",
+                url: "/category/mens-shoes", // Link to a main category page
                 appearance: "default",
-              },
-            },
-            {
-              link: {
-                type: "custom",
-                label: "View Collection",
-                url: "/products",
-                appearance: "outline",
               },
             },
           ],
@@ -581,3 +573,4 @@ export async function seedPages(
     throw error;
   }
 }
+// commit
