@@ -8,46 +8,16 @@ type Asset = {
 };
 
 const ASSETS_DATA: Asset[] = [
-  {
-    filename: "logo.png",
-    alt: "Company Logo",
-  },
-  {
-    filename: "athletic-running-pro.jpg",
-    alt: "Athletic Running Pro Shoes",
-  },
-  {
-    filename: "athletic-training-flex.jpg",
-    alt: "Athletic Training Flex Shoes",
-  },
-  {
-    filename: "featured-bestseller.jpg",
-    alt: "Featured Bestseller Shoes",
-  },
-  {
-    filename: "hero-lifestyle.png",
-    alt: "Hero Lifestyle Image",
-  },
-  {
-    filename: "hero-running-shoes.png",
-    alt: "Hero Running Shoes",
-  },
-  {
-    filename: "mens-dress-oxford.jpg",
-    alt: "Men's Dress Oxford Shoes",
-  },
-  {
-    filename: "mens-sneaker-urban.jpg",
-    alt: "Men's Urban Sneakers",
-  },
-  {
-    filename: "womens-flat-comfort.jpg",
-    alt: "Women's Comfort Flats",
-  },
-  {
-    filename: "womens-heel-elegant.jpg",
-    alt: "Women's Elegant Heels",
-  },
+  { filename: "logo.png", alt: "Company Logo" },
+  { filename: "athletic-running-pro.jpg", alt: "Athletic Running Pro Shoes" },
+  { filename: "athletic-training-flex.jpg", alt: "Athletic Training Flex Shoes" },
+  { filename: "featured-bestseller.jpg", alt: "Featured Bestseller Shoes" },
+  { filename: "hero-lifestyle.png", alt: "Hero Lifestyle Image" },
+  { filename: "hero-running-shoes.png", alt: "Hero Running Shoes" },
+  { filename: "mens-dress-oxford.jpg", alt: "Men's Dress Oxford Shoes" },
+  { filename: "mens-sneaker-urban.jpg", alt: "Men's Urban Sneakers" },
+  { filename: "womens-flat-comfort.jpg", alt: "Women's Comfort Flats" },
+  { filename: "womens-heel-elegant.jpg", alt: "Women's Elegant Heels" },
 ];
 
 export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
@@ -60,14 +30,16 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       try {
         logger.info(`📄 Creating database entry for: ${asset.filename}`);
 
-        // Direct Supabase Storage URL
-        const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`;
+        // --- THE ONLY CHANGE IS HERE ---
+        // Construct the URL using the correct S3-compatible path format.
+        // The bucket name 'media' is assumed from your previous code.
+        const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/media/${asset.filename}`;
+        // --- END OF CHANGE ---
 
-        // Get file extension for MIME type
         const extension = asset.filename.split(".").pop()?.toLowerCase();
         const mimeType = extension === "png" ? "image/png" : "image/jpeg";
 
-        // Create media entry by directly inserting into database, bypassing file upload validation
+        // This `data` object now exactly matches your original structure, but with the corrected `fileUrl`.
         const media = (await payload.db.create({
           collection: "media",
           data: {
@@ -78,7 +50,7 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
             width: 800,
             height: 600,
             url: fileUrl,
-            thumbnailURL: fileUrl, // Add thumbnailURL field
+            thumbnailURL: fileUrl, // Kept your original schema field
             sizes: {
               thumbnail: {
                 width: 400,
@@ -86,10 +58,9 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
                 mimeType: mimeType,
                 filesize: 50000,
                 filename: `thumb_${asset.filename}`,
-                url: fileUrl,
+                url: fileUrl, // Kept this pointing to the main URL as in your original code
               },
             },
-            // Add timestamps that PayloadCMS expects
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           },
@@ -102,7 +73,6 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
         logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
         logger.error(`   Error: ${String(error)}`);
 
-        // Log detailed error info to debug
         if (error && typeof error === "object") {
           console.log("Full error object:", JSON.stringify(error, null, 2));
         }
