@@ -30,11 +30,7 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       try {
         logger.info(`📄 Creating database entry for: ${asset.filename}`);
 
-        // --- THE ONLY CHANGE IS HERE ---
-        // Construct the URL using the correct S3-compatible path format.
-        // The bucket name 'media' is assumed from your previous code.
-        const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/media/${asset.filename}`;
-        // --- END OF CHANGE ---
+        const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`;
 
         const extension = asset.filename.split(".").pop()?.toLowerCase();
         const mimeType = extension === "png" ? "image/png" : "image/jpeg";
