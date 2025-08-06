@@ -157,7 +157,7 @@ export default buildConfig({
       },
       bucket: process.env.S3_BUCKET ?? "",
       config: {
-        endpoint: process.env.S3_ENDPOINT ?? "",
+        endpoint: `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public`,
         region: "us-east-1", // Supabase requires a specific region
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
