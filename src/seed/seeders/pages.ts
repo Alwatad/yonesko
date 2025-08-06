@@ -93,6 +93,8 @@ async function createHomePage(
     logger.info("Creating homepage...");
 
     const featuredProducts = products.filter((p) => p.bought > 50).slice(0, 4);
+    const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
+    const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
 
     const homePage = await payload.create({
       collection: "pages",
@@ -111,7 +113,8 @@ async function createHomePage(
               ),
             ]),
           ]),
-          media: (mediaAssets["hero-running-shoes.png"] as { id: string })?.id,
+          // Only include media if it exists
+          ...(heroMediaId && { media: heroMediaId }),
           links: [
             {
               link: {
@@ -240,12 +243,16 @@ async function createHomePage(
               },
             ],
           },
-          // Lifestyle Hero Image
-          {
-            blockType: "mediaBlock",
-            blockName: "Lifestyle Image",
-            media: (mediaAssets["hero-lifestyle.png"] as { id: string })?.id,
-          },
+          // Only include lifestyle media block if media exists
+          ...(lifestyleMediaId
+            ? [
+                {
+                  blockType: "mediaBlock" as const,
+                  blockName: "Lifestyle Image",
+                  media: lifestyleMediaId,
+                },
+              ]
+            : []),
         ],
         _status: "published",
       },
