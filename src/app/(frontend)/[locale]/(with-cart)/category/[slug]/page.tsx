@@ -30,6 +30,19 @@ const CategoryPage = async ({
     notFound();
   }
 
+  const category = categories[0];
+
+  // This part you added is correct.
+  const { docs: subcategories } = await safeFind("productCategories", {
+    depth: 0,
+    locale,
+    where: {
+      parent: {
+        equals: category.id,
+      },
+    },
+  });
+
   const colorArr = color ? color.split(",") : [];
   const sizeArr = size ? size.split(",") : [];
   let sortQuery: Sort = "bought";
@@ -66,8 +79,12 @@ const CategoryPage = async ({
   return (
     <ProductList
       filteredProducts={products}
-      title={categories[0].title}
-      category={categories[0]}
+      title={category.title}
+      category={category}
+      // --- THIS IS THE FINAL FIX ---
+      // Pass the subcategories list to the component
+      subcategories={subcategories}
+      // --------------------------
       searchParams={{
         color: colorArr,
         size: sizeArr,

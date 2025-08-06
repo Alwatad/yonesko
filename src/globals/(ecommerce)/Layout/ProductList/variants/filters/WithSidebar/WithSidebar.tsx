@@ -13,7 +13,7 @@ import { type ReactNode } from "react";
 
 import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "@/i18n/routing";
-import { type Product, type ProductCategory, type ProductSubCategory } from "@/payload-types";
+import { type Product, type ProductCategory } from "@/payload-types";
 
 import { FilterCheckbox } from "./components/FilterCheckbox";
 import { MobileFiltersCloseButton } from "./components/MobileFiltersCloseButton";
@@ -21,20 +21,17 @@ import { MobileFiltersDialog } from "./components/MobileFiltersDialog";
 import { MobileFunnelFiltersButton } from "./components/MobileFunnelFiltersButton";
 import { SortSelect } from "./components/SortSelect";
 
-// Type guard
-const isProductCategory = (category: ProductCategory | ProductSubCategory): category is ProductCategory => {
-  return "subcategories" in category;
-};
-
 export const WithSidebar = ({
   title,
-  category,
+  category: _category,
+  subcategories,
   products,
   searchParams,
   children,
 }: {
   title: string;
-  category?: ProductCategory | ProductSubCategory;
+  category?: ProductCategory;
+  subcategories: ProductCategory[];
   products: Product[];
   searchParams: {
     size: string[];
@@ -123,23 +120,18 @@ export const WithSidebar = ({
 
               {/* Filters */}
               <form className="mt-4 border-t border-gray-200">
-                {category && isProductCategory(category) && category.subcategories?.docs && (
+                {/* Subcategory navigation for mobile */}
+                {subcategories && subcategories.length > 0 && (
                   <>
                     <h3 className="sr-only">{t("categories")}</h3>
                     <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                      {category.subcategories.docs.map(
-                        (subcategory) =>
-                          typeof subcategory !== "string" && (
-                            <li key={subcategory.id}>
-                              <Link
-                                className="block px-2 py-3"
-                                href={`/category/${category.slug}/${subcategory.slug}`}
-                              >
-                                {subcategory.title}
-                              </Link>
-                            </li>
-                          ),
-                      )}
+                      {subcategories.map((subcategory) => (
+                        <li key={subcategory.id}>
+                          <Link className="block px-2 py-3" href={`/category/${subcategory.slug}`}>
+                            {subcategory.title}
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
                   </>
                 )}
@@ -246,23 +238,19 @@ export const WithSidebar = ({
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
               <form className="hidden lg:block">
-                {category && isProductCategory(category) && category.subcategories?.docs && (
+                {/* Subcategory navigation for desktop */}
+                {subcategories && subcategories.length > 0 && (
                   <>
                     <h3 className="sr-only">{t("categories")}</h3>
                     <ul
                       role="list"
                       className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
                     >
-                      {category.subcategories.docs.map(
-                        (subcategory) =>
-                          typeof subcategory !== "string" && (
-                            <li key={subcategory.id}>
-                              <Link href={`/category/${category.slug}/${subcategory.slug}`}>
-                                {subcategory.title}
-                              </Link>
-                            </li>
-                          ),
-                      )}
+                      {subcategories.map((subcategory) => (
+                        <li key={subcategory.id}>
+                          <Link href={`/category/${subcategory.slug}`}>{subcategory.title}</Link>
+                        </li>
+                      ))}
                     </ul>
                   </>
                 )}
