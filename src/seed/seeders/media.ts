@@ -91,14 +91,6 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
                 filename: `thumb_${asset.filename}`,
                 url: fileUrl,
               },
-              card: {
-                width: 768,
-                height: 576,
-                mimeType: mimeType,
-                filesize: 80000,
-                filename: `card_${asset.filename}`,
-                url: fileUrl,
-              },
             },
           },
         })) as { id: string };
