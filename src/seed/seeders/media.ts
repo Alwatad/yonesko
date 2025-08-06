@@ -67,24 +67,28 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
         const extension = asset.filename.split(".").pop()?.toLowerCase();
         const mimeType = extension === "png" ? "image/png" : "image/jpeg";
 
-        // Create media entry by directly inserting into database, bypassing file upload logic
-        const media = (await payload.db.create({
+        // Try the regular payload.create method first with proper data structure
+        const media = (await payload.create({
           collection: "media",
+          context: {
+            disableRevalidate: true,
+          },
           data: {
             alt: asset.alt,
             filename: asset.filename,
             mimeType: mimeType,
-            filesize: 100000, // Placeholder filesize
+            filesize: 100000,
             width: 800,
             height: 600,
             url: fileUrl,
+            thumbnailURL: fileUrl,
             sizes: {
               thumbnail: {
                 width: 400,
                 height: 300,
                 mimeType: mimeType,
                 filesize: 50000,
-                filename: asset.filename,
+                filename: `thumb_${asset.filename}`,
                 url: fileUrl,
               },
               card: {
@@ -92,7 +96,7 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
                 height: 576,
                 mimeType: mimeType,
                 filesize: 80000,
-                filename: asset.filename,
+                filename: `card_${asset.filename}`,
                 url: fileUrl,
               },
             },
@@ -105,27 +109,6 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       } catch (error) {
         logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
         logger.error(`   Error: ${String(error)}`);
-
-        // Fallback: Try the regular payload.create method without file validation
-        try {
-          const media = (await payload.create({
-            collection: "media",
-            context: {
-              disableRevalidate: true,
-              skipValidation: true,
-            },
-            data: {
-              alt: asset.alt,
-              filename: asset.filename,
-              url: `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`,
-            },
-          })) as { id: string };
-
-          mediaAssets[asset.filename] = { id: media.id };
-          logger.success(`✅ Created media entry (fallback): ${asset.filename} → ID: ${media.id}`);
-        } catch (fallbackError) {
-          logger.error(`   Fallback also failed: ${String(fallbackError)}`);
-        }
       }
     }
 
