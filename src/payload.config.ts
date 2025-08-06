@@ -231,7 +231,7 @@ if (process.env.REQUIRES_SEEDING !== "true") {
       bucket: process.env.S3_BUCKET ?? "",
       config: {
         // --- FIX #2: Correct endpoint for public file access ---
-        endpoint: "https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public",
+        endpoint: "https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1",
         region: "us-east-1", // Supabase requires a specific region
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID ?? "",
