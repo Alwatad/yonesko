@@ -25,7 +25,7 @@ const PRODUCTS_DATA: ProductData[] = [
     description:
       "Modern streetwear meets classic comfort. These versatile sneakers feature a clean design with premium materials, perfect for everyday wear.",
     category: "mens-shoes",
-    subcategory: "mens-sneakers",
+    subcategory: "sneakers",
     price: 89.99,
     image: "mens-sneaker-urban.jpg",
     sizes: generateSizes("mens"),
@@ -41,7 +41,7 @@ const PRODUCTS_DATA: ProductData[] = [
     description:
       "Timeless elegance for the modern gentleman. Crafted from genuine leather with traditional brogue detailing.",
     category: "mens-shoes",
-    subcategory: "mens-dress-shoes",
+    subcategory: "dress-shoes",
     price: 149.99,
     image: "mens-dress-oxford.jpg",
     sizes: generateSizes("mens"),
@@ -53,7 +53,7 @@ const PRODUCTS_DATA: ProductData[] = [
     description:
       'Sophisticated and stunning. These heels feature a comfortable 3.5" height with cushioned insoles for all-night comfort.',
     category: "womens-shoes",
-    subcategory: "womens-heels",
+    subcategory: "heels",
     price: 129.99,
     image: "womens-heel-elegant.jpg",
     sizes: generateSizes("womens"),
@@ -69,7 +69,7 @@ const PRODUCTS_DATA: ProductData[] = [
     description:
       "All-day comfort meets timeless style. Soft leather upper with flexible sole and memory foam insole.",
     category: "womens-shoes",
-    subcategory: "womens-flats",
+    subcategory: "flats",
     price: 79.99,
     image: "womens-flat-comfort.jpg",
     sizes: generateSizes("womens"),
