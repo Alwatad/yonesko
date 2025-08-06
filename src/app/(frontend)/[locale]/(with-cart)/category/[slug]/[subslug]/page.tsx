@@ -70,6 +70,7 @@ const SubcategoryPage = async ({
         filteredProducts={products}
         title={subcategories[0].title}
         subcategory={subcategories[0]}
+        subcategories={[]} // Empty array since this is a subcategory page
         searchParams={{
           color: colorArr,
           size: sizeArr,

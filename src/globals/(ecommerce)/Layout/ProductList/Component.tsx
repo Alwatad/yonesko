@@ -16,12 +16,14 @@ export const ProductList = async ({
   title,
   category,
   subcategory,
+  subcategories,
   searchParams,
 }: {
   filteredProducts: Product[];
   title: string;
   category?: ProductCategory;
   subcategory?: ProductSubCategory;
+  subcategories: ProductCategory[];
   searchParams: {
     size: string[];
     color: string[];
@@ -70,6 +72,7 @@ export const ProductList = async ({
           products={allProducts}
           title={title}
           category={category}
+          subcategories={subcategories}
           searchParams={searchParams}
         >
           <WithInlinePrice products={filteredProducts} />
