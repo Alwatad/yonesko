@@ -60,28 +60,44 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       try {
         logger.info(`📄 Creating database entry for: ${asset.filename}`);
 
-        // Calculate the full S3 URL for the existing file
-        const baseUrl = process.env.S3_ENDPOINT?.replace("/s3", "") || "";
-        const bucketName = process.env.S3_BUCKET || "media";
-        const fileUrl = `${baseUrl}/storage/v1/object/public/${bucketName}/${asset.filename}`;
+        // Direct Supabase Storage URL (the correct format you showed me)
+        const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`;
 
         // Get file extension for MIME type
         const extension = asset.filename.split(".").pop()?.toLowerCase();
         const mimeType = extension === "png" ? "image/png" : "image/jpeg";
 
-        const media = await payload.create({
+        // Create media entry by directly inserting into database, bypassing file upload logic
+        const media = (await payload.db.create({
           collection: "media",
-          context: { disableRevalidate: true },
           data: {
             alt: asset.alt,
             filename: asset.filename,
             mimeType: mimeType,
-            filesize: 0, // We don't know the exact size, but it's not critical
-            width: 800, // Default width - will be updated when image is accessed
-            height: 600, // Default height - will be updated when image is accessed
-            url: fileUrl, // Direct URL to the file in Supabase Storage
+            filesize: 100000, // Placeholder filesize
+            width: 800,
+            height: 600,
+            url: fileUrl,
+            sizes: {
+              thumbnail: {
+                width: 400,
+                height: 300,
+                mimeType: mimeType,
+                filesize: 50000,
+                filename: asset.filename,
+                url: fileUrl,
+              },
+              card: {
+                width: 768,
+                height: 576,
+                mimeType: mimeType,
+                filesize: 80000,
+                filename: asset.filename,
+                url: fileUrl,
+              },
+            },
           },
-        });
+        })) as { id: string };
 
         mediaAssets[asset.filename] = { id: media.id };
         logger.success(`✅ Created media entry: ${asset.filename} → ID: ${media.id}`);
@@ -89,6 +105,27 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       } catch (error) {
         logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
         logger.error(`   Error: ${String(error)}`);
+
+        // Fallback: Try the regular payload.create method without file validation
+        try {
+          const media = (await payload.create({
+            collection: "media",
+            context: {
+              disableRevalidate: true,
+              skipValidation: true,
+            },
+            data: {
+              alt: asset.alt,
+              filename: asset.filename,
+              url: `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`,
+            },
+          })) as { id: string };
+
+          mediaAssets[asset.filename] = { id: media.id };
+          logger.success(`✅ Created media entry (fallback): ${asset.filename} → ID: ${media.id}`);
+        } catch (fallbackError) {
+          logger.error(`   Fallback also failed: ${String(fallbackError)}`);
+        }
       }
     }
 
