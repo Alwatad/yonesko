@@ -60,19 +60,16 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       try {
         logger.info(`📄 Creating database entry for: ${asset.filename}`);
 
-        // Direct Supabase Storage URL (the correct format you showed me)
+        // Direct Supabase Storage URL
         const fileUrl = `https://qlbmivkyeijvlktgitvk.supabase.co/storage/v1/object/public/media/${asset.filename}`;
 
         // Get file extension for MIME type
         const extension = asset.filename.split(".").pop()?.toLowerCase();
         const mimeType = extension === "png" ? "image/png" : "image/jpeg";
 
-        // Try the regular payload.create method first with proper data structure
-        const media = (await payload.create({
+        // Create media entry by directly inserting into database, bypassing file upload validation
+        const media = (await payload.db.create({
           collection: "media",
-          context: {
-            disableRevalidate: true,
-          },
           data: {
             alt: asset.alt,
             filename: asset.filename,
@@ -81,7 +78,7 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
             width: 800,
             height: 600,
             url: fileUrl,
-            thumbnailURL: fileUrl,
+            thumbnailURL: fileUrl, // Add thumbnailURL field
             sizes: {
               thumbnail: {
                 width: 400,
@@ -92,6 +89,9 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
                 url: fileUrl,
               },
             },
+            // Add timestamps that PayloadCMS expects
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
           },
         })) as { id: string };
 
@@ -101,6 +101,11 @@ export async function seedMedia(payload: Payload): Promise<Record<string, { id: 
       } catch (error) {
         logger.error(`❌ Failed to create media entry for ${asset.filename}:`);
         logger.error(`   Error: ${String(error)}`);
+
+        // Log detailed error info to debug
+        if (error && typeof error === "object") {
+          console.log("Full error object:", JSON.stringify(error, null, 2));
+        }
       }
     }
 
