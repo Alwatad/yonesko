@@ -93,7 +93,6 @@ export interface Config {
       orders: 'orders';
     };
     productCategories: {
-      subcategories: 'productSubCategories';
       products: 'products';
     };
     productSubCategories: {
@@ -1043,29 +1042,7 @@ export interface HotspotBlock {
 export interface ProductCategory {
   id: string;
   title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  subcategories?: {
-    docs?: (string | ProductSubCategory)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  products?: {
-    docs?: (string | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: string;
-  category: string | ProductCategory;
-  title: string;
+  parent?: (string | null) | ProductCategory;
   slug?: string | null;
   slugLock?: boolean | null;
   products?: {
@@ -1200,6 +1177,24 @@ export interface Product {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productSubCategories".
+ */
+export interface ProductSubCategory {
+  id: string;
+  category: string | ProductCategory;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  products?: {
+    docs?: (string | Product)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2398,9 +2393,9 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface ProductCategoriesSelect<T extends boolean = true> {
   title?: T;
+  parent?: T;
   slug?: T;
   slugLock?: T;
-  subcategories?: T;
   products?: T;
   updatedAt?: T;
   createdAt?: T;
