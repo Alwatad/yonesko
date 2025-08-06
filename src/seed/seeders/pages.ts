@@ -79,6 +79,8 @@ function createRichTextRoot(children: { [k: string]: unknown; type: string; vers
   };
 }
 
+// in your pages seeder file (e.g., seed/seeders/pages.ts)
+
 async function createHomePage(
   payload: Payload,
   mediaAssets: Record<string, unknown>,
@@ -93,7 +95,11 @@ async function createHomePage(
     logger.info("Creating homepage...");
 
     const featuredProducts = products.filter((p) => p.bought > 50).slice(0, 4);
-    const _heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
+
+    // --- START OF FIX ---
+    const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
+    // --- END OF FIX ---
+
     const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
 
     const homePage = await payload.create({
@@ -104,7 +110,10 @@ async function createHomePage(
         slug: "home",
         slugLock: true,
         hero: {
-          type: "lowImpact", // Changed to lowImpact to avoid required media field
+          // --- START OF FIX ---
+          type: "highImpact", // Change type to one that shows media
+          media: heroMediaId, // Assign the hero media ID
+          // --- END OF FIX ---
           richText: createRichTextRoot([
             createHeadingNode([createTextNode("Step into Style", 1)], "h1"),
             createParagraphNode([
@@ -133,6 +142,7 @@ async function createHomePage(
           ],
         },
         layout: [
+          // Layout remains the same...
           // Featured Products Carousel - only include if we have products
           ...(featuredProducts.length > 0
             ? [
@@ -158,6 +168,7 @@ async function createHomePage(
                 },
               ]
             : []),
+          // ... rest of your layout sections
           // CTA Section
           {
             blockType: "cta",
