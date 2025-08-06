@@ -36,17 +36,23 @@ export const ProductCategories: CollectionConfig = {
       required: true,
       localized: true,
     },
-    ...slugField(),
     {
-      name: "subcategories",
-      label: {
-        en: "Related subcategories",
-        pl: "Powiązane podkategorie",
-      },
-      type: "join",
-      collection: "productSubCategories",
-      on: "category",
+      name: "parent",
+      type: "relationship",
+      // --- FIX: Use the correct camelCase slug name ---
+      relationTo: "productCategories",
     },
+    ...slugField(),
+    // {
+    //   name: "subcategories",
+    //   label: {
+    //     en: "Related subcategories",
+    //     pl: "Powiązane podkategorie",
+    //   },
+    //   type: "join",
+    //   collection: "productSubCategories",
+    //   on: "category",
+    // },
     {
       name: "products",
       label: {

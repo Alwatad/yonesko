@@ -102,6 +102,10 @@ const CONTENT_CATEGORIES_DATA = [
   },
 ];
 
+// in your seed/seeders/categories.ts file
+
+// in your seed/seeders/categories.ts file
+
 export async function seedCategories(payload: Payload): Promise<Record<string, unknown>> {
   try {
     logger.info("Creating product categories...");
@@ -109,8 +113,8 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
     const categories: Record<string, { id: string; subcategories?: { slug: string; id: string }[] }> = {};
 
     for (const categoryData of CATEGORIES_DATA) {
-      // Create main category
-      const category = await payload.create({
+      // Create the main parent category
+      const parentCategory = await payload.create({
         collection: "productCategories",
         data: {
           title: categoryData.title,
@@ -120,16 +124,16 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
 
       logger.info(`  ✓ Created category: ${categoryData.title}`);
 
-      // Create subcategories if they exist
       const subcategories: { slug: string; id: string }[] = [];
       if (categoryData.subcategories) {
         for (const subCategoryData of categoryData.subcategories) {
+          // Create the subcategory in the SAME collection, linking to the parent
           const subCategory = await payload.create({
-            collection: "productSubCategories",
+            collection: "productCategories",
             data: {
               title: subCategoryData.title,
               slug: subCategoryData.slug,
-              category: category.id,
+              parent: parentCategory.id, // This line will now work correctly
             },
           });
 
@@ -143,12 +147,12 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
       }
 
       categories[categoryData.slug] = {
-        id: category.id,
+        id: parentCategory.id,
         subcategories: subcategories.length > 0 ? subcategories : undefined,
       };
     }
 
-    // Create content categories
+    // ... rest of the function remains the same
     logger.info("Creating content categories...");
     for (const categoryData of CONTENT_CATEGORIES_DATA) {
       await payload.create({
@@ -157,7 +161,6 @@ export async function seedCategories(payload: Payload): Promise<Record<string, u
           title: categoryData.title,
         },
       });
-
       logger.info(`  ✓ Created content category: ${categoryData.title}`);
     }
 
