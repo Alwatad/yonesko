@@ -1025,13 +1025,13 @@ export async function seedPages(
   try {
     // Home Page
     await createHomePage(payload, mediaAssets, products);
-
+    
     // About Us Page
     await createAboutPage(payload, mediaAssets);
-
+    
     // Contact Page
     await createContactPage(payload);
-
+    
     // Terms & Conditions Page
     await createTermsPage(payload);
 
@@ -1114,7 +1114,7 @@ async function createHomePage(
       slug: "home",
       slugLock: true,
       hero: {
-        type: "lowImpact",
+        type: "highImpact", // Changed from lowImpact to show hero background image
         richText: createRichTextRoot([
           createHeadingNode(
             [
@@ -1128,6 +1128,7 @@ async function createHomePage(
             ),
           ]),
         ]),
+        media: (mediaAssets["hero-running-shoes.jpg"] as { id: string })?.id, // Hero background image
         links: [
           {
             link: {
@@ -1236,6 +1237,31 @@ async function createHomePage(
               },
             },
           ],
+        },
+        // Additional Content Section
+        {
+          blockType: "content",
+          blockName: "Lifestyle Text",
+          alignment: "center",
+          columns: [
+            {
+              size: "full",
+              richText: createRichTextRoot([
+                createHeadingNode([createTextNode("Find the Perfect Shoes for Every Occasion", 1)], "h2"),
+                createParagraphNode([
+                  createTextNode(
+                    "Whether you're looking for comfortable shoes for daily city walks, elegant models for the office that will emphasize your professionalism, or perhaps unique creations for special occasions like weddings, galas, or important business meetings - our extensive collection offers solutions tailored to every lifestyle and need."
+                  ),
+                ]),
+              ]),
+            },
+          ],
+        },
+        // Lifestyle Hero Image
+        {
+          blockType: "mediaBlock",
+          blockName: "Lifestyle Image",
+          media: (mediaAssets["hero-lifestyle.jpg"] as { id: string })?.id,
         },
       ],
       _status: "published",

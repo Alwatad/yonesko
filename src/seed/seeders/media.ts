@@ -69,14 +69,34 @@ const _ASSETS_DATA: Asset[] = [
   },
 ];
 
-export async function seedMedia(_payload: Payload): Promise<Record<string, { id: string }>> {
+export async function seedMedia(payload: Payload): Promise<Record<string, { id: string }>> {
   try {
-    logger.info("📸 Skipping media uploads - assuming files will be added to storage separately...");
-
-    // Return empty media assets - products and pages will work without images
+    logger.info("📸 Creating media database entries for uploaded files...");
+    
     const mediaAssets: Record<string, { id: string }> = {};
 
-    logger.success("✓ Media seeding skipped (files should be uploaded to storage separately)");
+    // Create database entries for each media asset
+    // These should correspond to files you've uploaded to Supabase Storage
+    for (const asset of _ASSETS_DATA) {
+      try {
+        const media = await payload.create({
+          collection: "media",
+          context: { disableRevalidate: true },
+          data: {
+            alt: asset.alt,
+            filename: asset.filename, // PayloadCMS + S3 plugin will generate URL from this
+          },
+        });
+        
+        mediaAssets[asset.filename] = { id: media.id };
+        logger.info(`✓ Created media entry: ${asset.filename} (ID: ${media.id})`);
+      } catch (error) {
+        logger.warn(`⚠️  Failed to create media entry for ${asset.filename}: ${String(error)}`);
+        // Continue with other assets even if one fails
+      }
+    }
+
+    logger.success(`✓ Media seeding completed - ${Object.keys(mediaAssets).length} entries created`);
     return mediaAssets;
   } catch (error) {
     logger.error("Failed to seed media:", error);
