@@ -120,7 +120,7 @@ export default buildConfig({
       },
       options: "--client-encoding=UTF8",
     },
-    push: process.env.NODE_ENV === "development",
+    //push: process.env.NODE_ENV === "development",
     migrationDir: path.resolve(dirname, "migrations"),
   }),
   collections: [
