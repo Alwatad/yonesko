@@ -39,7 +39,7 @@ export const ProductCategories: CollectionConfig = {
     {
       name: "parent",
       type: "relationship",
-      // --- FIX: Use the correct camelCase slug name ---
+      // --- FIX: Use the correct camelCase slug nam e ---
       relationTo: "productCategories",
     },
     ...slugField(),
