@@ -50,8 +50,8 @@ export const ProductCategories: CollectionConfig = {
         pl: "Powiązane podkategorie",
       },
       type: "join",
-      collection: "productSubCategories",
-      on: "category",
+      collection: "productCategories",
+      on: "parent",
     },
     {
       name: "products",
