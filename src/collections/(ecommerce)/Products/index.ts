@@ -571,7 +571,7 @@ export const Products: CollectionConfig = {
                     en: "Subcategories",
                     pl: "Podkategorie",
                   },
-                  relationTo: "productSubCategories",
+                  relationTo: "productCategories",
                   filterOptions: ({ siblingData }) => {
                     // eslint-disable-next-line
                     const siblingDataTyped: {
@@ -579,7 +579,7 @@ export const Products: CollectionConfig = {
                       // eslint-disable-next-line
                     } = siblingData as any;
                     return {
-                      category: {
+                      parent: {
                         equals: siblingDataTyped.category,
                       },
                     };
