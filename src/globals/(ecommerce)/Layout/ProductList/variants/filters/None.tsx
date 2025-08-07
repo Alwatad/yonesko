@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 
-import { type Product, type ProductCategory, type ProductSubCategory } from "@/payload-types";
+import { type Product, type ProductCategory } from "@/payload-types";
 
 export const None = ({
   title,
@@ -12,7 +12,7 @@ export const None = ({
 }: {
   title: string;
   children: ReactNode;
-  category?: ProductCategory | ProductSubCategory;
+  category?: ProductCategory;
   subcategories: ProductCategory[];
   products: Product[];
   searchParams: {

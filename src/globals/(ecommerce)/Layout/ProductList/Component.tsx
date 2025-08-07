@@ -3,7 +3,7 @@ import { getLocale } from "next-intl/server";
 
 import { ListingBreadcrumbs } from "@/components/(ecommerce)/ListingBreadcrumbs";
 import { type Locale } from "@/i18n/config";
-import { type Product, type ProductCategory, type ProductSubCategory } from "@/payload-types";
+import { type Product, type ProductCategory } from "@/payload-types";
 import { getCachedGlobal } from "@/utilities/getGlobals";
 import { safeFind } from "@/utilities/safePayloadQuery";
 
@@ -22,7 +22,7 @@ export const ProductList = async ({
   filteredProducts: Product[];
   title: string;
   category?: ProductCategory;
-  subcategory?: ProductSubCategory;
+  subcategory?: ProductCategory;
   subcategories: ProductCategory[];
   searchParams: {
     size: string[];
