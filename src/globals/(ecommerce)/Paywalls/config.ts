@@ -29,6 +29,13 @@ export const Paywalls: GlobalConfig = {
       options: [
         {
           label: {
+            en: "Cash Payment",
+            pl: "Płatność gotówką",
+          },
+          value: "cash",
+        },
+        {
+          label: {
             en: "Stripe",
             pl: "Stripe",
           },
@@ -49,7 +56,7 @@ export const Paywalls: GlobalConfig = {
           value: "p24",
         },
       ],
-      defaultValue: "stripe",
+      defaultValue: "cash",
       required: true,
     },
     {

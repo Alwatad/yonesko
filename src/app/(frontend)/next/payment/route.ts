@@ -232,10 +232,14 @@ export async function POST(req: Request) {
 
     const totalWithShipping = (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost;
 
-    console.log(paywalls.paywall);
-
     try {
       switch (paywalls.paywall) {
+        case "cash":
+          // Cash payment - redirect directly to order confirmation
+          return Response.json({
+            status: 200,
+            url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
+          });
         case "stripe":
           redirectURL = await getStripePaymentURL({
             filledProducts,

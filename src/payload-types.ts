@@ -3106,7 +3106,7 @@ export interface InpostCourierCod {
  */
 export interface Paywall {
   id: string;
-  paywall: 'stripe' | 'autopay' | 'p24';
+  paywall: 'cash' | 'stripe' | 'autopay' | 'p24';
   /**
    * If you want to use test environment, you can also provide test keys here.
    */
