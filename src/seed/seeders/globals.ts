@@ -222,7 +222,7 @@ async function seedShopSettings(payload: Payload) {
     slug: "shopSettings",
     context: { disableRevalidate: true },
     data: {
-      availableCurrencies: ["USD", "EUR", "SAR"],
+      availableCurrencies: ["USD", "EUR", "PLN"],
       currencyValues: [
         {
           currency: "USD",
