@@ -193,7 +193,9 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       )}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit, (errors) => {
+            console.log("❌ Form validation errors:", errors);
+          })}
           className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
         >
           <div>
