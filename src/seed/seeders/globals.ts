@@ -222,7 +222,7 @@ async function seedShopSettings(payload: Payload) {
     slug: "shopSettings",
     context: { disableRevalidate: true },
     data: {
-      availableCurrencies: ["USD", "EUR", "PLN"],
+      availableCurrencies: ["USD", "EUR", "SAR"],
       currencyValues: [
         {
           currency: "USD",
@@ -233,8 +233,8 @@ async function seedShopSettings(payload: Payload) {
           value: 0.92,
         },
         {
-          currency: "PLN",
-          value: 4.05,
+          currency: "SAR",
+          value: 3.75,
         },
       ],
     },
@@ -353,7 +353,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
       geowidgetToken: "demo-geowidget-token",
       deliveryZones: [
         {
-          countries: ["pl", "de"],
+          countries: ["sa", "ae"],
           freeShipping: [
             {
               value: 100,
@@ -361,7 +361,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
             },
             {
               value: 400,
-              currency: "PLN",
+              currency: "SAR",
             },
           ],
           range: [
@@ -374,8 +374,8 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
                   currency: "USD",
                 },
                 {
-                  value: 49,
-                  currency: "PLN",
+                  value: 45,
+                  currency: "SAR",
                 },
               ],
             },
@@ -388,8 +388,8 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
                   currency: "USD",
                 },
                 {
-                  value: 73,
-                  currency: "PLN",
+                  value: 67,
+                  currency: "SAR",
                 },
               ],
             },
@@ -415,7 +415,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
       shipXAPIKey: "demo-api-key",
       deliveryZones: [
         {
-          countries: ["pl", "de", "fr"],
+          countries: ["sa", "ae"],
           freeShipping: [
             {
               value: 150,
@@ -423,7 +423,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
             },
             {
               value: 600,
-              currency: "PLN",
+              currency: "SAR",
             },
           ],
           range: [
@@ -436,8 +436,8 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
                   currency: "USD",
                 },
                 {
-                  value: 61,
-                  currency: "PLN",
+                  value: 56,
+                  currency: "SAR",
                 },
               ],
             },
@@ -450,8 +450,8 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
                   currency: "USD",
                 },
                 {
-                  value: 101,
-                  currency: "PLN",
+                  value: 94,
+                  currency: "SAR",
                 },
               ],
             },

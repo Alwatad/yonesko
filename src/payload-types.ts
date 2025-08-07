@@ -1229,11 +1229,13 @@ export interface Customer {
           | 'ro'
           | 'rs'
           | 'ru'
+          | 'sa'
           | 'se'
           | 'si'
           | 'sk'
           | 'sm'
           | 'ua'
+          | 'ae'
           | 'va';
         region: string;
         postalCode: string;
@@ -1357,11 +1359,13 @@ export interface Order {
           | 'ro'
           | 'rs'
           | 'ru'
+          | 'sa'
           | 'se'
           | 'si'
           | 'sk'
           | 'sm'
           | 'ua'
+          | 'ae'
           | 'va'
         )
       | null;
@@ -1422,11 +1426,13 @@ export interface Order {
       | 'ro'
       | 'rs'
       | 'ru'
+      | 'sa'
       | 'se'
       | 'si'
       | 'sk'
       | 'sm'
       | 'ua'
+      | 'ae'
       | 'va';
     region: string;
     postalCode: string;
@@ -2747,7 +2753,7 @@ export interface ShopSetting {
   /**
    * First currency is the default one
    */
-  availableCurrencies: ('USD' | 'EUR' | 'GBP' | 'PLN')[];
+  availableCurrencies: ('USD' | 'EUR' | 'GBP' | 'PLN' | 'SAR')[];
   currencyValues?:
     | {
         currency: string;
@@ -2858,11 +2864,13 @@ export interface InpostPickup {
           | 'ro'
           | 'rs'
           | 'ru'
+          | 'sa'
           | 'se'
           | 'si'
           | 'sk'
           | 'sm'
           | 'ua'
+          | 'ae'
           | 'va'
         )[];
         freeShipping?:
@@ -2954,11 +2962,13 @@ export interface InpostCourier {
           | 'ro'
           | 'rs'
           | 'ru'
+          | 'sa'
           | 'se'
           | 'si'
           | 'sk'
           | 'sm'
           | 'ua'
+          | 'ae'
           | 'va'
         )[];
         freeShipping?:
@@ -3049,11 +3059,13 @@ export interface InpostCourierCod {
           | 'ro'
           | 'rs'
           | 'ru'
+          | 'sa'
           | 'se'
           | 'si'
           | 'sk'
           | 'sm'
           | 'ua'
+          | 'ae'
           | 'va'
         )[];
         freeShipping?:
@@ -3173,11 +3185,13 @@ export interface Fulfilment {
       | 'ro'
       | 'rs'
       | 'ru'
+      | 'sa'
       | 'se'
       | 'si'
       | 'sk'
       | 'sm'
       | 'ua'
+      | 'ae'
       | 'va';
     region: string;
     postalCode: string;

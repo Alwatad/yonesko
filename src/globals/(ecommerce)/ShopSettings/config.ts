@@ -31,6 +31,7 @@ export const ShopSettings: GlobalConfig = {
         { value: "EUR", label: "EUR" },
         { value: "GBP", label: "GBP" },
         { value: "PLN", label: "PLN" },
+        { value: "SAR", label: "SAR" },
       ],
       admin: {
         description: {

@@ -273,6 +273,13 @@ export const countryList = [
     },
   },
   {
+    value: "sa",
+    label: {
+      en: "Saudi Arabia",
+      pl: "Arabia Saudyjska",
+    },
+  },
+  {
     value: "se",
     label: {
       en: "Sweden",
@@ -305,6 +312,13 @@ export const countryList = [
     label: {
       en: "Ukraine",
       pl: "Ukraina",
+    },
+  },
+  {
+    value: "ae",
+    label: {
+      en: "United Arab Emirates",
+      pl: "Zjednoczone Emiraty Arabskie",
     },
   },
   {
