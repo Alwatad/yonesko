@@ -4,6 +4,7 @@
   "buildCommand": "pnpm vercel-build",
   "build": {
     "env": {
+      "PAYLOAD_MIGRATE_FIRST": "true",
       "REQUIRES_SEEDING": "true"
     }
   }
