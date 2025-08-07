@@ -65,7 +65,7 @@ export const ProductList = async ({
     return (
       <div>
         {category && <ListingBreadcrumbs category={category} />}
-        {subcategory && typeof subcategory.parent !== "string" && (
+        {subcategory && typeof subcategory.parent !== "string" && subcategory.parent && (
           <ListingBreadcrumbs category={subcategory.parent} subcategory={subcategory} />
         )}
         <ProductDetailsComponent
