@@ -67,7 +67,7 @@ export async function POST(req: Request) {
           ),
         };
 
-        const calculatedPrice = deliveryZoneWithRange?.range?.pricing.map((prices) => {
+        const calculatedPrice = deliveryZoneWithRange?.range?.pricing?.map((prices) => {
           const freeShippingValue = deliveryZoneWithRange.freeShipping?.find(
             (freeShipping) => freeShipping.currency === prices.currency,
           )?.value;

@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     const shippingCost = courierData.deliveryZones
       ?.find((zone) => zone.countries.includes(selectedCountry))
       ?.range?.find((range) => range.weightFrom <= totalWeight && range.weightTo >= totalWeight)
-      ?.pricing.find((pricing) => pricing.currency === currency)?.value;
+      ?.pricing?.find((pricing) => pricing.currency === currency)?.value;
 
     if (!shippingCost) {
       console.log("❌ Shipping cost not found");
