@@ -96,9 +96,9 @@ async function createHomePage(
 
     const featuredProducts = products.filter((p) => p.bought > 50).slice(0, 4);
 
-    // --- START OF FIX ---
-    const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string })?.id;
-    // --- END OF FIX ---
+    // Try to use a hero image if it exists, otherwise fall back to a text-only hero
+    const heroMediaId = (mediaAssets["hero-running-shoes.png"] as { id: string } | undefined)?.id;
+    const heroType: "highImpact" | "lowImpact" = heroMediaId ? "highImpact" : "lowImpact";
 
     const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
 
@@ -110,10 +110,8 @@ async function createHomePage(
         slug: "home",
         slugLock: true,
         hero: {
-          // --- START OF FIX ---
-          type: "highImpact", // Change type to one that shows media
-          media: heroMediaId, // Assign the hero media ID
-          // --- END OF FIX ---
+          type: heroType,
+          ...(heroMediaId ? { media: heroMediaId } : {}),
           richText: createRichTextRoot([
             createHeadingNode([createTextNode("Step into Style", 1)], "h1"),
             createParagraphNode([
