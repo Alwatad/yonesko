@@ -75,9 +75,12 @@ export async function POST(req: Request) {
     const totalWeight = getTotalWeight(filledProducts, cart);
     const couriers = await createCouriers(locale);
 
-    console.log("🚚 Available couriers:", couriers.map(c => c.key));
+    console.log(
+      "🚚 Available couriers:",
+      couriers.map((c) => c.key),
+    );
     console.log("🎯 Selected delivery method:", checkoutData.deliveryMethod);
-    
+
     const courier = couriers.find((courier) => courier?.key === checkoutData.deliveryMethod);
     if (!courier) {
       console.log("❌ Courier not found for delivery method:", checkoutData.deliveryMethod);
@@ -239,11 +242,14 @@ export async function POST(req: Request) {
     try {
       console.log("💰 Payment method:", paywalls.paywall);
       console.log("📦 Order created with ID:", order.id);
-      
+
       switch (paywalls.paywall) {
         case "cash":
           // Cash payment - redirect directly to order confirmation
-          console.log("💵 Processing cash payment, redirecting to:", `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`);
+          console.log(
+            "💵 Processing cash payment, redirecting to:",
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
+          );
           return Response.json({
             status: 200,
             url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
@@ -252,7 +258,7 @@ export async function POST(req: Request) {
           redirectURL = await getStripePaymentURL({
             filledProducts,
             shippingCost,
-            shippingLabel: courierData.settings.label,
+            shippingLabel: courierData.settings?.label ?? "Shipping",
             currency,
             locale,
             apiKey: paywalls?.stripe?.secret ?? "",
