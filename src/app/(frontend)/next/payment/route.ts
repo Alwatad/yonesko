@@ -114,6 +114,9 @@ export async function POST(req: Request) {
     const user = await getCustomer();
     console.log("👤 User:", user ? `ID: ${user.id}` : "No user");
 
+    const isCash = paywalls.paywall === "cash";
+    const initialStatus: "pending" | "processing" = isCash ? "processing" : "pending";
+
     console.log("📝 Creating order...");
     const order = await payload.create({
       collection: "orders",
@@ -172,7 +175,7 @@ export async function POST(req: Request) {
         orderDetails: {
           shipping: courier.key,
           shippingCost,
-          status: "pending",
+          status: initialStatus,
           total: total.find((price) => price.currency === currency)?.value ?? 0,
           totalWithShipping: (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost,
           currency: currency,
