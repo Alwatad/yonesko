@@ -51,7 +51,8 @@ export const hero: Field = {
         condition: (_, { type } = {}) => ["highImpact", "mediumImpact"].includes(type as string),
       },
       relationTo: "media",
-      required: true,
+      required: ({ siblingData }) =>
+        ["highImpact", "mediumImpact"].includes((siblingData as { type?: string })?.type ?? ""),
     },
     {
       name: "reversed",
@@ -60,7 +61,7 @@ export const hero: Field = {
       admin: {
         condition: (_, { type } = {}) => ["mediumImpact"].includes(type as string),
       },
-      required: true,
+      required: ({ siblingData }) => ((siblingData as { type?: string })?.type ?? "") === "mediumImpact",
     },
   ],
   label: false,
