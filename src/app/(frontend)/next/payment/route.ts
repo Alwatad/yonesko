@@ -75,8 +75,12 @@ export async function POST(req: Request) {
     const totalWeight = getTotalWeight(filledProducts, cart);
     const couriers = await createCouriers(locale);
 
+    console.log("🚚 Available couriers:", couriers.map(c => c.key));
+    console.log("🎯 Selected delivery method:", checkoutData.deliveryMethod);
+    
     const courier = couriers.find((courier) => courier?.key === checkoutData.deliveryMethod);
     if (!courier) {
+      console.log("❌ Courier not found for delivery method:", checkoutData.deliveryMethod);
       return Response.json({ status: 400, message: "Courier not found" });
     }
     const courierData = await courier.getSettings();
@@ -233,9 +237,13 @@ export async function POST(req: Request) {
     const totalWithShipping = (total.find((price) => price.currency === currency)?.value ?? 0) + shippingCost;
 
     try {
+      console.log("💰 Payment method:", paywalls.paywall);
+      console.log("📦 Order created with ID:", order.id);
+      
       switch (paywalls.paywall) {
         case "cash":
           // Cash payment - redirect directly to order confirmation
+          console.log("💵 Processing cash payment, redirecting to:", `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`);
           return Response.json({
             status: 200,
             url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
@@ -281,13 +289,13 @@ export async function POST(req: Request) {
           break;
       }
     } catch (error) {
-      console.log(error);
+      console.log("❌ Payment processing error:", error);
       return Response.json({ status: 500, message: "Error while creating payment" });
     }
 
     return Response.json({ status: 200, url: redirectURL });
   } catch (error) {
-    console.log(error);
+    console.log("❌ Route error:", error);
     return Response.json({ status: 500, message: "Internal server error" });
   }
 }
