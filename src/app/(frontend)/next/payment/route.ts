@@ -22,7 +22,19 @@ const createCouriers = async (locale: Locale) => {
 
 export async function POST(req: Request) {
   try {
+    console.log("🚀 Payment route started");
     const payload = await getPayload({ config });
+    console.log("✅ Payload initialized");
+
+    const requestData = (await req.json()) as {
+      cart: Cart | undefined;
+      selectedCountry: Country;
+      locale: Locale;
+      checkoutData: CheckoutFormData;
+      currency: Currency;
+    };
+    console.log("📦 Request data received:", JSON.stringify(requestData, null, 2));
+
     const {
       cart,
       selectedCountry,
@@ -35,13 +47,7 @@ export async function POST(req: Request) {
       locale: Locale;
       checkoutData: CheckoutFormData;
       currency: Currency;
-    } = (await req.json()) as {
-      cart: Cart | undefined;
-      selectedCountry: Country;
-      locale: Locale;
-      checkoutData: CheckoutFormData;
-      currency: Currency;
-    };
+    } = requestData;
     if (!cart) {
       return Response.json({ status: 200 });
     }
@@ -93,15 +99,20 @@ export async function POST(req: Request) {
       ?.pricing.find((pricing) => pricing.currency === currency)?.value;
 
     if (!shippingCost) {
+      console.log("❌ Shipping cost not found");
       return Response.json({ status: 400, message: "Shipping cost not found" });
     }
 
+    console.log("💰 Fetching paywalls global...");
     const paywalls = await getCachedGlobal("paywalls", locale, 1)();
+    console.log("✅ Paywalls fetched:", JSON.stringify(paywalls, null, 2));
 
     let redirectURL: string | null = null;
 
     const user = await getCustomer();
+    console.log("👤 User:", user ? `ID: ${user.id}` : "No user");
 
+    console.log("📝 Creating order...");
     const order = await payload.create({
       collection: "orders",
       data: {
@@ -181,7 +192,9 @@ export async function POST(req: Request) {
         },
       },
     });
+    console.log("✅ Order created with ID:", order.id);
 
+    console.log("📦 Updating product stock...");
     filledProducts.forEach((product) => {
       const newBoughtCount = product.bought ?? 0 + (product?.quantity ?? 0);
       if (product.enableVariants && product.variant && product.variants) {
