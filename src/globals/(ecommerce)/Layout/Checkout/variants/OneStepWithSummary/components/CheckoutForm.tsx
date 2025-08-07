@@ -148,22 +148,34 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
 
   const onSubmit = async (values: CheckoutFormData) => {
     try {
-      const { data } = await axios.post<{ status: number; url?: string }>("/next/payment", {
+      console.log("🛒 Starting order submission...");
+      const payload = {
         cart,
         selectedCountry: shipping.country,
         checkoutData: values,
         locale,
         currency: currency.currency,
-      });
+      };
+      console.log("📦 Sending payload:", payload);
+
+      const { data } = await axios.post<{ status: number; url?: string }>("/next/payment", payload);
+      console.log("✅ Server response:", data);
+
       if (data.status === 200 && data.url) {
         setCart(null);
         router.push(data.url);
       } else {
+        console.log("❌ Unexpected response status:", data.status);
         form.setError("root", { message: t("internal-server-error") });
       }
     } catch (error) {
+      console.error("❌ Order submission error:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
       form.setError("root", { message: t("internal-server-error") });
-      console.log(error);
     }
   };
 
