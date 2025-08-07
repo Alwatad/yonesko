@@ -193,9 +193,7 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
       )}
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit, (errors) => {
-            console.log("❌ Form validation errors:", errors);
-          })}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
         >
           <div>
@@ -331,16 +329,19 @@ export const CheckoutForm = ({ user, geowidgetToken }: { user?: Customer; geowid
                         <FormItem>
                           <FormLabel>{t("country")}</FormLabel>
                           <FormControl>
-                            <Select onValueChange={field.onChange} defaultValue={field.value ?? "pl"}>
+                            <Select onValueChange={field.onChange} defaultValue={field.value ?? "sa"}>
                               <FormControl>
                                 <SelectTrigger className="focus:outline-main-600 w-full appearance-none rounded-md bg-white py-2 pr-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 outline-solid focus:ring-0 focus:ring-offset-0 focus:outline-2 focus:-outline-offset-2 focus:outline-solid sm:text-sm/6">
                                   <SelectValue placeholder={t("country-placeholder")} />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="pl">{c("pl")}</SelectItem>
-                                <SelectItem value="gb">{c("gb")}</SelectItem>
-                                <SelectItem value="us">{c("us")}</SelectItem>
+                                <SelectItem value="sa">Saudi Arabia</SelectItem>
+                                <SelectItem value="ae">United Arab Emirates</SelectItem>
+                                <SelectItem value="kw">Kuwait</SelectItem>
+                                <SelectItem value="qa">Qatar</SelectItem>
+                                <SelectItem value="bh">Bahrain</SelectItem>
+                                <SelectItem value="om">Oman</SelectItem>
                               </SelectContent>
                             </Select>
                           </FormControl>

@@ -1,13 +1,11 @@
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { useTranslations } from "next-intl";
-import { useFormContext } from "react-hook-form";
 
 import { PriceClient } from "@/components/(ecommerce)/PriceClient";
 import { QuantityInput } from "@/components/(ecommerce)/QuantityInput";
 import { Media } from "@/components/Media";
 import { type ProductWithFilledVariants } from "@/globals/(ecommerce)/Layout/Cart/variants/SlideOver";
 import { Link } from "@/i18n/routing";
-import { type CheckoutFormData } from "@/schemas/checkoutForm.schema";
 import { useCart } from "@/stores/CartStore";
 import { type Currency } from "@/stores/Currency/types";
 
@@ -51,16 +49,8 @@ export const OrderSummary = ({
   }[];
   errorMessage?: string;
 }) => {
-  const totalPriceWithShipping = mergeAmounts(totalPrice, shippingCost);
+    const totalPriceWithShipping = mergeAmounts(totalPrice, shippingCost);
   const { cart, updateCart, setCart, removeFromCart } = useCart();
-  const form = useFormContext<CheckoutFormData>();
-
-  console.log("🔍 Form state:", {
-    isValid: form.formState.isValid,
-    isSubmitting: form.formState.isSubmitting,
-    errors: form.formState.errors,
-    isDirty: form.formState.isDirty,
-  });
 
   const setCartQuantity = (quantity: number, productID: string, productVariantSlug: string | undefined) => {
     setCart([
@@ -209,7 +199,6 @@ export const OrderSummary = ({
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
           <button
             type="submit"
-            onClick={() => console.log("🔘 Confirm button clicked!")}
             className="bg-main-600 hover:bg-main-700 focus:ring-main-500 w-full cursor-pointer rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-xs focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden"
           >
             {t("confirm")}

@@ -353,7 +353,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
       geowidgetToken: "demo-geowidget-token",
       deliveryZones: [
         {
-          countries: ["sa", "ae"],
+          countries: ["sa", "ae", "kw", "qa", "bh", "om"],
           freeShipping: [
             {
               value: 100,
@@ -415,7 +415,7 @@ async function seedShippingMethods(payload: Payload, mediaAssets: Record<string,
       shipXAPIKey: "demo-api-key",
       deliveryZones: [
         {
-          countries: ["sa", "ae"],
+          countries: ["sa", "ae", "kw", "qa", "bh", "om"],
           freeShipping: [
             {
               value: 150,

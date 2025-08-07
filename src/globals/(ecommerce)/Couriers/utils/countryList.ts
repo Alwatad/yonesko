@@ -28,6 +28,13 @@ export const countryList = [
     },
   },
   {
+    value: "bh",
+    label: {
+      en: "Bahrain",
+      pl: "Bahrajn",
+    },
+  },
+  {
     value: "be",
     label: {
       en: "Belgium",
@@ -154,6 +161,13 @@ export const countryList = [
     },
   },
   {
+    value: "kw",
+    label: {
+      en: "Kuwait",
+      pl: "Kuwejt",
+    },
+  },
+  {
     value: "it",
     label: {
       en: "Italy",
@@ -238,6 +252,13 @@ export const countryList = [
     },
   },
   {
+    value: "om",
+    label: {
+      en: "Oman",
+      pl: "Oman",
+    },
+  },
+  {
     value: "pl",
     label: {
       en: "Poland",
@@ -249,6 +270,13 @@ export const countryList = [
     label: {
       en: "Portugal",
       pl: "Portugalia",
+    },
+  },
+  {
+    value: "qa",
+    label: {
+      en: "Qatar",
+      pl: "Katar",
     },
   },
   {
