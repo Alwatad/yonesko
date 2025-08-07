@@ -4,7 +4,7 @@
   "buildCommand": "pnpm vercel-build",
   "build": {
     "env": {
-      "PAYLOAD_DROP_DATABASE": "true"
+      "REQUIRES_SEEDING": "true"
     }
   }
 }
