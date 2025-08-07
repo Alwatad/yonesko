@@ -77,7 +77,6 @@ export interface Config {
     orders: Order;
     products: Product;
     productCategories: ProductCategory;
-    productSubCategories: ProductSubCategory;
     productReviews: ProductReview;
     redirects: Redirect;
     forms: Form;
@@ -95,9 +94,6 @@ export interface Config {
     productCategories: {
       products: 'products';
     };
-    productSubCategories: {
-      products: 'products';
-    };
   };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -109,7 +105,6 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     productCategories: ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
-    productSubCategories: ProductSubCategoriesSelect<false> | ProductSubCategoriesSelect<true>;
     productReviews: ProductReviewsSelect<false> | ProductReviewsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -1009,7 +1004,7 @@ export interface HotspotBlock {
   type: 'category' | 'subcategory' | 'manual';
   appearance: 'default' | 'slider' | 'sliderLoop';
   category?: (string | null) | ProductCategory;
-  subcategory?: (string | null) | ProductSubCategory;
+  subcategory?: (string | null) | ProductCategory;
   /**
    * Sort is applied only when type is set to 'category' or 'subcategory', in manual mode you can manually sort products in the list
    */
@@ -1177,24 +1172,6 @@ export interface Product {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories".
- */
-export interface ProductSubCategory {
-  id: string;
-  category: string | ProductCategory;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  products?: {
-    docs?: (string | Product)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1706,10 +1683,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'productCategories';
         value: string | ProductCategory;
-      } | null)
-    | ({
-        relationTo: 'productSubCategories';
-        value: string | ProductSubCategory;
       } | null)
     | ({
         relationTo: 'productReviews';
@@ -2394,19 +2367,6 @@ export interface ProductsSelect<T extends boolean = true> {
 export interface ProductCategoriesSelect<T extends boolean = true> {
   title?: T;
   parent?: T;
-  slug?: T;
-  slugLock?: T;
-  products?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "productSubCategories_select".
- */
-export interface ProductSubCategoriesSelect<T extends boolean = true> {
-  category?: T;
-  title?: T;
   slug?: T;
   slugLock?: T;
   products?: T;

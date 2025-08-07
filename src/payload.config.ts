@@ -15,7 +15,6 @@ import { Customers } from "./collections/(ecommerce)/Customers";
 import { Orders } from "./collections/(ecommerce)/Orders";
 import { ProductCategories } from "./collections/(ecommerce)/ProductCategories";
 import { ProductReviews } from "./collections/(ecommerce)/ProductReviews";
-import { ProductSubCategories } from "./collections/(ecommerce)/ProductSubCategories";
 import { Products } from "./collections/(ecommerce)/Products";
 import { Administrators } from "./collections/Administrators";
 import { Categories } from "./collections/Categories";
@@ -133,7 +132,6 @@ export default buildConfig({
     Orders,
     Products,
     ProductCategories,
-    ProductSubCategories,
     ProductReviews,
   ],
   cors: [getServerSideURL()].filter(Boolean),
@@ -175,4 +173,3 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
 });
-

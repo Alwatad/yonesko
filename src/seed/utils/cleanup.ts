@@ -14,7 +14,7 @@ export async function cleanDatabase(payload: Payload): Promise<void> {
       "pages",
       "productReviews",
       "products",
-      "productSubCategories",
+
       "productCategories",
       "orders",
       "customers",

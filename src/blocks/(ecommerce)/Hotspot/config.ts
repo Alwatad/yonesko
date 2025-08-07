@@ -84,7 +84,7 @@ export const Hotspot: Block = {
         {
           name: "subcategory",
           type: "relationship",
-          relationTo: "productSubCategories",
+          relationTo: "productCategories",
           admin: {
             condition: (_, siblingData) => siblingData.type === "subcategory",
             width: "50%",

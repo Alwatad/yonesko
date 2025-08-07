@@ -44,7 +44,7 @@ export const navIconMap: Partial<Record<CollectionSlug | GlobalSlug, ExoticCompo
   fulfilment: Building2,
   products: PackageSearch,
   productCategories: TagIcon,
-  productSubCategories: Tags,
+
   productReviews: Star,
   emailMessages: Mail,
   shopSettings: Settings,

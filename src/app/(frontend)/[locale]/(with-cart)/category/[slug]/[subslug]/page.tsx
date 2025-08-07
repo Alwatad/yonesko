@@ -17,12 +17,15 @@ const SubcategoryPage = async ({
     const locale = (await getLocale()) as Locale;
     const { color, size, sortBy } = await searchParams;
     const { subslug } = await params;
-    const { docs: subcategories } = await safeFind("productSubCategories", {
+    const { docs: subcategories } = await safeFind("productCategories", {
       depth: 1,
       locale,
       where: {
         slug: {
           equals: subslug,
+        },
+        parent: {
+          exists: true,
         },
       },
     });
