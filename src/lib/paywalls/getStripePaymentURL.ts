@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 
 import { type Locale } from "@/i18n/config";
+import { getServerSideURL } from "@/utilities/getURL";
 import { type Currency } from "@/stores/Currency/types";
 
 import { type FilledProduct } from "../getFilledProducts";
@@ -83,8 +84,8 @@ export const getStripePaymentURL = async ({
           orderID,
         },
       },
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${orderID}?cancelled=true`,
+      success_url: `${getServerSideURL()}/${locale}/order/${orderID}`,
+      cancel_url: `${getServerSideURL()}/${locale}/order/${orderID}?cancelled=true`,
     });
 
     return session.url;

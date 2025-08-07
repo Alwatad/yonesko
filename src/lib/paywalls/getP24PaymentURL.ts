@@ -4,6 +4,7 @@ import axios, { isAxiosError } from "axios";
 
 import { type Locale } from "@/i18n/config";
 import { type Customer } from "@/payload-types";
+import { getServerSideURL } from "@/utilities/getURL";
 import { type Currency } from "@/stores/Currency/types";
 
 export const getP24PaymentURL = async ({
@@ -53,7 +54,7 @@ export const getP24PaymentURL = async ({
       description,
       email: email,
       client: `${client?.firstName} ${client?.lastName}`,
-      urlReturn: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${sessionId}`,
+      urlReturn: `${getServerSideURL()}/${locale}/order/${sessionId}`,
       sign,
     };
 

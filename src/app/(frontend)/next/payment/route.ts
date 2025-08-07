@@ -13,6 +13,7 @@ import { type Cart } from "@/stores/CartStore/types";
 import { type Currency } from "@/stores/Currency/types";
 import { getCustomer } from "@/utilities/getCustomer";
 import { getCachedGlobal } from "@/utilities/getGlobals";
+import { getServerSideURL } from "@/utilities/getURL";
 import config from "@payload-config";
 
 const createCouriers = async (locale: Locale) => {
@@ -22,6 +23,7 @@ const createCouriers = async (locale: Locale) => {
 
 export async function POST(req: Request) {
   try {
+    const serverURL = getServerSideURL();
     console.log("🚀 Payment route started");
     const payload = await getPayload({ config });
     console.log("✅ Payload initialized");
@@ -246,7 +248,7 @@ export async function POST(req: Request) {
     if (courier.prepaid === false) {
       return Response.json({
         status: 200,
-        url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
+        url: `${serverURL}/${locale}/order/${order.id}`,
       });
     }
 
@@ -261,11 +263,11 @@ export async function POST(req: Request) {
           // Cash payment - redirect directly to order confirmation
           console.log(
             "💵 Processing cash payment, redirecting to:",
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
+            `${serverURL}/${locale}/order/${order.id}`,
           );
           return Response.json({
             status: 200,
-            url: `${process.env.NEXT_PUBLIC_SERVER_URL}/${locale}/order/${order.id}`,
+            url: `${serverURL}/${locale}/order/${order.id}`,
           });
         case "stripe":
           redirectURL = await getStripePaymentURL({
