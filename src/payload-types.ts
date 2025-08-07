@@ -93,7 +93,6 @@ export interface Config {
       orders: 'orders';
     };
     productCategories: {
-      subcategories: 'productCategories';
       products: 'products';
     };
     productSubCategories: {
@@ -1046,11 +1045,6 @@ export interface ProductCategory {
   parent?: (string | null) | ProductCategory;
   slug?: string | null;
   slugLock?: boolean | null;
-  subcategories?: {
-    docs?: (string | ProductCategory)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
   products?: {
     docs?: (string | Product)[];
     hasNextPage?: boolean;
@@ -2402,7 +2396,6 @@ export interface ProductCategoriesSelect<T extends boolean = true> {
   parent?: T;
   slug?: T;
   slugLock?: T;
-  subcategories?: T;
   products?: T;
   updatedAt?: T;
   createdAt?: T;
