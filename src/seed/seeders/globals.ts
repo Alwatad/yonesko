@@ -469,7 +469,7 @@ async function seedPaymentSettings(payload: Payload) {
     slug: "paywalls",
     context: { disableRevalidate: true },
     data: {
-      paywall: "cash",
+      paywall: "stripe",
       stripe: {
         secret: "sk_test_demo",
         public: "pk_test_demo",
