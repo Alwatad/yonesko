@@ -1,4 +1,5 @@
 import { type Media } from "@/payload-types";
+import { type Currency } from "@/stores/Currency/types";
 
 export type FilledVariant = {
   color:
@@ -22,7 +23,7 @@ export type FilledVariant = {
   pricing:
     | {
         value: number;
-        currency: "USD" | "EUR" | "GBP" | "PLN";
+        currency: Currency;
         id?: string | null;
       }[]
     | null
