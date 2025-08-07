@@ -1531,7 +1531,7 @@ export const pages_blocks_hotspot_zone = pgTable(
     category: uuid("category_id").references(() => product_categories.id, {
       onDelete: "set null",
     }),
-    subcategory: uuid("subcategory_id").references(() => product_sub_categories.id, {
+    subcategory: uuid("subcategory_id").references(() => product_categories.id, {
       onDelete: "set null",
     }),
     sort: enum_pages_blocks_hotspot_zone_sort("sort"),
@@ -2236,7 +2236,7 @@ export const _pages_v_blocks_hotspot_zone = pgTable(
     category: uuid("category_id").references(() => product_categories.id, {
       onDelete: "set null",
     }),
-    subcategory: uuid("subcategory_id").references(() => product_sub_categories.id, {
+    subcategory: uuid("subcategory_id").references(() => product_categories.id, {
       onDelete: "set null",
     }),
     sort: enum__pages_v_blocks_hotspot_zone_sort("sort"),
@@ -3369,15 +3369,15 @@ export const products_rels = pgTable(
     parent: uuid("parent_id").notNull(),
     path: varchar("path").notNull(),
     mediaID: uuid("media_id"),
-    productSubCategoriesID: uuid("product_sub_categories_id"),
+    productCategoriesID: uuid("product_categories_id"),
   },
   (columns) => ({
     order: index("products_rels_order_idx").on(columns.order),
     parentIdx: index("products_rels_parent_idx").on(columns.parent),
     pathIdx: index("products_rels_path_idx").on(columns.path),
     products_rels_media_id_idx: index("products_rels_media_id_idx").on(columns.mediaID),
-    products_rels_product_sub_categories_id_idx: index("products_rels_product_sub_categories_id_idx").on(
-      columns.productSubCategoriesID,
+    products_rels_product_categories_id_idx: index("products_rels_product_categories_id_idx").on(
+      columns.productCategoriesID,
     ),
     parentFk: foreignKey({
       columns: [columns["parent"]],
@@ -3389,10 +3389,10 @@ export const products_rels = pgTable(
       foreignColumns: [media.id],
       name: "products_rels_media_fk",
     }).onDelete("cascade"),
-    productSubCategoriesIdFk: foreignKey({
-      columns: [columns["productSubCategoriesID"]],
-      foreignColumns: [product_sub_categories.id],
-      name: "products_rels_product_sub_categories_fk",
+    productCategoriesIdFk: foreignKey({
+      columns: [columns["productCategoriesID"]],
+      foreignColumns: [product_categories.id],
+      name: "products_rels_product_categories_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -3708,16 +3708,16 @@ export const _products_v_rels = pgTable(
     parent: uuid("parent_id").notNull(),
     path: varchar("path").notNull(),
     mediaID: uuid("media_id"),
-    productSubCategoriesID: uuid("product_sub_categories_id"),
+    productCategoriesID: uuid("product_categories_id"),
   },
   (columns) => ({
     order: index("_products_v_rels_order_idx").on(columns.order),
     parentIdx: index("_products_v_rels_parent_idx").on(columns.parent),
     pathIdx: index("_products_v_rels_path_idx").on(columns.path),
     _products_v_rels_media_id_idx: index("_products_v_rels_media_id_idx").on(columns.mediaID),
-    _products_v_rels_product_sub_categories_id_idx: index(
-      "_products_v_rels_product_sub_categories_id_idx",
-    ).on(columns.productSubCategoriesID),
+    _products_v_rels_product_categories_id_idx: index("_products_v_rels_product_categories_id_idx").on(
+      columns.productCategoriesID,
+    ),
     parentFk: foreignKey({
       columns: [columns["parent"]],
       foreignColumns: [_products_v.id],
@@ -3728,10 +3728,10 @@ export const _products_v_rels = pgTable(
       foreignColumns: [media.id],
       name: "_products_v_rels_media_fk",
     }).onDelete("cascade"),
-    productSubCategoriesIdFk: foreignKey({
-      columns: [columns["productSubCategoriesID"]],
-      foreignColumns: [product_sub_categories.id],
-      name: "_products_v_rels_product_sub_categories_fk",
+    productCategoriesIdFk: foreignKey({
+      columns: [columns["productCategoriesID"]],
+      foreignColumns: [product_categories.id],
+      name: "_products_v_rels_product_categories_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -3740,6 +3740,9 @@ export const product_categories = pgTable(
   "product_categories",
   {
     id: uuid("id").defaultRandom().primaryKey(),
+    parent: uuid("parent_id").references((): AnyPgColumn => product_categories.id, {
+      onDelete: "set null",
+    }),
     slug: varchar("slug"),
     slugLock: boolean("slug_lock").default(true),
     updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 })
@@ -3750,6 +3753,7 @@ export const product_categories = pgTable(
       .notNull(),
   },
   (columns) => ({
+    product_categories_parent_idx: index("product_categories_parent_idx").on(columns.parent),
     product_categories_slug_idx: index("product_categories_slug_idx").on(columns.slug),
     product_categories_updated_at_idx: index("product_categories_updated_at_idx").on(columns.updatedAt),
     product_categories_created_at_idx: index("product_categories_created_at_idx").on(columns.createdAt),
@@ -3773,57 +3777,6 @@ export const product_categories_locales = pgTable(
       columns: [columns["_parentID"]],
       foreignColumns: [product_categories.id],
       name: "product_categories_locales_parent_id_fk",
-    }).onDelete("cascade"),
-  }),
-);
-
-export const product_sub_categories = pgTable(
-  "product_sub_categories",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
-    category: uuid("category_id")
-      .notNull()
-      .references(() => product_categories.id, {
-        onDelete: "set null",
-      }),
-    slug: varchar("slug"),
-    slugLock: boolean("slug_lock").default(true),
-    updatedAt: timestamp("updated_at", { mode: "string", withTimezone: true, precision: 3 })
-      .defaultNow()
-      .notNull(),
-    createdAt: timestamp("created_at", { mode: "string", withTimezone: true, precision: 3 })
-      .defaultNow()
-      .notNull(),
-  },
-  (columns) => ({
-    product_sub_categories_category_idx: index("product_sub_categories_category_idx").on(columns.category),
-    product_sub_categories_slug_idx: index("product_sub_categories_slug_idx").on(columns.slug),
-    product_sub_categories_updated_at_idx: index("product_sub_categories_updated_at_idx").on(
-      columns.updatedAt,
-    ),
-    product_sub_categories_created_at_idx: index("product_sub_categories_created_at_idx").on(
-      columns.createdAt,
-    ),
-  }),
-);
-
-export const product_sub_categories_locales = pgTable(
-  "product_sub_categories_locales",
-  {
-    title: varchar("title").notNull(),
-    id: serial("id").primaryKey(),
-    _locale: enum__locales("_locale").notNull(),
-    _parentID: uuid("_parent_id").notNull(),
-  },
-  (columns) => ({
-    _localeParent: uniqueIndex("product_sub_categories_locales_locale_parent_id_unique").on(
-      columns._locale,
-      columns._parentID,
-    ),
-    _parentIdFk: foreignKey({
-      columns: [columns["_parentID"]],
-      foreignColumns: [product_sub_categories.id],
-      name: "product_sub_categories_locales_parent_id_fk",
     }).onDelete("cascade"),
   }),
 );
@@ -4686,7 +4639,6 @@ export const payload_locked_documents_rels = pgTable(
     ordersID: varchar("orders_id"),
     productsID: uuid("products_id"),
     productCategoriesID: uuid("product_categories_id"),
-    productSubCategoriesID: uuid("product_sub_categories_id"),
     productReviewsID: uuid("product_reviews_id"),
     redirectsID: uuid("redirects_id"),
     formsID: uuid("forms_id"),
@@ -4725,9 +4677,6 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_product_categories_id_idx: index(
       "payload_locked_documents_rels_product_categories_id_idx",
     ).on(columns.productCategoriesID),
-    payload_locked_documents_rels_product_sub_categories_id_idx: index(
-      "payload_locked_documents_rels_product_sub_categories_id_idx",
-    ).on(columns.productSubCategoriesID),
     payload_locked_documents_rels_product_reviews_id_idx: index(
       "payload_locked_documents_rels_product_reviews_id_idx",
     ).on(columns.productReviewsID),
@@ -4795,11 +4744,6 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns["productCategoriesID"]],
       foreignColumns: [product_categories.id],
       name: "payload_locked_documents_rels_product_categories_fk",
-    }).onDelete("cascade"),
-    productSubCategoriesIdFk: foreignKey({
-      columns: [columns["productSubCategoriesID"]],
-      foreignColumns: [product_sub_categories.id],
-      name: "payload_locked_documents_rels_product_sub_categories_fk",
     }).onDelete("cascade"),
     productReviewsIdFk: foreignKey({
       columns: [columns["productReviewsID"]],
@@ -5949,9 +5893,9 @@ export const relations_pages_blocks_hotspot_zone = relations(pages_blocks_hotspo
     references: [product_categories.id],
     relationName: "category",
   }),
-  subcategory: one(product_sub_categories, {
+  subcategory: one(product_categories, {
     fields: [pages_blocks_hotspot_zone.subcategory],
-    references: [product_sub_categories.id],
+    references: [product_categories.id],
     relationName: "subcategory",
   }),
 }));
@@ -6313,9 +6257,9 @@ export const relations__pages_v_blocks_hotspot_zone = relations(
       references: [product_categories.id],
       relationName: "category",
     }),
-    subcategory: one(product_sub_categories, {
+    subcategory: one(product_categories, {
       fields: [_pages_v_blocks_hotspot_zone.subcategory],
-      references: [product_sub_categories.id],
+      references: [product_categories.id],
       relationName: "subcategory",
     }),
   }),
@@ -6736,10 +6680,10 @@ export const relations_products_rels = relations(products_rels, ({ one }) => ({
     references: [media.id],
     relationName: "media",
   }),
-  productSubCategoriesID: one(product_sub_categories, {
-    fields: [products_rels.productSubCategoriesID],
-    references: [product_sub_categories.id],
-    relationName: "productSubCategories",
+  productCategoriesID: one(product_categories, {
+    fields: [products_rels.productCategoriesID],
+    references: [product_categories.id],
+    relationName: "productCategories",
   }),
 }));
 export const relations_products = relations(products, ({ many }) => ({
@@ -6902,10 +6846,10 @@ export const relations__products_v_rels = relations(_products_v_rels, ({ one }) 
     references: [media.id],
     relationName: "media",
   }),
-  productSubCategoriesID: one(product_sub_categories, {
-    fields: [_products_v_rels.productSubCategoriesID],
-    references: [product_sub_categories.id],
-    relationName: "productSubCategories",
+  productCategoriesID: one(product_categories, {
+    fields: [_products_v_rels.productCategoriesID],
+    references: [product_categories.id],
+    relationName: "productCategories",
   }),
 }));
 export const relations__products_v = relations(_products_v, ({ one, many }) => ({
@@ -6946,28 +6890,13 @@ export const relations_product_categories_locales = relations(product_categories
     relationName: "_locales",
   }),
 }));
-export const relations_product_categories = relations(product_categories, ({ many }) => ({
-  _locales: many(product_categories_locales, {
-    relationName: "_locales",
-  }),
-}));
-export const relations_product_sub_categories_locales = relations(
-  product_sub_categories_locales,
-  ({ one }) => ({
-    _parentID: one(product_sub_categories, {
-      fields: [product_sub_categories_locales._parentID],
-      references: [product_sub_categories.id],
-      relationName: "_locales",
-    }),
-  }),
-);
-export const relations_product_sub_categories = relations(product_sub_categories, ({ one, many }) => ({
-  category: one(product_categories, {
-    fields: [product_sub_categories.category],
+export const relations_product_categories = relations(product_categories, ({ one, many }) => ({
+  parent: one(product_categories, {
+    fields: [product_categories.parent],
     references: [product_categories.id],
-    relationName: "category",
+    relationName: "parent",
   }),
-  _locales: many(product_sub_categories_locales, {
+  _locales: many(product_categories_locales, {
     relationName: "_locales",
   }),
 }));
@@ -7375,11 +7304,6 @@ export const relations_payload_locked_documents_rels = relations(
       fields: [payload_locked_documents_rels.productCategoriesID],
       references: [product_categories.id],
       relationName: "productCategories",
-    }),
-    productSubCategoriesID: one(product_sub_categories, {
-      fields: [payload_locked_documents_rels.productSubCategoriesID],
-      references: [product_sub_categories.id],
-      relationName: "productSubCategories",
     }),
     productReviewsID: one(product_reviews, {
       fields: [payload_locked_documents_rels.productReviewsID],
@@ -8086,8 +8010,6 @@ type DatabaseSchema = {
   _products_v_rels: typeof _products_v_rels;
   product_categories: typeof product_categories;
   product_categories_locales: typeof product_categories_locales;
-  product_sub_categories: typeof product_sub_categories;
-  product_sub_categories_locales: typeof product_sub_categories_locales;
   product_reviews: typeof product_reviews;
   redirects: typeof redirects;
   redirects_rels: typeof redirects_rels;
@@ -8269,8 +8191,6 @@ type DatabaseSchema = {
   relations__products_v: typeof relations__products_v;
   relations_product_categories_locales: typeof relations_product_categories_locales;
   relations_product_categories: typeof relations_product_categories;
-  relations_product_sub_categories_locales: typeof relations_product_sub_categories_locales;
-  relations_product_sub_categories: typeof relations_product_sub_categories;
   relations_product_reviews: typeof relations_product_reviews;
   relations_redirects_rels: typeof relations_redirects_rels;
   relations_redirects: typeof relations_redirects;
