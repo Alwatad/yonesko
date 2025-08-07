@@ -198,7 +198,7 @@ export async function seedProducts(
             })),
           }),
           // Create variants
-          // variants: createVariants(productData), // Remove variants for now
+          variants: _createVariants(productData),
           // Pricing
           pricing: [
             {
@@ -223,8 +223,25 @@ export async function seedProducts(
   }
 }
 
-function _createVariants(productData: ProductData) {
-  const variants: unknown[] = [];
+type VariantData = {
+  size?: string | null;
+  color?: string | null;
+  variantSlug?: string | null;
+  image?: string | null;
+  stock: number;
+  weight?: number | null;
+  pricing?:
+    | {
+        value: number;
+        currency: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+};
+
+function _createVariants(productData: ProductData): VariantData[] {
+  const variants: VariantData[] = [];
 
   if (productData.colors) {
     // Create color and size combinations
@@ -237,6 +254,7 @@ function _createVariants(productData: ProductData) {
           stock: Math.floor(
             (productData.stock ?? 100) / (productData.colors.length * productData.sizes.length),
           ),
+          weight: 0,
           pricing: [
             {
               value: productData.price,
@@ -253,6 +271,7 @@ function _createVariants(productData: ProductData) {
         size: `size-${size}`,
         variantSlug: `size-${size}`,
         stock: Math.floor((productData.stock ?? 100) / productData.sizes.length),
+        weight: 0,
         pricing: [
           {
             value: productData.price,
