@@ -1,5 +1,10 @@
 
 {
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm vercel-build"
+  "buildCommand": "pnpm vercel-build",
+  "build": {
+    "env": {
+      "PAYLOAD_DROP_DATABASE": "true"
+    }
+  }
 }
