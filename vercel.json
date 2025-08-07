@@ -5,7 +5,8 @@
   "build": {
     "env": {
       "PAYLOAD_MIGRATE_FIRST": "true",
-      "REQUIRES_SEEDING": "true"
+      "REQUIRES_SEEDING": "true",
+      "SKIP_STATIC_OPTIMIZATION": "true"
     }
   }
 }
