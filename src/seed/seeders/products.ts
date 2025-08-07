@@ -178,6 +178,7 @@ export async function seedProducts(
           categoriesArr: [
             {
               category: category.id,
+              subcategories: [subcategory.id],
             },
           ],
           images: [mediaId], // Required field for product images
