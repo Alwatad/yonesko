@@ -43,16 +43,16 @@ export const ProductCategories: CollectionConfig = {
       relationTo: "productCategories",
     },
     ...slugField(),
-    // {
-    //   name: "subcategories",
-    //   label: {
-    //     en: "Related subcategories",
-    //     pl: "Powiązane podkategorie",
-    //   },
-    //   type: "join",
-    //   collection: "productSubCategories",
-    //   on: "category",
-    // },
+    {
+      name: "subcategories",
+      label: {
+        en: "Related subcategories",
+        pl: "Powiązane podkategorie",
+      },
+      type: "join",
+      collection: "productSubCategories",
+      on: "category",
+    },
     {
       name: "products",
       label: {
