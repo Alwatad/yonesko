@@ -113,24 +113,8 @@ async function createHomePage(
         hero: {
           type: heroType,
           ...(heroMediaId ? { media: heroMediaId } : {}),
-          richText: createRichTextRoot([
-            createHeadingNode([createTextNode("Step in the right direction", 1)], "h1"),
-            createParagraphNode([
-              createTextNode(
-                "Discover our latest collection of premium footwear designed for comfort and style.",
-              ),
-            ]),
-          ]),
-          links: [
-            {
-              link: {
-                type: "custom",
-                label: "Shop collection",
-                url: "/products",
-                appearance: "default",
-              },
-            },
-          ],
+          richText: createRichTextRoot([]),
+          links: [],
         },
         layout: [
           // Intro content like the original template
@@ -152,6 +136,16 @@ async function createHomePage(
               },
             ],
           },
+          // Featured image next to intro (placed immediately after intro)
+          ...(lifestyleMediaId
+            ? [
+                {
+                  blockType: "mediaBlock" as const,
+                  blockName: "Lifestyle Image",
+                  media: lifestyleMediaId,
+                },
+              ]
+            : []),
           // Featured Products Carousel
           ...(featuredProducts.length > 0
             ? [
@@ -251,16 +245,6 @@ async function createHomePage(
               },
             ],
           },
-          // Only include lifestyle media block if media exists
-          ...(lifestyleMediaId
-            ? [
-                {
-                  blockType: "mediaBlock" as const,
-                  blockName: "Lifestyle Image",
-                  media: lifestyleMediaId,
-                },
-              ]
-            : []),
         ],
         _status: "published",
       },
