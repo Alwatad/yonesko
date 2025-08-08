@@ -32,3 +32,33 @@ export function generateSizes(type: "mens" | "womens" | "unisex"): string[] {
       return ["6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11", "11.5", "12"];
   }
 }
+
+export function getBranding(): {
+  brandName: string;
+  brandDomain: string;
+  projectName: string;
+  emails: {
+    info: string;
+    support: string;
+    noreply: string;
+    warehouse: string;
+  };
+} {
+  const brandName = process.env.SEED_BRAND_NAME ?? "Stride Footwear";
+  const brandDomain = process.env.SEED_BRAND_DOMAIN ?? "stridefootwear.com";
+  const projectName = brandDomain.split(".")[0] ?? "store";
+
+  const emails = {
+    info: `info@${brandDomain}`,
+    support: `support@${brandDomain}`,
+    noreply: `noreply@${brandDomain}`,
+    warehouse: `warehouse@${brandDomain}`,
+  };
+
+  return {
+    brandName,
+    brandDomain,
+    projectName,
+    emails,
+  };
+}

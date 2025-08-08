@@ -1,6 +1,7 @@
 // seed/seeders/globals.ts
 import { type Payload } from "payload";
 
+import { getBranding } from "../utils/helpers";
 import { logger } from "../utils/logger";
 
 // Helper function to create proper Lexical text nodes (same as pages.ts)
@@ -156,6 +157,7 @@ async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: st
 }
 
 async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
+  const { brandName } = getBranding();
   await payload.updateGlobal({
     slug: "footer",
     context: { disableRevalidate: true },
@@ -200,14 +202,12 @@ async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: s
       attribution: {
         en: createRichTextRoot([
           createParagraphNode([
-            createTextNode("© 2024 Stride Footwear. All rights reserved. Made with ❤️ and PayloadCMS"),
+            createTextNode(`© 2024 ${brandName}. All rights reserved. Made with ❤️ and PayloadCMS`),
           ]),
         ]),
         pl: createRichTextRoot([
           createParagraphNode([
-            createTextNode(
-              "© 2024 Stride Footwear. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS",
-            ),
+            createTextNode(`© 2024 ${brandName}. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS`),
           ]),
         ]),
       },
@@ -244,6 +244,7 @@ async function seedShopSettings(payload: Payload) {
 }
 
 async function seedShopLayout(payload: Payload) {
+  const { emails } = getBranding();
   await payload.updateGlobal({
     slug: "shopLayout",
     context: { disableRevalidate: true },
@@ -280,7 +281,7 @@ async function seedShopLayout(payload: Payload) {
                 {
                   children: [
                     {
-                      text: "Email: support@stridefootwear.com",
+                      text: `Email: ${emails.support}`,
                     },
                   ],
                   type: "p",
@@ -312,6 +313,7 @@ async function seedShopLayout(payload: Payload) {
 }
 
 async function seedEmailSettings(payload: Payload, mediaAssets: Record<string, { id: string }>) {
+  const { brandName, emails } = getBranding();
   await payload.updateGlobal({
     slug: "emailMessages",
     context: { disableRevalidate: true },
@@ -320,13 +322,13 @@ async function seedEmailSettings(payload: Payload, mediaAssets: Record<string, {
         host: "smtp.example.com",
         port: 587,
         secure: false,
-        user: "noreply@stridefootwear.com",
+        user: emails.noreply,
         password: "your-smtp-password", // In production, use environment variables
-        fromEmail: "noreply@stridefootwear.com",
+        fromEmail: emails.noreply,
       },
       messages: {
         logo: mediaAssets["logo.png"]?.id,
-        additionalText: "Thank you for shopping with Stride Footwear!",
+        additionalText: `Thank you for shopping with ${brandName}!`,
         template: "default",
       },
     },
@@ -483,18 +485,19 @@ async function seedPaymentSettings(payload: Payload) {
 }
 
 async function seedFulfillmentSettings(payload: Payload) {
+  const { brandName, emails } = getBranding();
   await payload.updateGlobal({
     slug: "fulfilment",
     context: { disableRevalidate: true },
     data: {
       shopAddress: {
-        name: "Stride Footwear Warehouse",
+        name: `${brandName} Warehouse`,
         address: "123 Fashion Avenue",
         city: "New York",
         country: "pl", // Use supported country code
         region: "NY",
         postalCode: "10001",
-        email: "warehouse@stridefootwear.com",
+        email: emails.warehouse,
         phone: "+1 (555) 123-4567",
       },
     },

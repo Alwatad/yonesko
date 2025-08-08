@@ -1,5 +1,6 @@
 import { type Payload } from "payload";
 
+import { getBranding } from "../utils/helpers";
 import { logger } from "../utils/logger";
 
 // Detailed error logging helper
@@ -275,6 +276,7 @@ async function createHomePage(
 async function createAboutPage(payload: Payload, _mediaAssets: Record<string, unknown>) {
   try {
     logger.info("Creating about page...");
+    const { brandName } = getBranding();
 
     const aboutPage = await payload.create({
       collection: "pages",
@@ -299,7 +301,7 @@ async function createAboutPage(payload: Payload, _mediaAssets: Record<string, un
               {
                 size: "full",
                 richText: createRichTextRoot([
-                  createHeadingNode([createTextNode("Welcome to Stride Footwear", 1)], "h2"),
+                  createHeadingNode([createTextNode(`Welcome to ${brandName}`, 1)], "h2"),
                   createParagraphNode([
                     createTextNode(
                       "At Stride, we believe that great shoes are the foundation of every journey. Founded in 2020, we set out with a simple mission: to create footwear that combines exceptional comfort with timeless style.",
@@ -343,6 +345,7 @@ async function createAboutPage(payload: Payload, _mediaAssets: Record<string, un
 async function createContactPage(payload: Payload) {
   try {
     logger.info("Creating contact page...");
+    const { emails } = getBranding();
 
     // First create a contact form
     const contactForm = await payload.create({
@@ -388,8 +391,8 @@ async function createContactPage(payload: Payload) {
         ],
         emails: [
           {
-            emailTo: "info@stridefootwear.com",
-            emailFrom: "noreply@stridefootwear.com",
+            emailTo: emails.info,
+            emailFrom: emails.noreply,
             subject: "New Contact Form Submission",
           },
         ],
@@ -431,8 +434,8 @@ async function createContactPage(payload: Payload) {
                 richText: createRichTextRoot([
                   createHeadingNode([createTextNode("Contact Information", 1)], "h3"),
                   createParagraphNode([createTextNode("Phone: +1 (555) 123-4567")]),
-                  createParagraphNode([createTextNode("Email: info@stridefootwear.com")]),
-                  createParagraphNode([createTextNode("Customer Service: support@stridefootwear.com")]),
+                  createParagraphNode([createTextNode(`Email: ${emails.info}`)]),
+                  createParagraphNode([createTextNode(`Customer Service: ${emails.support}`)]),
                 ]),
               },
             ],
@@ -462,6 +465,7 @@ async function createContactPage(payload: Payload) {
 async function createTermsPage(payload: Payload) {
   try {
     logger.info("Creating terms page...");
+    const { brandName } = getBranding();
 
     const termsPage = await payload.create({
       collection: "pages",
@@ -495,19 +499,19 @@ async function createTermsPage(payload: Payload) {
                   createHeadingNode([createTextNode("2. Use License", 1)], "h2"),
                   createParagraphNode([
                     createTextNode(
-                      "Permission is granted to temporarily download one copy of the materials (information or software) on Stride Footwear's website for personal, non-commercial transitory viewing only.",
+                      `Permission is granted to temporarily download one copy of the materials (information or software) on ${brandName}'s website for personal, non-commercial transitory viewing only.`,
                     ),
                   ]),
                   createHeadingNode([createTextNode("3. Disclaimer", 1)], "h2"),
                   createParagraphNode([
                     createTextNode(
-                      "The materials on Stride Footwear's website are provided on an 'as is' basis. Stride Footwear makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.",
+                      `The materials on ${brandName}'s website are provided on an 'as is' basis. ${brandName} makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.`,
                     ),
                   ]),
                   createHeadingNode([createTextNode("4. Limitations", 1)], "h2"),
                   createParagraphNode([
                     createTextNode(
-                      "In no event shall Stride Footwear or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Stride Footwear's website.",
+                      `In no event shall ${brandName} or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on ${brandName}'s website.`,
                     ),
                   ]),
                   createHeadingNode([createTextNode("5. Privacy Policy", 1)], "h2"),
