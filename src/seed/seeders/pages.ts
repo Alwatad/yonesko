@@ -114,7 +114,7 @@ async function createHomePage(
           type: heroType,
           ...(heroMediaId ? { media: heroMediaId } : {}),
           richText: createRichTextRoot([
-            createHeadingNode([createTextNode("Step into Style", 1)], "h1"),
+            createHeadingNode([createTextNode("Step in the right direction", 1)], "h1"),
             createParagraphNode([
               createTextNode(
                 "Discover our latest collection of premium footwear designed for comfort and style.",
@@ -125,26 +125,47 @@ async function createHomePage(
             {
               link: {
                 type: "custom",
-                label: "Shop Collection",
-                url: "/category/mens-shoes", // Link to a main category page
+                label: "Shop collection",
+                url: "/products",
                 appearance: "default",
               },
             },
           ],
         },
         layout: [
-          // Layout remains the same...
-          // Featured Products Carousel - only include if we have products
+          // Intro content like the original template
+          {
+            blockType: "content",
+            blockName: "Find the perfect shoes",
+            alignment: "center",
+            columns: [
+              {
+                size: "full",
+                richText: createRichTextRoot([
+                  createHeadingNode([createTextNode("Find the perfect shoes for every occasion!", 1)], "h2"),
+                  createParagraphNode([
+                    createTextNode(
+                      "Whether you're looking for comfortable shoes for daily city walks, elegant models for the office that will emphasize your professionalism, or perhaps unique creations for special occasions like weddings, galas, or important business meetings - our extensive collection offers solutions tailored to every lifestyle and need.",
+                    ),
+                  ]),
+                ]),
+              },
+            ],
+          },
+          // Featured Products Carousel
           ...(featuredProducts.length > 0
             ? [
                 {
                   blockType: "carousel" as const,
                   blockName: "Featured Products",
-                  title: createRichTextRoot([createHeadingNode([createTextNode("Best Sellers", 1)], "h2")]),
+                  title: createRichTextRoot([
+                    createHeadingNode([createTextNode("Our bestsellers!", 1)], "h2"),
+                    createParagraphNode([createTextNode("Try it yourself and see why it's worth!")]),
+                  ]),
                   type: "default" as const,
                   autoplay: 5000,
                   slides: featuredProducts
-                    .filter((product) => product.media && product.media.length > 0) // Only products with media
+                    .filter((product) => product.media && product.media.length > 0)
                     .map((product) => ({
                       image: product.media[0] as string,
                       enableLink: true,
@@ -159,28 +180,6 @@ async function createHomePage(
                 },
               ]
             : []),
-          // ... rest of your layout sections
-          // CTA Section
-          {
-            blockType: "cta",
-            blockName: "Newsletter CTA",
-            richText: createRichTextRoot([
-              createHeadingNode([createTextNode("Stay in Step", 1)], "h2"),
-              createParagraphNode([
-                createTextNode("Subscribe to our newsletter and get 15% off your first order."),
-              ]),
-            ]),
-            links: [
-              {
-                link: {
-                  type: "custom",
-                  label: "Subscribe Now",
-                  url: "/newsletter",
-                  appearance: "default",
-                },
-              },
-            ],
-          },
           // Content Columns - Categories
           {
             blockType: "content",
@@ -231,22 +230,24 @@ async function createHomePage(
               },
             ],
           },
-          // Additional Content Section
+          // CTA Section at the end
           {
-            blockType: "content",
-            blockName: "Lifestyle Text",
-            alignment: "center",
-            columns: [
+            blockType: "cta",
+            blockName: "Newsletter CTA",
+            richText: createRichTextRoot([
+              createHeadingNode([createTextNode("Stay in Step", 1)], "h2"),
+              createParagraphNode([
+                createTextNode("Subscribe to our newsletter and get 15% off your first order."),
+              ]),
+            ]),
+            links: [
               {
-                size: "full",
-                richText: createRichTextRoot([
-                  createHeadingNode([createTextNode("Find the Perfect Shoes for Every Occasion", 1)], "h2"),
-                  createParagraphNode([
-                    createTextNode(
-                      "Whether you're looking for comfortable shoes for daily city walks, elegant models for the office that will emphasize your professionalism, or perhaps unique creations for special occasions like weddings, galas, or important business meetings - our extensive collection offers solutions tailored to every lifestyle and need.",
-                    ),
-                  ]),
-                ]),
+                link: {
+                  type: "custom",
+                  label: "Subscribe Now",
+                  url: "/newsletter",
+                  appearance: "default",
+                },
               },
             ],
           },
