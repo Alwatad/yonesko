@@ -114,7 +114,16 @@ async function createHomePage(
           type: heroType,
           ...(heroMediaId ? { media: heroMediaId } : {}),
           richText: createRichTextRoot([]),
-          links: [],
+          links: [
+            {
+              link: {
+                type: "custom",
+                label: "Shop collection",
+                url: "/products",
+                appearance: "default",
+              },
+            },
+          ],
         },
         layout: [
           // Intro content like the original template
@@ -124,7 +133,7 @@ async function createHomePage(
             alignment: "center",
             columns: [
               {
-                size: "full",
+                size: "half",
                 richText: createRichTextRoot([
                   createHeadingNode([createTextNode("Find the perfect shoes for every occasion!", 1)], "h2"),
                   createParagraphNode([
@@ -134,18 +143,23 @@ async function createHomePage(
                   ]),
                 ]),
               },
+              ...(lifestyleMediaId
+                ? [
+                    {
+                      size: "half" as const,
+                      richText: createRichTextRoot([
+                        {
+                          type: "block",
+                          version: 1,
+                          blockType: "mediaBlock",
+                          fields: { media: lifestyleMediaId },
+                        } as unknown as { [k: string]: unknown; type: string; version: number },
+                      ]),
+                    },
+                  ]
+                : []),
             ],
           },
-          // Featured image next to intro (placed immediately after intro)
-          ...(lifestyleMediaId
-            ? [
-                {
-                  blockType: "mediaBlock" as const,
-                  blockName: "Lifestyle Image",
-                  media: lifestyleMediaId,
-                },
-              ]
-            : []),
           // Featured Products Carousel
           ...(featuredProducts.length > 0
             ? [
