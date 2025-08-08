@@ -2,10 +2,6 @@ import { type MigrateUpArgs, type MigrateDownArgs, sql } from "@payloadcms/db-po
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   -- Ensure required extensions exist for UUID generation (safe if already installed)
-   CREATE EXTENSION IF NOT EXISTS pgcrypto;
-   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-  
    CREATE TYPE "public"."_locales" AS ENUM('en', 'pl');
   CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_appearance" AS ENUM('default', 'outline');
