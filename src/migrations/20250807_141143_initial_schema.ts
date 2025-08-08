@@ -1,7 +1,11 @@
-import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+import { type MigrateUpArgs, type MigrateDownArgs, sql } from "@payloadcms/db-postgres";
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
+   -- Ensure required extensions exist for UUID generation (safe if already installed)
+   CREATE EXTENSION IF NOT EXISTS pgcrypto;
+   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+  
    CREATE TYPE "public"."_locales" AS ENUM('en', 'pl');
   CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_appearance" AS ENUM('default', 'outline');
@@ -2677,7 +2681,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "inpost_courier_cod_delivery_zones_order_idx" ON "inpost_courier_cod_delivery_zones" USING btree ("_order");
   CREATE INDEX "inpost_courier_cod_delivery_zones_parent_id_idx" ON "inpost_courier_cod_delivery_zones" USING btree ("_parent_id");
   CREATE INDEX "inpost_courier_cod_icon_idx" ON "inpost_courier_cod" USING btree ("icon_id");
-  CREATE UNIQUE INDEX "inpost_courier_cod_locales_locale_parent_id_unique" ON "inpost_courier_cod_locales" USING btree ("_locale","_parent_id");`)
+  CREATE UNIQUE INDEX "inpost_courier_cod_locales_locale_parent_id_unique" ON "inpost_courier_cod_locales" USING btree ("_locale","_parent_id");`);
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -2999,5 +3003,5 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_inpost_courier_cod_delivery_zones_countries";
   DROP TYPE "public"."enum_inpost_courier_cod_a_p_i_url";
   DROP TYPE "public"."enum_paywalls_paywall";
-  DROP TYPE "public"."enum_fulfilment_shop_address_country";`)
+  DROP TYPE "public"."enum_fulfilment_shop_address_country";`);
 }
