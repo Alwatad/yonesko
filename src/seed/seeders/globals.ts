@@ -43,6 +43,20 @@ function createRichTextRoot(children: { [k: string]: unknown; type: string; vers
   };
 }
 
+// Helper to create a proper Lexical block node (e.g., mediaBlock)
+function createBlockNode(blockType: string, fields: Record<string, unknown>) {
+  return {
+    type: "block",
+    fields: {
+      blockType,
+      ...fields,
+    },
+    format: "",
+    indent: 0,
+    version: 1,
+  } as { [k: string]: unknown; type: string; version: number };
+}
+
 export async function seedGlobalSettings(
   payload: Payload,
   mediaAssets: Record<string, { id: string }>,
@@ -81,6 +95,28 @@ export async function seedGlobalSettings(
 
 async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: string }>) {
   try {
+    const { brandName } = getBranding();
+
+    // Ensure logo media has alt populated for current locales so header condition passes
+    const logoId = mediaAssets["logo.png"]?.id;
+    if (logoId) {
+      try {
+        const mediaDoc = await payload.findByID({ collection: "media", id: logoId });
+        const hasAlt = typeof (mediaDoc as { alt?: unknown }).alt === "string";
+        if (!hasAlt) {
+          await payload.update({
+            collection: "media",
+            id: logoId,
+            data: {
+              alt: `${brandName} logo`,
+            },
+          });
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     await payload.updateGlobal({
       slug: "header",
       context: { disableRevalidate: true },
@@ -88,7 +124,7 @@ async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: st
         type: "default",
         hideOnScroll: false,
         background: "#000000",
-        logo: mediaAssets["logo.png"]?.id,
+        logo: logoId,
         navItems: [
           {
             link: {
@@ -156,8 +192,19 @@ async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: st
   logger.info("✓ Header configured");
 }
 
-async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: string }>) {
+async function seedFooter(payload: Payload, mediaAssets: Record<string, { id: string }>) {
   const { brandName } = getBranding();
+  // Try to embed brand logo at top of attribution rich text (visual logo without code changes)
+  let logoBlock: { [k: string]: unknown; type: string; version: number } | undefined;
+  try {
+    const logoId = mediaAssets["logo.png"]?.id;
+    if (logoId) {
+      const mediaDoc = await payload.findByID({ collection: "media", id: logoId });
+      logoBlock = createBlockNode("mediaBlock", { media: mediaDoc });
+    }
+  } catch {
+    // ignore
+  }
   await payload.updateGlobal({
     slug: "footer",
     context: { disableRevalidate: true },
@@ -201,11 +248,13 @@ async function seedFooter(payload: Payload, _mediaAssets: Record<string, { id: s
       ],
       attribution: {
         en: createRichTextRoot([
+          ...(logoBlock ? [logoBlock] : []),
           createParagraphNode([
             createTextNode(`© 2024 ${brandName}. All rights reserved. Made with ❤️ and PayloadCMS`),
           ]),
         ]),
         pl: createRichTextRoot([
+          ...(logoBlock ? [logoBlock] : []),
           createParagraphNode([
             createTextNode(`© 2024 ${brandName}. Wszelkie prawa zastrzeżone. Stworzone z ❤️ i PayloadCMS`),
           ]),

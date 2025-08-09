@@ -191,6 +191,8 @@ async function createHomePage(
             blockType: "content",
             blockName: "Find the perfect shoes",
             alignment: "center",
+            spacingTop: "small" as const,
+            spacingBottom: "small" as const,
             columns: [
               {
                 size: "half",
@@ -221,6 +223,8 @@ async function createHomePage(
                 {
                   blockType: "carousel" as const,
                   blockName: "Featured Products",
+                  spacingTop: "small" as const,
+                  spacingBottom: "small" as const,
                   title: createRichTextRoot([
                     createHeadingNode([createTextNode("Our bestsellers!", 1)], "h2"),
                     createParagraphNode([createTextNode("Try it yourself and see why it's worth!")]),
@@ -248,6 +252,8 @@ async function createHomePage(
             blockType: "content",
             blockName: "Shop by Category",
             alignment: "center",
+            spacingTop: "small" as const,
+            spacingBottom: "small" as const,
             columns: [
               {
                 size: "oneThird",
@@ -300,6 +306,8 @@ async function createHomePage(
           {
             blockType: "cta",
             blockName: "Newsletter CTA",
+            spacingTop: "small" as const,
+            spacingBottom: "small" as const,
             richText: createRichTextRoot([
               createHeadingNode([createTextNode("Stay in Step", 1)], "h2"),
               createParagraphNode([
