@@ -80,6 +80,18 @@ function createRichTextRoot(children: { [k: string]: unknown; type: string; vers
   };
 }
 
+// Helper to create a proper Lexical block node (e.g., mediaBlock)
+function createBlockNode(blockType: string, fields: Record<string, unknown>) {
+  return {
+    type: "block",
+    blockType,
+    fields,
+    format: "",
+    indent: 0,
+    version: 1,
+  } as { [k: string]: unknown; type: string; version: number };
+}
+
 // in your pages seeder file (e.g., seed/seeders/pages.ts)
 
 async function createHomePage(
@@ -179,12 +191,7 @@ async function createHomePage(
                     {
                       size: "half" as const,
                       richText: createRichTextRoot([
-                        {
-                          type: "block",
-                          version: 1,
-                          blockType: "mediaBlock",
-                          fields: { media: lifestyleMediaId },
-                        } as unknown as { [k: string]: unknown; type: string; version: number },
+                        createBlockNode("mediaBlock", { media: lifestyleMediaId }),
                       ]),
                     },
                   ]
@@ -228,16 +235,7 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
-                  ...(mensCategoryImgId
-                    ? [
-                        {
-                          type: "block",
-                          version: 1,
-                          blockType: "mediaBlock",
-                          fields: { media: mensCategoryImgId },
-                        } as unknown as { [k: string]: unknown; type: string; version: number },
-                      ]
-                    : []),
+                  ...(mensCategoryImgId ? [createBlockNode("mediaBlock", { media: mensCategoryImgId })] : []),
                   createHeadingNode([createTextNode("Men's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("From casual sneakers to formal dress shoes.")]),
                 ]),
@@ -253,14 +251,7 @@ async function createHomePage(
                 size: "oneThird",
                 richText: createRichTextRoot([
                   ...(womensCategoryImgId
-                    ? [
-                        {
-                          type: "block",
-                          version: 1,
-                          blockType: "mediaBlock",
-                          fields: { media: womensCategoryImgId },
-                        } as unknown as { [k: string]: unknown; type: string; version: number },
-                      ]
+                    ? [createBlockNode("mediaBlock", { media: womensCategoryImgId })]
                     : []),
                   createHeadingNode([createTextNode("Women's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Elegant heels to comfortable flats.")]),
@@ -277,14 +268,7 @@ async function createHomePage(
                 size: "oneThird",
                 richText: createRichTextRoot([
                   ...(athleticCategoryImgId
-                    ? [
-                        {
-                          type: "block",
-                          version: 1,
-                          blockType: "mediaBlock",
-                          fields: { media: athleticCategoryImgId },
-                        } as unknown as { [k: string]: unknown; type: string; version: number },
-                      ]
+                    ? [createBlockNode("mediaBlock", { media: athleticCategoryImgId })]
                     : []),
                   createHeadingNode([createTextNode("Athletic Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Performance footwear for every sport.")]),
