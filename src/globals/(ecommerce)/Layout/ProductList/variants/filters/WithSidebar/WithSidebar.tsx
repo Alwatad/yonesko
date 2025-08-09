@@ -41,6 +41,7 @@ export const WithSidebar = ({
   children: ReactNode;
 }) => {
   const t = useTranslations("ProductList");
+  const parentSlug = typeof _category !== "string" && _category?.slug ? _category.slug : undefined;
 
   const sizes = Array.from(
     new Map(
@@ -127,7 +128,14 @@ export const WithSidebar = ({
                     <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                       {subcategories.map((subcategory) => (
                         <li key={subcategory.id}>
-                          <Link className="block px-2 py-3" href={`/category/${subcategory.slug}`}>
+                          <Link
+                            className="block px-2 py-3"
+                            href={
+                              parentSlug
+                                ? `/category/${parentSlug}/${subcategory.slug}`
+                                : `/category/${subcategory.slug}`
+                            }
+                          >
                             {subcategory.title}
                           </Link>
                         </li>
@@ -248,7 +256,15 @@ export const WithSidebar = ({
                     >
                       {subcategories.map((subcategory) => (
                         <li key={subcategory.id}>
-                          <Link href={`/category/${subcategory.slug}`}>{subcategory.title}</Link>
+                          <Link
+                            href={
+                              parentSlug
+                                ? `/category/${parentSlug}/${subcategory.slug}`
+                                : `/category/${subcategory.slug}`
+                            }
+                          >
+                            {subcategory.title}
+                          </Link>
                         </li>
                       ))}
                     </ul>
