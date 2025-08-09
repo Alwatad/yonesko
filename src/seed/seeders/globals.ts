@@ -145,22 +145,6 @@ async function seedHeader(payload: Payload, mediaAssets: Record<string, { id: st
           {
             link: {
               type: "custom",
-              label: "Men's",
-              url: "/category/mens-shoes",
-              newTab: false,
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Women's",
-              url: "/category/womens-shoes",
-              newTab: false,
-            },
-          },
-          {
-            link: {
-              type: "custom",
               label: "About",
               url: "/about",
               newTab: false,
