@@ -148,6 +148,21 @@ async function createHomePage(
       return typeof slug === "string" ? slug : "";
     };
 
+    // Fetch full media docs for embedded media blocks so rendering doesn't depend on query depth
+    const fetchMediaById = async (id?: string) => {
+      if (!id) return undefined;
+      try {
+        return await payload.findByID({ collection: "media", id });
+      } catch {
+        return undefined;
+      }
+    };
+
+    const lifestyleMediaDoc = await fetchMediaById(lifestyleMediaId);
+    const mensImgDoc = await fetchMediaById(mensCategoryImgId);
+    const womensImgDoc = await fetchMediaById(womensCategoryImgId);
+    const athleticImgDoc = await fetchMediaById(athleticCategoryImgId);
+
     const homePage = await payload.create({
       collection: "pages",
       context: { disableRevalidate: true },
@@ -188,12 +203,12 @@ async function createHomePage(
                   ]),
                 ]),
               },
-              ...(lifestyleMediaId
+              ...(lifestyleMediaDoc
                 ? [
                     {
                       size: "half" as const,
                       richText: createRichTextRoot([
-                        createBlockNode("mediaBlock", { media: lifestyleMediaId }),
+                        createBlockNode("mediaBlock", { media: lifestyleMediaDoc }),
                       ]),
                     },
                   ]
@@ -237,7 +252,7 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
-                  ...(mensCategoryImgId ? [createBlockNode("mediaBlock", { media: mensCategoryImgId })] : []),
+                  ...(mensImgDoc ? [createBlockNode("mediaBlock", { media: mensImgDoc })] : []),
                   createHeadingNode([createTextNode("Men's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("From casual sneakers to formal dress shoes.")]),
                 ]),
@@ -252,9 +267,7 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
-                  ...(womensCategoryImgId
-                    ? [createBlockNode("mediaBlock", { media: womensCategoryImgId })]
-                    : []),
+                  ...(womensImgDoc ? [createBlockNode("mediaBlock", { media: womensImgDoc })] : []),
                   createHeadingNode([createTextNode("Women's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Elegant heels to comfortable flats.")]),
                 ]),
@@ -269,9 +282,7 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
-                  ...(athleticCategoryImgId
-                    ? [createBlockNode("mediaBlock", { media: athleticCategoryImgId })]
-                    : []),
+                  ...(athleticImgDoc ? [createBlockNode("mediaBlock", { media: athleticImgDoc })] : []),
                   createHeadingNode([createTextNode("Athletic Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Performance footwear for every sport.")]),
                 ]),
