@@ -179,7 +179,7 @@ async function createHomePage(
               link: {
                 type: "custom",
                 label: "Shop collection",
-                url: "/products",
+                url: "/category/mens-shoes",
                 appearance: "default",
               },
             },
