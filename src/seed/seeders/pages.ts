@@ -102,6 +102,37 @@ async function createHomePage(
     const heroType: "highImpact" | "lowImpact" = heroMediaId ? "highImpact" : "lowImpact";
 
     const lifestyleMediaId = (mediaAssets["hero-lifestyle.png"] as { id: string })?.id;
+    // Category teaser images
+    const mensCategoryImgId = (mediaAssets["mens-sneaker-urban.jpg"] as { id: string } | undefined)?.id;
+    const womensCategoryImgId = (mediaAssets["womens-heel-elegant.jpg"] as { id: string } | undefined)?.id;
+    const athleticCategoryImgId = (mediaAssets["athletic-running-pro.jpg"] as { id: string } | undefined)?.id;
+
+    // Helper accessors for products without using `any`
+    const getProductImages = (p: unknown): string[] | null => {
+      if (typeof p !== "object" || p === null) return null;
+      const obj = p as { images?: unknown };
+      const images = obj.images;
+      return Array.isArray(images) && images.length > 0 ? (images as string[]) : null;
+    };
+
+    const getProductTitle = (p: unknown): string => {
+      if (typeof p !== "object" || p === null) return "Product";
+      const obj = p as { title?: unknown };
+      const raw = obj.title;
+      if (typeof raw === "string") return raw;
+      if (typeof raw === "object" && raw !== null) {
+        const en = (raw as { en?: unknown }).en;
+        if (typeof en === "string") return en;
+      }
+      return "Product";
+    };
+
+    const getProductSlug = (p: unknown): string => {
+      if (typeof p !== "object" || p === null) return "";
+      const obj = p as { slug?: unknown };
+      const slug = obj.slug;
+      return typeof slug === "string" ? slug : "";
+    };
 
     const homePage = await payload.create({
       collection: "pages",
@@ -173,15 +204,15 @@ async function createHomePage(
                   type: "default" as const,
                   autoplay: 5000,
                   slides: featuredProducts
-                    .filter((product) => product.media && product.media.length > 0)
-                    .map((product) => ({
-                      image: product.media[0] as string,
+                    .map((p) => ({ p, images: getProductImages(p) }))
+                    .filter(({ images }) => Array.isArray(images) && images.length > 0)
+                    .map(({ p, images }) => ({
+                      image: images![0],
                       enableLink: true,
                       link: {
                         type: "custom" as const,
-                        label:
-                          typeof product.title === "string" ? product.title : (product.title.en ?? "Product"),
-                        url: `/products/${product.slug}`,
+                        label: getProductTitle(p),
+                        url: `/products/${getProductSlug(p)}`,
                         appearance: "default" as const,
                       },
                     })),
@@ -197,6 +228,16 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
+                  ...(mensCategoryImgId
+                    ? [
+                        {
+                          type: "block",
+                          version: 1,
+                          blockType: "mediaBlock",
+                          fields: { media: mensCategoryImgId },
+                        } as unknown as { [k: string]: unknown; type: string; version: number },
+                      ]
+                    : []),
                   createHeadingNode([createTextNode("Men's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("From casual sneakers to formal dress shoes.")]),
                 ]),
@@ -211,6 +252,16 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
+                  ...(womensCategoryImgId
+                    ? [
+                        {
+                          type: "block",
+                          version: 1,
+                          blockType: "mediaBlock",
+                          fields: { media: womensCategoryImgId },
+                        } as unknown as { [k: string]: unknown; type: string; version: number },
+                      ]
+                    : []),
                   createHeadingNode([createTextNode("Women's Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Elegant heels to comfortable flats.")]),
                 ]),
@@ -225,6 +276,16 @@ async function createHomePage(
               {
                 size: "oneThird",
                 richText: createRichTextRoot([
+                  ...(athleticCategoryImgId
+                    ? [
+                        {
+                          type: "block",
+                          version: 1,
+                          blockType: "mediaBlock",
+                          fields: { media: athleticCategoryImgId },
+                        } as unknown as { [k: string]: unknown; type: string; version: number },
+                      ]
+                    : []),
                   createHeadingNode([createTextNode("Athletic Collection", 1)], "h3"),
                   createParagraphNode([createTextNode("Performance footwear for every sport.")]),
                 ]),
