@@ -84,8 +84,10 @@ function createRichTextRoot(children: { [k: string]: unknown; type: string; vers
 function createBlockNode(blockType: string, fields: Record<string, unknown>) {
   return {
     type: "block",
-    blockType,
-    fields,
+    fields: {
+      blockType,
+      ...fields,
+    },
     format: "",
     indent: 0,
     version: 1,
