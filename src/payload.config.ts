@@ -69,7 +69,7 @@ export default buildConfig({
         },
       ],
       title: "Admin Panel",
-      titleSuffix: "| Mandala SH",
+      titleSuffix: "| Yonesko",
     },
     importMap: {
       baseDir: path.resolve(dirname),
